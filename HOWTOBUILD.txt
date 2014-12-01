@@ -1,0 +1,15 @@
+This build assums the same Debian machine as for the QEMU build.
+
+
+ssh ilg-deb77x64-mingw.local
+
+WORK=/media/Work/build-tools
+mkdir -p $WORK/output
+
+cd $WORK
+git clone git clone git://git.code.sf.net/p/gnuarmeclipse/build-tools build-tools.git
+
+ndate=$(date -u +%Y%m%d%H%M%S)
+makensis  -V4 -NOCD -NOCONFIG -DBINDIR="/tmp/build-tools" -DSRCDIR=$WORK/build-tools.git \
+-DOUTFILE=$WORK/output/Build-Tools-w32-$ndate-setup.exe build-tools.git/build-tools.nsi
+
