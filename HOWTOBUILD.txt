@@ -7,7 +7,7 @@ WORK=/media/Work/build-tools
 mkdir -p $WORK/output
 
 cd $WORK
-git clone git clone git://git.code.sf.net/p/gnuarmeclipse/build-tools build-tools.git
+git clone git://git.code.sf.net/p/gnuarmeclipse/build-tools build-tools.git
 
 ndate=$(date -u +%Y%m%d%H%M%S)
 makensis  -V4 -NOCD -NOCONFIG -DBINDIR="/tmp/build-tools" -DSRCDIR=$WORK/build-tools.git \
