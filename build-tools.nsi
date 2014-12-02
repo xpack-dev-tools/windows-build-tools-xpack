@@ -129,7 +129,7 @@ SetRegView 64
 WriteRegStr HKLM SOFTWARE\${PRODUCT_KEY} "Install_Dir" "$INSTDIR"
 
 ; Write the uninstall keys for Windows
-WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "QEMU"
+WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "Build Tools"
 WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" '"${UNINST_EXE}"'
 WriteRegDWORD HKLM "${UNINST_KEY}" "NoModify" 1
 WriteRegDWORD HKLM "${UNINST_KEY}" "NoRepair" 1
@@ -137,11 +137,9 @@ WriteUninstaller "build-tools-uninstall.exe"
 
 SectionEnd
 
-
-; Optional section (can be disabled by the user)
-Section "Start Menu Shortcuts" SectionMenu
-CreateDirectory "$SMPROGRAMS\${PRODUCT_KEY}"
-CreateShortCut "$SMPROGRAMS\${PRODUCT_KEY}\Uninstall.lnk" "${UNINST_EXE}" "" "${UNINST_EXE}" 0
+Section "Libraries (DLL)" SectionDll
+SetOutPath "$INSTDIR"
+File "${SRCDIR}\*.dll"
 SectionEnd
 
 ;--------------------------------
@@ -156,16 +154,14 @@ SetRegView 64
 DeleteRegKey HKLM "${UNINST_KEY}"
 DeleteRegKey HKLM SOFTWARE\${PRODUCT_KEY}
 
-; Remove shortcuts, if any
-Delete "$SMPROGRAMS\${PRODUCT_KEY}\Uninstall.lnk"
-RMDir "$SMPROGRAMS\${PRODUCT_KEY}"
-
 ; Remove files and directories used
 Delete "$INSTDIR\LICENSE.txt"
 Delete "$INSTDIR\README.txt"
 Delete "$INSTDIR\echo.exe"
 Delete "$INSTDIR\make.exe"
 Delete "$INSTDIR\rm.exe"
+; Remove all DLLs
+Delete "$INSTDIR\*.dll"
 ; Remove uninstaller
 Delete "${UNINST_EXE}"
 RMDir "$INSTDIR"
@@ -175,7 +171,6 @@ SectionEnd
 
 ; Descriptions (mouse-over).
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-!insertmacro MUI_DESCRIPTION_TEXT ${SectionMenu}  "Menu entries."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------
