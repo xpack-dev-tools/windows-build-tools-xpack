@@ -1,0 +1,15 @@
+
+This are the GNU ARM Eclipse build tools for 32-bit Windows.
+
+They based on MinGW MSYS, with no changes.
+
+For more details and support, please read the GNU ARM Eclipe project pages from:
+
+  http://gnuarmeclipse.livius.net/blog/
+  http://gnuarmeclipse.livius.net/wiki/
+
+
+Thank you for using GNU ARM Eclipse,
+
+Liviu Ionescu
+

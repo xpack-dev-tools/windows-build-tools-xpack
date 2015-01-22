@@ -20,27 +20,15 @@
 
 ; NSIS_WIN32_MAKENSIS
 
-!define PRODUCT "Build_Tools"
-!define PRODUCT_KEY "GNU_ARM_Eclipse\Build_Tools"
+!define PRODNAME "Build Tools"
+!define PRODLCNAME "build-tools"
+!define PRODUCT "GNU ARM Eclipse\${PRODNAME}"
 !define URL     "http://gnuarmeclipse.livius.net"
 
-!define UNINST_EXE "$INSTDIR\build-tools-uninstall.exe"
-!define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_KEY}"
+!define UNINST_EXE "$INSTDIR\${PRODLCNAME}-uninstall.exe"
+!define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}"
 
-!ifndef BINDIR
-!define BINDIR nsis.tmp
-!endif
-!ifndef SRCDIR
-!define SRCDIR source
-!endif
-!ifndef OUTFILE
-!define OUTFILE "build-tools-setup.exe"
-!endif
-
-; Optionally install documentation.
-!ifndef CONFIG_DOCUMENTATION
-!define CONFIG_DOCUMENTATION
-!endif
+!define INSTALL_LOCATION_KEY "InstallFolder"
 
 ; Use maximum compression.
 SetCompressor /SOLID lzma
@@ -48,24 +36,24 @@ SetCompressor /SOLID lzma
 !include "MUI2.nsh"
 
 ; The name of the installer.
-Name "GNU ARM Eclipse Build Tools"
+Name "GNU ARM Eclipse ${PRODNAME}"
 
 ; The file to write
 OutFile "${OUTFILE}"
 
 ; The default installation directory.
 !ifdef W64
-InstallDir "$PROGRAMFILES64\GNU ARM Eclipse\Build Tools"
+InstallDir "$PROGRAMFILES64\GNU ARM Eclipse\${PRODNAME}"
 !else
-InstallDir "$PROGRAMFILES\GNU ARM Eclipse\Build Tools"
+InstallDir "$PROGRAMFILES\GNU ARM Eclipse\${PRODNAME}"
 !endif
 
 ; Registry key to check for directory (so if you install again, it will
 ; overwrite the old one automatically)
 !ifdef W64
-InstallDirRegKey HKLM "Software\${PRODUCT_KEY}_64" "Install_Dir"
+InstallDirRegKey HKLM "Software\${PRODLCNAME}64-gnuarmeclipse" "${INSTALL_LOCATION_KEY}"
 !else
-InstallDirRegKey HKLM "Software\${PRODUCT_KEY}_32" "Install_Dir"
+InstallDirRegKey HKLM "Software\${PRODLCNAME}32-gnuarmeclipse" "${INSTALL_LOCATION_KEY}"
 !endif
 
 ; Request administrator privileges for Windows Vista.
@@ -73,21 +61,15 @@ RequestExecutionLevel admin
 
 ;--------------------------------
 ; Interface Settings.
-;!define MUI_HEADERIMAGE "qemu-nsis.bmp"
-; !define MUI_SPECIALBITMAP "qemu.bmp"
-!define MUI_ICON "${SRCDIR}\build-tools-nsi.ico"
-!define MUI_UNICON "${SRCDIR}\build-tools-nsi.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "${SRCDIR}\build-tools-nsi.bmp"
-; !define MUI_HEADERIMAGE_BITMAP "qemu-install.bmp"
-; !define MUI_HEADERIMAGE_UNBITMAP "qemu-uninstall.bmp"
-; !define MUI_COMPONENTSPAGE_SMALLDESC
-; !define MUI_WELCOMEPAGE_TEXT "Insert text here.$\r$\n$\r$\n$\r$\n$_CLICK"
+!define MUI_ICON "${NSIS_FOLDER}\${PRODLCNAME}-nsis.ico"
+!define MUI_UNICON "${NSIS_FOLDER}\${PRODLCNAME}-nsis.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "${NSIS_FOLDER}\${PRODLCNAME}-nsis.bmp"
 
 ;--------------------------------
 ; Pages.
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "${SRCDIR}\COPYING"
+!insertmacro MUI_PAGE_LICENSE "${INSTALL_FOLDER}\COPYING"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -108,38 +90,58 @@ RequestExecutionLevel admin
 ;--------------------------------
 
 ; The stuff to install.
-Section "${PRODUCT} (required)"
+Section "${PRODNAME} (required)"
 
 SectionIn RO
 
 ; Set output path to the installation directory.
-SetOutPath "$INSTDIR"
+SetOutPath "$INSTDIR\bin"
+File /r "${INSTALL_FOLDER}\bin\*.exe"
 
-File "${SRCDIR}\LICENSE.txt"
-File "${SRCDIR}\README.txt"
-File "${SRCDIR}\echo.exe"
-File "${SRCDIR}\make.exe"
-File "${SRCDIR}\rm.exe"
+SetOutPath "$INSTDIR\license"
+File /r "${INSTALL_FOLDER}\license\*"
+
+SetOutPath "$INSTDIR"
+File "${INSTALL_FOLDER}\INFO.txt"
+
+SetOutPath "$INSTDIR\gnuarmeclipse"
+File /r "${INSTALL_FOLDER}\gnuarmeclipse\*"
 
 !ifdef W64
 SetRegView 64
 !endif
 
 ; Write the installation path into the registry
-WriteRegStr HKLM SOFTWARE\${PRODUCT_KEY} "Install_Dir" "$INSTDIR"
+WriteRegStr HKLM "SOFTWARE\${PRODUCT}" "${INSTALL_LOCATION_KEY}" "$INSTDIR"
 
 ; Write the uninstall keys for Windows
-WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "Build Tools"
+WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "GNU ARM Eclipse ${PRODNAME}"
 WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" '"${UNINST_EXE}"'
 WriteRegDWORD HKLM "${UNINST_KEY}" "NoModify" 1
 WriteRegDWORD HKLM "${UNINST_KEY}" "NoRepair" 1
-WriteUninstaller "build-tools-uninstall.exe"
+WriteUninstaller "${PRODLCNAME}-uninstall.exe"
 
 SectionEnd
 
+
 Section "Libraries (DLL)" SectionDll
-SetOutPath "$INSTDIR"
-File "${SRCDIR}\*.dll"
+
+SetOutPath "$INSTDIR\bin"
+File "${INSTALL_FOLDER}\bin\*.dll"
+
+SectionEnd
+
+Section "Documentation" SectionDoc
+
+SetOutPath "$INSTDIR\doc"
+File /r "${INSTALL_FOLDER}\doc\*"
+
+SectionEnd
+
+; Optional section (can be disabled by the user)
+Section "Start Menu Shortcuts" SectionMenu
+CreateDirectory "$SMPROGRAMS\${PRODUCT}"
+CreateShortCut "$SMPROGRAMS\${PRODUCT}\Uninstall.lnk" "${UNINST_EXE}" "" "${UNINST_EXE}" 0
 SectionEnd
 
 ;--------------------------------
@@ -152,25 +154,28 @@ Section "Uninstall"
 SetRegView 64
 !endif
 DeleteRegKey HKLM "${UNINST_KEY}"
-DeleteRegKey HKLM SOFTWARE\${PRODUCT_KEY}
+DeleteRegKey HKLM "SOFTWARE\${PRODUCT}"
 
-; Remove files and directories used
-Delete "$INSTDIR\LICENSE.txt"
-Delete "$INSTDIR\README.txt"
-Delete "$INSTDIR\echo.exe"
-Delete "$INSTDIR\make.exe"
-Delete "$INSTDIR\rm.exe"
-; Remove all DLLs
-Delete "$INSTDIR\*.dll"
+; Remove shortcuts, if any
+Delete "$SMPROGRAMS\${PRODUCT}\Uninstall.lnk"
+RMDir "$SMPROGRAMS\${PRODUCT}"
+
 ; Remove uninstaller
 Delete "${UNINST_EXE}"
-RMDir "$INSTDIR"
+
+; Remove files and directories used
+RMDir /r "$INSTDIR"
 SectionEnd
 
 ;--------------------------------
 
 ; Descriptions (mouse-over).
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+
+!insertmacro MUI_DESCRIPTION_TEXT ${SectionDll}		"Runtime Libraries (DLL)."
+!insertmacro MUI_DESCRIPTION_TEXT ${SectionDoc}		"Documentation."
+!insertmacro MUI_DESCRIPTION_TEXT ${SectionMenu}	"Menu entries."
+
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------
@@ -179,3 +184,4 @@ SectionEnd
 Function .onInit
 !insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
+

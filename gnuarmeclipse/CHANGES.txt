@@ -1,0 +1,5 @@
+
+There are currently no changes from the official MinGW MSYS distribution.
+
+Liviu Ionescu
+
