@@ -25,7 +25,7 @@ NDATE=${NDATE:-$(date -u +%Y%m%d%H%M)}
 
 # ----- Local variables -----
 
-OUTFILE_VERSION="2.1"
+OUTFILE_VERSION="2.2"
 
 BUILDTOOLS_TARGET="win32"
 
@@ -45,8 +45,8 @@ then
   if [ "${ACTION}" == "clean" ]
   then
     # Remove most build and temporary folders
-    rm -rfv "${BUILDTOOLS_BUILD_FOLDER}"
-    rm -rfv "${BUILDTOOLS_INSTALL_FOLDER}"
+    rm -rf "${BUILDTOOLS_BUILD_FOLDER}"
+    rm -rf "${BUILDTOOLS_INSTALL_FOLDER}"
 
     # exit 0
     # Continue with build
@@ -60,399 +60,223 @@ mkdir -p "${BUILDTOOLS_WORK}"
 rm -rfv "${BUILDTOOLS_INSTALL_FOLDER}/build-tools"
 
 # To simplify the script, we do not build the libraries, but use them form 
-# the open source MinGW project.
-# https://sourceforge.net/projects/mingw/
-# From this archive the binary DLLs will be directly copied to the setup.
+# the open source MSYS2 project.
+# https://sourceforge.net/projects/msys2/
+# From this project the binary executable and DLLs will be directly 
+# copied to the setup.
 
-MSYS_PACK_URL_BASE="http://sourceforge.net/projects/mingw/files/MSYS/Base"
+MSYS2_PACK_URL_BASE="http://sourceforge.net/projects/msys2/files"
 
-# http://sourceforge.net/projects/mingw/files/MSYS/Base/msys-core/msys-1.0.18-1/
+# https://sourceforge.net/projects/msys2/files/Base/i686/
 
-MSYS_VERSION="1.0.18"
-MSYS_VERSION_RELEASE="${MSYS_VERSION}-1"
-MSYS_PACK_ARCH="msysCORE-${MSYS_VERSION_RELEASE}-msys-${MSYS_VERSION}-bin.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/msys-core/msys-${MSYS_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
+MSYS2_PACK_VERSION="20141113"
+MSYS2_PACK_ARCH="msys2-base-i686-${MSYS2_PACK_VERSION}.tar.xz"
+MSYS2_PACK_URL="${MSYS2_PACK_URL_BASE}/Base/i686/${MSYS2_PACK_ARCH}"
 
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
+if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}" ]
 then
   mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
   cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
 
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
+  "${WGET}" "${MSYS2_PACK_URL}" \
+  "${WGET_OUT}" "${MSYS2_PACK_ARCH}"
 fi
 
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-1.0.dll" ]
+if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/echo.exe" ]
 then
   mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
   cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
 
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
+  tar -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}"
 fi
 
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-1.0.dll" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
+mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
-MSYS_PACK_ARCH="msysCORE-${MSYS_VERSION_RELEASE}-msys-${MSYS_VERSION}-lic.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/msys-core/msys-${MSYS_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/echo.exe" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/rm.exe" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/sh.exe" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/rebase.exe" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/msys-2.0.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/msys-crypt-0.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/msys-ffi-6.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/msys-gcc_s-1.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/msys-gmp-10.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/msys-iconv-2.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/msys32/usr/bin/msys-intl-8.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
+
+# http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/i686/make-4.1-2-i686.pkg.tar.xz
+
+MSYS2_PACK_VERSION="4.1-2"
+MSYS2_PACK_ARCH="make-${MSYS2_PACK_VERSION}-i686.pkg.tar.xz"
+MSYS2_PACK_URL="${MSYS2_PACK_URL_BASE}/REPOS/MSYS2/i686/${MSYS2_PACK_ARCH}"
+
+if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}" ]
 then
   mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
   cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
 
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
+  "${WGET}" "${MSYS2_PACK_URL}" \
+  "${WGET_OUT}" "${MSYS2_PACK_ARCH}"
 fi
 
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/MSYS_LICENSE.rtf" ]
+if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/make.exe" ]
 then
   mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
   cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
 
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
+  tar -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}"
 fi
 
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license/MSYS"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/COPYING" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license/MSYS"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/COPYING.LIB" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license/MSYS"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/CYGWIN_LICENSE" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license/MSYS"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/MSYS_LICENSE.rtf" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license/MSYS"
+mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
-MSYS_PACK_ARCH="msysCORE-${MSYS_VERSION_RELEASE}-msys-${MSYS_VERSION}-doc.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/msys-core/msys-${MSYS_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/make.exe" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
+# http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/i686/libltdl-2.4.5-1-i686.pkg.tar.xz
+
+MSYS2_PACK_VERSION="2.4.5-1"
+MSYS2_PACK_ARCH="libltdl-${MSYS2_PACK_VERSION}-i686.pkg.tar.xz"
+MSYS2_PACK_URL="${MSYS2_PACK_URL_BASE}/REPOS/MSYS2/i686/${MSYS2_PACK_ARCH}"
+
+if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}" ]
 then
   mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
   cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
 
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
+  "${WGET}" "${MSYS2_PACK_URL}" \
+  "${WGET_OUT}" "${MSYS2_PACK_ARCH}"
 fi
 
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/README.rtf" ]
+if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/msys-ltdl-7.dll" ]
 then
   mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
   cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
 
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
+  tar -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}"
 fi
 
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/MSYS"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/MSYS_MISSION" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/MSYS"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/MSYS_VS_CYGWIN" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/MSYS"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/MSYS_WELCOME.rtf" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/MSYS"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/README.rtf" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/MSYS"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/msysCORE-1.0.18-1-msys-RELEASE_NOTES.txt" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/MSYS"
+mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/msys-ltdl-7.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
-# https://sourceforge.net/projects/mingw/files/MSYS/Base/make/make-3.81-3/
+# http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/i686/libunistring-0.9.4-2-i686.pkg.tar.xz/download
 
-MSYS_VERSION="1.0.13"
-MSYS_PACK_NAME="make"
-MSYS_PACK_VERSION="3.81"
-MSYS_PACK_VERSION_RELEASE="${MSYS_PACK_VERSION}-3"
-MSYS_PACK_ARCH="make-${MSYS_PACK_VERSION_RELEASE}-msys-${MSYS_VERSION}-bin.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/${MSYS_PACK_NAME}/${MSYS_PACK_NAME}-${MSYS_PACK_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
+MSYS2_PACK_VERSION="0.9.4-2"
+MSYS2_PACK_ARCH="libunistring-${MSYS2_PACK_VERSION}-i686.pkg.tar.xz"
+MSYS2_PACK_URL="${MSYS2_PACK_URL_BASE}/REPOS/MSYS2/i686/${MSYS2_PACK_ARCH}"
 
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
+if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}" ]
 then
   mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
   cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
 
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
+  "${WGET}" "${MSYS2_PACK_URL}" \
+  "${WGET_OUT}" "${MSYS2_PACK_ARCH}"
 fi
 
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/make.exe" ]
+if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/msys-unistring-2.dll" ]
 then
   mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
   cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
 
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
+  tar -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}"
 fi
 
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/make.exe" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
+mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
-MSYS_PACK_ARCH="make-${MSYS_PACK_VERSION_RELEASE}-msys-${MSYS_VERSION}-doc.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/${MSYS_PACK_NAME}/${MSYS_PACK_NAME}-${MSYS_PACK_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/msys-unistring-2.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
+# http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/i686/libguile-2.0.11-3-i686.pkg.tar.xz/download
+
+MSYS2_PACK_VERSION="2.0.11-3"
+MSYS2_PACK_ARCH="libguile-${MSYS2_PACK_VERSION}-i686.pkg.tar.xz"
+MSYS2_PACK_URL="${MSYS2_PACK_URL_BASE}/REPOS/MSYS2/i686/${MSYS2_PACK_ARCH}"
+
+if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}" ]
 then
   mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
   cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
 
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
+  "${WGET}" "${MSYS2_PACK_URL}" \
+  "${WGET_OUT}" "${MSYS2_PACK_ARCH}"
 fi
 
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/make/${MSYS_PACK_VERSION}/README" ]
+if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/msys-guile-2.0-22.dll" ]
 then
   mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
   cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
 
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
+  tar -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}"
 fi
 
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/make"
-cp -rv "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/make/${MSYS_PACK_VERSION}/"* \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/make"
-cp -rv "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/make-${MSYS_PACK_VERSION_RELEASE}-msys.RELEASE_NOTES.txt" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/make"
+mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/msys-guile-2.0-22.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
-# https://sourceforge.net/projects/mingw/files/MSYS/Base/bash/bash-3.1.23-1/
+# http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/i686/libgc-7.2.d-1-i686.pkg.tar.xz/download
 
-MSYS_VERSION="1.0.18"
-MSYS_PACK_NAME="bash"
-MSYS_PACK_VERSION="3.1.23"
-MSYS_PACK_VERSION_RELEASE="${MSYS_PACK_VERSION}-1"
-MSYS_PACK_ARCH="bash-${MSYS_PACK_VERSION_RELEASE}-msys-${MSYS_VERSION}-bin.tar.xz"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/${MSYS_PACK_NAME}/${MSYS_PACK_NAME}-${MSYS_PACK_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
+MSYS2_PACK_VERSION="7.2.d-1"
+MSYS2_PACK_ARCH="libgc-${MSYS2_PACK_VERSION}-i686.pkg.tar.xz"
+MSYS2_PACK_URL="${MSYS2_PACK_URL_BASE}/REPOS/MSYS2/i686/${MSYS2_PACK_ARCH}"
 
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
+if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}" ]
 then
   mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
   cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
 
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
+  "${WGET}" "${MSYS2_PACK_URL}" \
+  "${WGET_OUT}" "${MSYS2_PACK_ARCH}"
 fi
 
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/sh.exe" ]
+if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/msys-gc-1.dll" ]
 then
   mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
   cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
 
-  tar -xJvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
+  tar -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_PACK_ARCH}"
 fi
 
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/sh.exe" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
+mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
-MSYS_PACK_ARCH="bash-${MSYS_PACK_VERSION_RELEASE}-msys-${MSYS_VERSION}-doc.tar.xz"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/${MSYS_PACK_NAME}/${MSYS_PACK_NAME}-${MSYS_PACK_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
-
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
-then
-  mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-  cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
-fi
-
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/bash/${MSYS_PACK_VERSION}/README" ]
-then
-  mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-  cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-
-  tar -xJvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
-fi
-
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/bash"
-cp -rv "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/bash/${MSYS_PACK_VERSION}/"* \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/bash"
-cp -rv "${BUILDTOOLS_INSTALL_FOLDER}/msys/share/doc/MSYS/bash-${MSYS_PACK_VERSION_RELEASE}-msys.RELEASE_NOTES.txt" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc/bash"
+cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/usr/bin/msys-gc-1.dll" \
+  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/usr/bin"
 
 
-# https://sourceforge.net/projects/mingw/files/MSYS/Base/coreutils/coreutils-5.97-3/
+# Copy license files
+mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}/msys/license"
+cd "${BUILDTOOLS_DOWNLOAD_FOLDER}/msys/license"
 
-MSYS_VERSION="1.0.13"
-MSYS_PACK_NAME="coreutils"
-MSYS_PACK_VERSION="5.97"
-MSYS_PACK_VERSION_RELEASE="${MSYS_PACK_VERSION}-3"
-MSYS_PACK_ARCH="coreutils-${MSYS_PACK_VERSION_RELEASE}-msys-${MSYS_VERSION}-bin.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/${MSYS_PACK_NAME}/${MSYS_PACK_NAME}-${MSYS_PACK_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
-
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
-then
-  mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-  cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
-fi
-
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/rm.exe" ]
-then
-  mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-  cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
-fi
-
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/rm.exe" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/echo.exe" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-
-
-# https://sourceforge.net/projects/mingw/files/MSYS/Base/termcap/termcap-0.20050421_1-2/
-
-MSYS_VERSION="1.0.13"
-MSYS_PACK_NAME="termcap"
-MSYS_PACK_VERSION="0.20050421_1"
-MSYS_PACK_VERSION_RELEASE="${MSYS_PACK_VERSION}-2"
-MSYS_PACK_ARCH="libtermcap-${MSYS_PACK_VERSION_RELEASE}-msys-${MSYS_VERSION}-dll-0.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/${MSYS_PACK_NAME}/${MSYS_PACK_NAME}-${MSYS_PACK_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
-
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
-then
-  mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-  cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
-fi
-
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-termcap-0.dll" ]
-then
-  mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-  cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
-fi
-
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-termcap-0.dll" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-
-
-# https://sourceforge.net/projects/mingw/files/MSYS/Base/gettext/gettext-0.18.1.1-1/
-
-MSYS_VERSION="1.0.17"
-MSYS_PACK_NAME="gettext"
-MSYS_PACK_VERSION="0.18.1.1"
-MSYS_PACK_VERSION_RELEASE="${MSYS_PACK_VERSION}-1"
-MSYS_PACK_ARCH="libintl-${MSYS_PACK_VERSION_RELEASE}-msys-${MSYS_VERSION}-dll-8.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/${MSYS_PACK_NAME}/${MSYS_PACK_NAME}-${MSYS_PACK_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
-
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
-then
-  mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-  cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
-fi
-
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-intl-8.dll" ]
-then
-  mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-  cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
-fi
-
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-intl-8.dll" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-
-
-# https://sourceforge.net/projects/mingw/files/MSYS/Base/libiconv/libiconv-1.14-1/
-
-MSYS_VERSION="1.0.17"
-MSYS_PACK_NAME="libiconv"
-MSYS_PACK_VERSION="1.14"
-MSYS_PACK_VERSION_RELEASE="${MSYS_PACK_VERSION}-1"
-MSYS_PACK_ARCH="libiconv-${MSYS_PACK_VERSION_RELEASE}-msys-${MSYS_VERSION}-dll-2.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/${MSYS_PACK_NAME}/${MSYS_PACK_NAME}-${MSYS_PACK_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
-
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
-then
-  mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-  cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
-fi
-
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-iconv-2.dll" ]
-then
-  mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-  cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
-fi
-
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-iconv-2.dll" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-
-
-# https://sourceforge.net/projects/mingw/files/MSYS/Base/regex/regex-1.20090805-2/
-
-MSYS_VERSION="1.0.13"
-MSYS_PACK_NAME="regex"
-MSYS_PACK_VERSION="1.20090805"
-MSYS_PACK_VERSION_RELEASE="${MSYS_PACK_VERSION}-2"
-MSYS_PACK_ARCH="libregex-${MSYS_PACK_VERSION_RELEASE}-msys-${MSYS_VERSION}-dll-1.tar.lzma"
-MSYS_PACK_URL="${MSYS_PACK_URL_BASE}/${MSYS_PACK_NAME}/${MSYS_PACK_NAME}-${MSYS_PACK_VERSION_RELEASE}/${MSYS_PACK_ARCH}"
-
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}" ]
-then
-  mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-  cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-
-  "${WGET}" "${MSYS_PACK_URL}" \
-  "${WGET_OUT}" "${MSYS_PACK_ARCH}"
-fi
-
-if [ ! -f "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-regex-1.dll" ]
-then
-  mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-  cd "${BUILDTOOLS_INSTALL_FOLDER}/msys"
-
-  tar --lzma -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS_PACK_ARCH}"
-fi
-
-mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_INSTALL_FOLDER}/msys/bin/msys-regex-1.dll" \
-  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-
-
-# Get the GNU ARM Eclipse OpenOCD git repository.
-
-# The custom OpenOCD branch is available from the dedicated Git repository
-# which is part of the GNU ARM Eclipse project hosted on SourceForge.
-# Generally this branch follows the official OpenOCD master branch, 
-# with updates after every OpenOCD public release.
-
-if [ ! -d "${BUILDTOOLS_GIT_FOLDER}" ]
-then
-  cd "${BUILDTOOLS_WORK}"
-
-  if [ "$(whoami)" == "ilg" ]
+for N in 'COPYING' 'COPYING.LIB' 'COPYING.LIBGLOSS' 'COPYING.NEWLIB' 'COPYING3' 'COPYING3.LIB' 'README'
+do
+  if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/msys/license/${N}" ]
   then
-    # Shortcut for ilg, who has full access to the repo.
-    git clone ssh://ilg-ul@git.code.sf.net/p/gnuarmeclipse/build-tools gnuarmeclipse-build-tools.git
-  else
-    # For regular read/only access, use the git url.
-    git clone http://git.code.sf.net/p/gnuarmeclipse/build-tools gnuarmeclipse-build-tools.git
+    "${WGET}" "https://sourceforge.net/p/msys2/code/ci/master/tree/${N}?format=raw" \
+      "${WGET_OUT}" "${BUILDTOOLS_DOWNLOAD_FOLDER}/msys/license/${N}"
   fi
-fi
+done
+
+mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license/msys2"
+cp -v "${BUILDTOOLS_DOWNLOAD_FOLDER}/msys/license/"* \
+ "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license/msys2"
+
 
 # Convert all text files to DOS.
 find "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license" -type f \
--exec unix2dos {} \;
-find "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/doc" -type f \
 -exec unix2dos {} \;
 
 # Copy the GNU ARM Eclipse info files.
@@ -484,7 +308,7 @@ NSIS_FILE="${NSIS_FOLDER}/gnuarmeclipse-build-tools.nsi"
 
 BUILDTOOLS_SETUP="${BUILDTOOLS_OUTPUT}/gnuarmeclipse-build-tools-${BUILDTOOLS_TARGET}-${OUTFILE_VERSION}-${NDATE}-setup.exe"
 
-mkdir -p cd "${BUILDTOOLS_BUILD_FOLDER}"
+mkdir -p "${BUILDTOOLS_BUILD_FOLDER}"
 cd "${BUILDTOOLS_BUILD_FOLDER}"
 echo
 makensis -V4 -NOCD \
@@ -498,6 +322,7 @@ echo
 if [ "${RESULT}" == "0" ]
 then
   echo "Build completed."
+  echo "File ${BUILDTOOLS_SETUP} created."
 else
   echo "Build failed."
 fi

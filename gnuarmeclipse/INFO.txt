@@ -1,7 +1,13 @@
 
-This are the GNU ARM Eclipse build tools for 32-bit Windows.
+These are the GNU ARM Eclipse build tools for 32-bit Windows.
 
-They based on MinGW MSYS, with no changes.
+The following binaries are copied from the MSYS2 project 
+(https://sourceforge.net/projects/msys2/), with no changes:
+
+- make.exe (GNU make version 4.1)
+- rm.exe
+- echo.exe
+- sh.exe
 
 For more details and support, please read the GNU ARM Eclipe project pages from:
 

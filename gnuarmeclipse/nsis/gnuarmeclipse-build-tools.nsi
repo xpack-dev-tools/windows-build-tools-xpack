@@ -56,7 +56,7 @@ InstallDirRegKey HKLM "Software\${PRODLCNAME}64-gnuarmeclipse" "${INSTALL_LOCATI
 InstallDirRegKey HKLM "Software\${PRODLCNAME}32-gnuarmeclipse" "${INSTALL_LOCATION_KEY}"
 !endif
 
-; Request administrator privileges for Windows Vista.
+; Request administrator privileges for Windows Vista and up.
 RequestExecutionLevel admin
 
 ;--------------------------------
@@ -95,8 +95,8 @@ Section "${PRODNAME} (required)"
 SectionIn RO
 
 ; Set output path to the installation directory.
-SetOutPath "$INSTDIR\bin"
-File /r "${INSTALL_FOLDER}\bin\*.exe"
+SetOutPath "$INSTDIR\usr\bin"
+File /r "${INSTALL_FOLDER}\usr\bin\*.exe"
 
 SetOutPath "$INSTDIR\license"
 File /r "${INSTALL_FOLDER}\license\*"
@@ -106,6 +106,8 @@ File "${INSTALL_FOLDER}\INFO.txt"
 
 SetOutPath "$INSTDIR\gnuarmeclipse"
 File /r "${INSTALL_FOLDER}\gnuarmeclipse\*"
+
+CreateDirectory "$INSTDIR\tmp"
 
 !ifdef W64
 SetRegView 64
@@ -126,15 +128,10 @@ SectionEnd
 
 Section "Libraries (DLL)" SectionDll
 
-SetOutPath "$INSTDIR\bin"
-File "${INSTALL_FOLDER}\bin\*.dll"
+SetOutPath "$INSTDIR\usr\bin"
+File "${INSTALL_FOLDER}\usr\bin\*.dll"
 
-SectionEnd
-
-Section "Documentation" SectionDoc
-
-SetOutPath "$INSTDIR\doc"
-File /r "${INSTALL_FOLDER}\doc\*"
+ExecWait '"$INSTDIR\usr\bin\rebase.exe" *.dll'
 
 SectionEnd
 
@@ -164,6 +161,12 @@ RMDir "$SMPROGRAMS\${PRODUCT}"
 Delete "${UNINST_EXE}"
 
 ; Remove files and directories used
+SetOutPath "$INSTDIR"
+
+RMDir /r "$INSTDIR\*"
+RMDir "$INSTDIR\usr\bin"
+RMDir "$INSTDIR\usr"
+
 RMDir /r "$INSTDIR"
 SectionEnd
 
@@ -173,7 +176,6 @@ SectionEnd
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 
 !insertmacro MUI_DESCRIPTION_TEXT ${SectionDll}		"Runtime Libraries (DLL)."
-!insertmacro MUI_DESCRIPTION_TEXT ${SectionDoc}		"Documentation."
 !insertmacro MUI_DESCRIPTION_TEXT ${SectionMenu}	"Menu entries."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
