@@ -95,8 +95,8 @@ Section "${PRODNAME} (required)"
 SectionIn RO
 
 ; Set output path to the installation directory.
-SetOutPath "$INSTDIR\usr\bin"
-File /r "${INSTALL_FOLDER}\usr\bin\*.exe"
+SetOutPath "$INSTDIR\bin"
+File /r "${INSTALL_FOLDER}\bin\*.exe"
 
 SetOutPath "$INSTDIR\license"
 File /r "${INSTALL_FOLDER}\license\*"
@@ -106,8 +106,6 @@ File "${INSTALL_FOLDER}\INFO.txt"
 
 SetOutPath "$INSTDIR\gnuarmeclipse"
 File /r "${INSTALL_FOLDER}\gnuarmeclipse\*"
-
-CreateDirectory "$INSTDIR\tmp"
 
 !ifdef W64
 SetRegView 64
@@ -122,16 +120,6 @@ WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" '"${UNINST_EXE}"'
 WriteRegDWORD HKLM "${UNINST_KEY}" "NoModify" 1
 WriteRegDWORD HKLM "${UNINST_KEY}" "NoRepair" 1
 WriteUninstaller "${PRODLCNAME}-uninstall.exe"
-
-SectionEnd
-
-
-Section "Libraries (DLL)" SectionDll
-
-SetOutPath "$INSTDIR\usr\bin"
-File "${INSTALL_FOLDER}\usr\bin\*.dll"
-
-ExecWait '"$INSTDIR\usr\bin\rebase.exe" *.dll'
 
 SectionEnd
 
@@ -164,9 +152,6 @@ Delete "${UNINST_EXE}"
 SetOutPath "$INSTDIR"
 
 RMDir /r "$INSTDIR\*"
-RMDir "$INSTDIR\usr\bin"
-RMDir "$INSTDIR\usr"
-
 RMDir /r "$INSTDIR"
 SectionEnd
 
@@ -175,7 +160,6 @@ SectionEnd
 ; Descriptions (mouse-over).
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 
-!insertmacro MUI_DESCRIPTION_TEXT ${SectionDll}		"Runtime Libraries (DLL)."
 !insertmacro MUI_DESCRIPTION_TEXT ${SectionMenu}	"Menu entries."
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_END

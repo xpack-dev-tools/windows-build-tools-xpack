@@ -1,5 +1,5 @@
 
-There are currently no changes from the official MinGW MSYS distribution.
+There are currently no changes from the official MSYS2 distribution.
 
 Liviu Ionescu
 

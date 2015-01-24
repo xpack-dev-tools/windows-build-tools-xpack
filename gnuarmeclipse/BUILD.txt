@@ -1,24 +1,24 @@
 
-This package was build on a Debian x64 machine, using the script provided in
+This package was build on an Ubuntu 14 LTS x64 machine, using the script
 
-  gnuarmeclipse/build-build-tools-w32-cross-debian.sh
+  gnuarmeclipse/build-build-tools-w32-cross-ubuntu.sh
 
 To run it, first be sure the the packages required in the Prerequisites 
 section are installed, then copy the script and execute it with bash:
 
-  bash build-build-tools-w32-cross-debian.sh
+  bash build-build-tools-w32-cross-ubuntu.sh
 
-The output of the build script is a setup file in the ${OPENOCD_WORK}/output 
+The output of the build script is a setup file in the Work/output 
 folder.
 
 To build the latest version of the package please use the script from:
 
-  wget https://sourceforge.net/p/gnuarmeclipse/build-tools/ci/gnuarmeclipse/tree/gnuarmeclipse/build-build-tools-w32-cross-debian.sh?format=raw \
-  -O ~/Downloads/build-build-tools-w32-cross-debian.sh
+  wget https://sourceforge.net/p/gnuarmeclipse/build-tools/ci/master/tree/gnuarmeclipse/build-build-tools-w32-cross-ubuntu.sh?format=raw \
+  -O ~/Downloads/build-build-tools-w32-cross-ubuntu.sh
 
-  bash ~/Downloads/build-build-tools-w32-cross-debian.sh
+  bash ~/Downloads/build-build-tools-w32-cross-ubuntu.sh
 
-The script was developped on Debian x64. Running it on other GNU/Linux
+The script was developped on Ubuntu 14 LTS x64. Running it on other GNU/Linux
 distributions is possible, but might require some adjustments.
 
 Up-to-date build informations are available in the GNU ARM Eclipse project wiki:
