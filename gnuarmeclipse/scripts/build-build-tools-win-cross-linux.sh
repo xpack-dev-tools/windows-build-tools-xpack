@@ -336,9 +336,9 @@ find "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license" -type f \
 echo 
 # Copy the GNU ARM Eclipse info files.
 mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse"
-cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/build-build-tools-w32-cross-ubuntu.sh" \
+cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/scripts/build-build-tools-win-cross-linux.sh" \
   "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse"
-unix2dos "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse/build-build-tools-w32-cross-ubuntu.sh"
+unix2dos "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse/build-build-tools-win-cross-linux.sh"
 
 cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/info/INFO.txt" \
   "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/INFO.txt"
