@@ -26,7 +26,7 @@
 !define URL     	"http://gnuarmeclipse.livius.net"
 
 !define UNINST_EXE 	"$INSTDIR\${PRODLCNAME}-uninstall.exe"
-!define UNINST_KEY 	"Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT}"
+!define UNINST_KEY 	"Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT} ${BITS}"
 
 !define INSTALL_LOCATION_KEY "InstallFolder"
 

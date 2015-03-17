@@ -2,9 +2,11 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Script to cross build the 32-bit Windows version of Build Tools 
+# Script to cross build the 32/64-bit Windows version of Build Tools 
 # with MinGW-w64 on GNU/Linux.
 # Developed on Ubuntu 14.04 LTS.
+
+# Note: the 64-bit is not yet functional, BusyBox sh.exe fails.
 
 # Prerequisites:
 #
@@ -33,9 +35,6 @@ do
   elif [ "$1" == "-64" -o "$1" == "-m64" -o "$1" == "-w64" ]
   then
     TARGET_BITS="64"
-
-    echo "Not implemented option $1 (busybox is 32-bit only)"
-	exit 1
   else
     echo "Unknown action/option $1"
     exit 1
@@ -111,6 +110,7 @@ then
   rm -rf "${BUILDTOOLS_INSTALL_FOLDER}"
   rm -rf "${BUILDTOOLS_WORK_FOLDER}/msys2"
   rm -rf "${BUILDTOOLS_WORK_FOLDER}/make-"*
+  rm -rf "${BUILDTOOLS_WORK_FOLDER}/busybox-w32-"*
 
   echo
   echo "Clean completed. Proceed with a regular build."
@@ -142,9 +142,6 @@ fi
 
 # Create the work folder.
 mkdir -p "${BUILDTOOLS_WORK_FOLDER}"
-
-# Always clear the destination folder, to have a consistent package.
-#### rm -rfv "${BUILDTOOLS_INSTALL_FOLDER}/build-tools"
 
 # Get the GNU ARM Eclipse Build Tools git repository.
 
@@ -244,10 +241,12 @@ make install-strip
 
 # ----- Copy files to the install bin folder -----
 
+echo 
 mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
 cp -v "${BUILDTOOLS_INSTALL_FOLDER}/make-${MAKE_VERSION}/bin/make.exe" \
  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
 
+echo 
 # Copy make license files
 mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license/make"
 cp -v "${BUILDTOOLS_WORK_FOLDER}/make-${MAKE_VERSION}/COPYING" \
@@ -257,47 +256,97 @@ cp -v "${BUILDTOOLS_WORK_FOLDER}/make-${MAKE_VERSION}/README"* \
 cp -v "${BUILDTOOLS_WORK_FOLDER}/make-${MAKE_VERSION}/NEWS" \
  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license/make"
 
-# Get BusyBox
+# Build BusyBox
 
 # http://intgat.tigress.co.uk/rmy/busybox/index.html
 
-BUSYBOX_URL="http://intgat.tigress.co.uk/rmy/files/busybox/busybox.exe"
+BUSYBOX_COMMIT="74ba8c760f3337218cddabaaa0acc4e1f5d6e6c5"
+# BUSYBOX_COMMIT=master
+BUSYBOX_ARCHIVE="${BUSYBOX_COMMIT}.zip"
+BUSYBOX_URL="https://github.com/rmyorston/busybox-w32/archive/${BUSYBOX_ARCHIVE}"
 
-if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/busybox.exe" ]
+BUSYBOX_SRC_FOLDER="${BUILDTOOLS_WORK_FOLDER}/busybox-w32-${BUSYBOX_COMMIT}"
+BUSYBOX_BUILD_FOLDER="${BUILDTOOLS_BUILD_FOLDER}/busybox"
+
+if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${BUSYBOX_ARCHIVE}" ]
 then
-  mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
   cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-
-  "${WGET}" "${BUSYBOX_URL}" \
-  "${WGET_OUT}" "busybox.exe"
+  "${WGET}" "${BUSYBOX_URL}" "${WGET_OUT}" "${BUSYBOX_ARCHIVE}"
 fi
 
+if [ ! -d "${BUSYBOX_SRC_FOLDER}" ]
+then
+  cd "${BUILDTOOLS_WORK_FOLDER}"
+  unzip "${BUILDTOOLS_DOWNLOAD_FOLDER}/${BUSYBOX_ARCHIVE}"
+
+  cd "${BUSYBOX_SRC_FOLDER}/configs"
+  sed -e 's/CONFIG_NOGLOB=y/CONFIG_NOGLOB=n/' \
+  <mingw32_defconfig >gnuarmeclipse_32_mingw_defconfig
+
+  sed -e "s/CONFIG_NOGLOB=y/CONFIG_NOGLOB=n/" \
+  -e 's/CONFIG_CROSS_COMPILER_PREFIX=".*"/CONFIG_CROSS_COMPILER_PREFIX="x86_64-w64-mingw32-"/' \
+  <mingw32_defconfig >gnuarmeclipse_64_mingw_defconfig
+fi
+
+# make KBUILD_SRC=/path/to/source -f /path/to/source/Makefile defconfig
+# make
+
+if [ ! -f "${BUSYBOX_BUILD_FOLDER}/.config" ]
+then
+
+  mkdir -p "${BUSYBOX_BUILD_FOLDER}"
+  cd "${BUSYBOX_BUILD_FOLDER}"
+
+  echo 
+  echo "make gnuarmeclipse_${TARGET_BITS}_mingw_defconfig..."
+
+  make KBUILD_SRC="${BUSYBOX_SRC_FOLDER}" \
+  -f "${BUSYBOX_SRC_FOLDER}/Makefile" \
+  "gnuarmeclipse_${TARGET_BITS}_mingw_defconfig"
+
+fi
+
+if [ ! -f "${BUSYBOX_BUILD_FOLDER}/busybox.exe" ]
+then
+
+  cd "${BUSYBOX_BUILD_FOLDER}"
+
+  echo 
+  echo "make..."
+
+  make
+
+fi
+
+echo 
 # Copy BusyBox with 3 different names
 mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
-cp -v "${BUILDTOOLS_DOWNLOAD_FOLDER}/busybox.exe" \
+cp -v "${BUSYBOX_BUILD_FOLDER}/busybox.exe" \
  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin/sh.exe"
-cp -v "${BUILDTOOLS_DOWNLOAD_FOLDER}/busybox.exe" \
+cp -v "${BUSYBOX_BUILD_FOLDER}/busybox.exe" \
  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin/rm.exe"
-cp -v "${BUILDTOOLS_DOWNLOAD_FOLDER}/busybox.exe" \
+cp -v "${BUSYBOX_BUILD_FOLDER}/busybox.exe" \
  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin/echo.exe"
 
-
+echo 
 # Convert all text files to DOS.
 find "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/license" -type f \
 -exec unix2dos {} \;
 
+echo 
 # Copy the GNU ARM Eclipse info files.
 mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse"
 cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/build-build-tools-w32-cross-ubuntu.sh" \
   "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse"
 unix2dos "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse/build-build-tools-w32-cross-ubuntu.sh"
-cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/INFO.txt" \
+
+cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/info/INFO.txt" \
   "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/INFO.txt"
 unix2dos "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/INFO.txt"
-cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/BUILD.txt" \
+cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/info/BUILD.txt" \
   "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse/BUILD.txt"
 unix2dos "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse/BUILD.txt"
-cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/CHANGES.txt" \
+cp -v "${BUILDTOOLS_GIT_FOLDER}/gnuarmeclipse/info/CHANGES.txt" \
   "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse/"
 unix2dos "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/gnuarmeclipse/CHANGES.txt"
 
@@ -323,6 +372,7 @@ makensis -V4 -NOCD \
 -DNSIS_FOLDER="${NSIS_FOLDER}" \
 -DOUTFILE="${BUILDTOOLS_SETUP}" \
 -DW${TARGET_BITS} \
+-DBITS=${TARGET_BITS} \
 "${NSIS_FILE}"
 RESULT="$?"
 
