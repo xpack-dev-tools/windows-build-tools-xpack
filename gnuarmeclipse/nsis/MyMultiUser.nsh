@@ -5,6 +5,7 @@ MultiUser.nsh
 Installer configuration for multi-user Windows environments
 
 Copyright 2008-2009 Joost Verburg
+Copyright 2015 Liviu Ionescu
 
 */
 
@@ -26,6 +27,7 @@ Copyright 2008-2009 Joost Verburg
 ;Variables
 
 Var MultiUser.Privileges
+;Var MultiUser.OriginalPrivileges
 Var MultiUser.InstallMode
 
 ;Command line installation mode setting
@@ -55,7 +57,7 @@ Var MultiUser.InstallMode
   Var MultiUser.DefaultKeyValue
 !endif
 
-;Windows Vista UAC setting
+; Windows Vista UAC setting. Must be top level, cannot be in a function.
 
 !if "${MULTIUSER_EXECUTIONLEVEL}" == Admin
   RequestExecutionLevel admin
@@ -66,16 +68,16 @@ Var MultiUser.InstallMode
 !else if "${MULTIUSER_EXECUTIONLEVEL}" == Highest
   RequestExecutionLevel highest
   !define MULTIUSER_EXECUTIONLEVEL_ALLUSERS
+!else if "${MULTIUSER_EXECUTIONLEVEL}" == Standard
+  RequestExecutionLevel user
 !else
   RequestExecutionLevel user
 !endif
 
-/*
+; -------------
+; Install modes
 
-Install modes
-
-*/
-
+; Implementation for MultiUser.InstallMode.AllUsers & un.MultiUser.InstallMode.AllUsers
 !macro MULTIUSER_INSTALLMODE_ALLUSERS UNINSTALLER_PREFIX UNINSTALLER_FUNCPREFIX
 
   ;Install mode initialization - per-machine
@@ -91,7 +93,11 @@ Install modes
     !if "${UNINSTALLER_PREFIX}" != UN
       ;Set default installation location for installer
       !ifdef MULTIUSER_INSTALLMODE_INSTDIR
-        StrCpy $INSTDIR "$PROGRAMFILES\${MULTIUSER_INSTALLMODE_INSTDIR}"
+        !ifdef W64
+          StrCpy $INSTDIR "$PROGRAMFILES64\${MULTIUSER_INSTALLMODE_INSTDIR}"
+        !else
+          StrCpy $INSTDIR "$PROGRAMFILES\${MULTIUSER_INSTALLMODE_INSTDIR}"
+        !endif
       !endif
     !endif
   
@@ -113,6 +119,7 @@ Install modes
 
 !macroend
 
+; Implementation for MultiUser.InstallMode.CurrentUser & un.MultiUser.InstallMode.CurrentUser
 !macro MULTIUSER_INSTALLMODE_CURRENTUSER UNINSTALLER_PREFIX UNINSTALLER_FUNCPREFIX
 
   ;Install mode initialization - per-user
@@ -127,9 +134,13 @@ Install modes
       ;Set default installation location for installer  
       !ifdef MULTIUSER_INSTALLMODE_INSTDIR
         ${if} ${AtLeastWin2000}
-          StrCpy $INSTDIR "$LOCALAPPDATA\${MULTIUSER_INSTALLMODE_INSTDIR}"
+          StrCpy $INSTDIR "$LOCALAPPDATA\Programs\${MULTIUSER_INSTALLMODE_INSTDIR}"
         ${else}
-          StrCpy $INSTDIR "$PROGRAMFILES\${MULTIUSER_INSTALLMODE_INSTDIR}"
+          !ifdef W64
+            StrCpy $INSTDIR "$PROGRAMFILES64\${MULTIUSER_INSTALLMODE_INSTDIR}"
+          !else
+            StrCpy $INSTDIR "$PROGRAMFILES\${MULTIUSER_INSTALLMODE_INSTDIR}"
+          !endif
         ${endif}
       !endif
     !endif
@@ -152,6 +163,11 @@ Install modes
 
 !macroend
 
+; (All) Based on $MultiUser.Privileges:
+;  - set $MultiUser.InstallMode 
+;  - set SetShellVarContext
+;  - set $INSTDIR
+
 Function MultiUser.InstallMode.AllUsers
   !insertmacro MULTIUSER_INSTALLMODE_ALLUSERS "" ""
 FunctionEnd
@@ -172,11 +188,8 @@ FunctionEnd
 
 !endif
 
-/*
-
-Installer/uninstaller initialization
-
-*/
+; ------------------------------------
+; Installer/uninstaller initialization
 
 !macro MULTIUSER_INIT_QUIT UNINSTALLER_FUNCPREFIX
 
@@ -204,14 +217,22 @@ Installer/uninstaller initialization
 
 !macroend
 
+; Set $MultiUser.Privileges (Admin, Power, User, Guest), for user running setup.
 !macro MULTIUSER_INIT_CHECKS UNINSTALLER_PREFIX UNINSTALLER_FUNCPREFIX
 
   ;Installer initialization - check privileges and set install mode
 
   !insertmacro MULTIUSER_INIT_TEXTS
 
+  ; UserInfo::GetOriginalAccountType
+  ; Pop $MultiUser.OriginalPrivileges
+
+  ; MessageBox MB_OK|MB_ICONSTOP $MultiUser.OriginalPrivileges
+
   UserInfo::GetAccountType
   Pop $MultiUser.Privileges
+
+  ; MessageBox MB_OK|MB_ICONSTOP $MultiUser.Privileges
   
   ${if} ${IsNT}
   
@@ -235,7 +256,7 @@ Installer/uninstaller initialization
         ${endif}        
         !insertmacro MULTIUSER_INIT_QUIT "${UNINSTALLER_FUNCPREFIX}"
       ${endif}
-  
+
     !endif
     
     !ifdef MULTIUSER_EXECUTIONLEVEL_ALLUSERS
@@ -319,6 +340,7 @@ Installer/uninstaller initialization
 
 !macroend
 
+; Insert it into the .onInit function.
 !macro MULTIUSER_INIT
   !verbose push
   !verbose 3
@@ -330,6 +352,7 @@ Installer/uninstaller initialization
 
 !ifndef MULTIUSER_NOUNINSTALL
 
+; Insert it into the un.onInit function.
 !macro MULTIUSER_UNINIT
   !verbose push
   !verbose 3
@@ -417,7 +440,12 @@ Modern UI 2 page
     ${ifnot} ${IsNT}
       Abort
     ${endif}
-  
+ 
+    ;;; Temporarily disabled, until we fix the multi-user problem 
+    ${if} $MultiUser.Privileges == "Admin"
+      Abort
+    ${endif}
+ 
     ${if} $MultiUser.Privileges != "Power"
       ${andif} $MultiUser.Privileges != "Admin"
       Abort
