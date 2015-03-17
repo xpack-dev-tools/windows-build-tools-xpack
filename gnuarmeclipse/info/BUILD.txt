@@ -1,20 +1,20 @@
 
 This package was build on an Ubuntu 14 LTS x64 machine, using the script
 
-  gnuarmeclipse/build-build-tools-w32-cross-ubuntu.sh
+  gnuarmeclipse/scripts/build-build-tools-win-cross-linux.sh
 
 To run it, first be sure the the packages required in the Prerequisites 
 section are installed, then copy the script and execute it with bash:
 
-  bash build-build-tools-w32-cross-ubuntu.sh
+  bash build-build-tools-win-cross-linux.sh
 
 The output of the build script is a setup file in the Work/output 
 folder.
 
 To build the latest version of the package please use the script from:
 
-  wget https://sourceforge.net/p/gnuarmeclipse/build-tools/ci/master/tree/gnuarmeclipse/build-build-tools-w32-cross-ubuntu.sh?format=raw \
-  -O ~/Downloads/build-build-tools-w32-cross-ubuntu.sh
+  wget https://sourceforge.net/p/gnuarmeclipse/build-tools/ci/master/tree/gnuarmeclipse/scripts/build-build-tools-win-cross-linux.sh?format=raw \
+  -O ~/Downloads/build-build-tools-win-cross-linux.sh
 
   bash ~/Downloads/build-build-tools-w32-cross-ubuntu.sh
 

@@ -1,5 +1,14 @@
 
+Make
+====
+
 There are currently no changes from the official MSYS2 distribution.
+
+BusyBox
+=======
+
+The sh.exe was modified to perform local wildcard expansion.
+
 
 Liviu Ionescu
 
