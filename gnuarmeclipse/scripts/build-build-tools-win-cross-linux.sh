@@ -92,10 +92,11 @@ echo
 echo "Test tools..."
 echo
 ${CROSS_COMPILE_PREFIX}-gcc --version
-unix2dos --version >/dev/null 2>/dev/null
-git --version >/dev/null
-automake --version >/dev/null
-makensis -VERSION >/dev/null
+unix2dos --version
+git --version
+automake --version
+makensis -VERSION
+echo
 
 # Process actions.
 
@@ -182,8 +183,8 @@ MSYS2_MAKE_PACK_URL="${MSYS2_MAKE_PACK_URL_BASE}/REPOS/MSYS2/Sources/${MSYS2_MAK
 if [ ! -f "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_MAKE_PACK_ARCH}" ]
 then
   mkdir -p "${BUILDTOOLS_DOWNLOAD_FOLDER}"
-  cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
 
+  cd "${BUILDTOOLS_DOWNLOAD_FOLDER}"
   "${WGET}" "${MSYS2_MAKE_PACK_URL}" \
   "${WGET_OUT}" "${MSYS2_MAKE_PACK_ARCH}"
 fi
@@ -192,16 +193,16 @@ MAKE_ARCH="make-${MAKE_VERSION}.tar.bz2"
 if [ ! -f "${BUILDTOOLS_WORK_FOLDER}/msys2/make/${MAKE_ARCH}" ]
 then
   mkdir -p "${BUILDTOOLS_WORK_FOLDER}/msys2"
-  cd "${BUILDTOOLS_WORK_FOLDER}/msys2"
 
+  cd "${BUILDTOOLS_WORK_FOLDER}/msys2"
   tar -xvf "${BUILDTOOLS_DOWNLOAD_FOLDER}/${MSYS2_MAKE_PACK_ARCH}"
 fi
 
 if [ ! -d "${BUILDTOOLS_WORK_FOLDER}/make-${MAKE_VERSION}" ]
 then
   mkdir -p "${BUILDTOOLS_WORK_FOLDER}"
-  cd "${BUILDTOOLS_WORK_FOLDER}"
 
+  cd "${BUILDTOOLS_WORK_FOLDER}"
   tar -xvf "${BUILDTOOLS_WORK_FOLDER}/msys2/make/${MAKE_ARCH}"
 
   cd "${BUILDTOOLS_WORK_FOLDER}/make-${MAKE_VERSION}"
@@ -219,7 +220,6 @@ then
   echo "configure..."
 
   cd "${BUILDTOOLS_BUILD_FOLDER}/make-${MAKE_VERSION}"
-
   "${BUILDTOOLS_WORK_FOLDER}/make-${MAKE_VERSION}/configure" \
   --host=${CROSS_COMPILE_PREFIX} \
   --prefix="${BUILDTOOLS_INSTALL_FOLDER}/make-${MAKE_VERSION}"  \
@@ -280,10 +280,11 @@ then
   unzip "${BUILDTOOLS_DOWNLOAD_FOLDER}/${BUSYBOX_ARCHIVE}"
 
   cd "${BUSYBOX_SRC_FOLDER}/configs"
-  sed -e 's/CONFIG_NOGLOB=y/CONFIG_NOGLOB=n/' \
+  sed \
+  -e 's/CONFIG_CROSS_COMPILER_PREFIX=".*"/CONFIG_CROSS_COMPILER_PREFIX="i686-w64-mingw32-"/' \
   <mingw32_defconfig >gnuarmeclipse_32_mingw_defconfig
 
-  sed -e "s/CONFIG_NOGLOB=y/CONFIG_NOGLOB=n/" \
+  sed \
   -e 's/CONFIG_CROSS_COMPILER_PREFIX=".*"/CONFIG_CROSS_COMPILER_PREFIX="x86_64-w64-mingw32-"/' \
   <mingw32_defconfig >gnuarmeclipse_64_mingw_defconfig
 fi
@@ -295,11 +296,11 @@ if [ ! -f "${BUSYBOX_BUILD_FOLDER}/.config" ]
 then
 
   mkdir -p "${BUSYBOX_BUILD_FOLDER}"
-  cd "${BUSYBOX_BUILD_FOLDER}"
 
   echo 
   echo "make gnuarmeclipse_${TARGET_BITS}_mingw_defconfig..."
 
+  cd "${BUSYBOX_BUILD_FOLDER}"
   make KBUILD_SRC="${BUSYBOX_SRC_FOLDER}" \
   -f "${BUSYBOX_SRC_FOLDER}/Makefile" \
   "gnuarmeclipse_${TARGET_BITS}_mingw_defconfig"
@@ -309,11 +310,10 @@ fi
 if [ ! -f "${BUSYBOX_BUILD_FOLDER}/busybox.exe" ]
 then
 
-  cd "${BUSYBOX_BUILD_FOLDER}"
-
   echo 
   echo "make..."
 
+  cd "${BUSYBOX_BUILD_FOLDER}"
   make
 
 fi
