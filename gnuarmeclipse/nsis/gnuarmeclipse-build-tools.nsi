@@ -20,15 +20,45 @@
 
 ; NSIS_WIN32_MAKENSIS
 
-!define PRODNAME 	"Build Tools"
-!define PRODLCNAME 	"build-tools"
-!define PRODUCT 	"GNU ARM Eclipse\${PRODNAME}"
-!define URL     	"http://gnuarmeclipse.livius.net"
+!include "x64.nsh"
 
-!define UNINST_EXE 	"$INSTDIR\${PRODLCNAME}-uninstall.exe"
-!define UNINST_KEY 	"Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT} ${BITS}"
+!define PUBLISHER 			"GNU ARM Eclipse"
+!define PRODUCT 			"Build Tools"
+!define PRODUCTLOWERCASE 	"build-tools"
+!define URL     			"http://gnuarmeclipse.livius.net"
 
-!define INSTALL_LOCATION_KEY "InstallFolder"
+; Single instance, each new install will overwrite the values
+!define INSTALL_KEY_FOLDER "SOFTWARE\${PUBLISHER}\${PRODUCT}"
+
+; Unique for each 32/64-bits.
+!define PERSISTENT_KEY_FOLDER "SOFTWARE\${PUBLISHER}\Persistent\${PRODUCT} ${BITS}"
+
+; https://msdn.microsoft.com/en-us/library/aa372105(v=vs.85).aspx
+; Instead of GUID, use a long key, unique for each version
+!define UNINSTALL_KEY_FOLDER "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PUBLISHER} ${PRODUCT} ${BITS} ${VERSION}"
+
+!define UNINSTALL_KEY_NAME "UninstallString"
+!define UNINSTALL_EXE "$INSTDIR\${PRODUCTLOWERCASE}-uninstall.exe"
+
+!define INSTALL_LOCATION_KEY_NAME "InstallLocation"
+
+!define DISPLAY_KEY_NAME "DisplayName"
+!define DISPLAY_VALUE "${PUBLISHER} ${PRODUCT}"
+
+!define VERSION_KEY_NAME "Version"
+!define VERSION_VALUE "${VERSION}"
+
+!define CONTACT_KEY_NAME "Contact"
+!define CONTACT_VALUE "Liviu Ionescu <ilg@livius.net>"
+
+!define URL_KEY_NAME "URLInfoAbout"
+!define URL_VALUE "${URL}"
+
+
+; Sub-folder in $SMPROGRAMS where to store links.
+; Dont't know if still in use by current Windows.
+!define LINK_FOLDER "${PUBLISHER}\${PRODUCT}"
+
 
 ; Use maximum compression.
 SetCompressor /SOLID lzma
@@ -37,20 +67,20 @@ SetCompressor /SOLID lzma
 ; HKCU or HKLM. The default installation mode will automatically be set to 
 ; the previously selected mode depending on the location of the key.
 ; Will set $MultiUser.DefaultKeyValue
-;;!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_KEY "SOFTWARE\${PRODUCT}"
-;;!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_VALUENAME "${INSTALL_LOCATION_KEY}"
+;;!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_KEY "SOFTWARE\${PROXX}"
+;;!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_VALUENAME "${INSTALL_LOCATION_KEY_NAME}"
 
 ; Name of the folder in which to install the application, without a path. 
 ; This folder will be located in Program Files for a per-machine installation 
 ; and in the local Application Data folder for a per-user installation 
 ; (if supported).
-!define MULTIUSER_INSTALLMODE_INSTDIR "GNU ARM Eclipse\${PRODNAME}"
+!define MULTIUSER_INSTALLMODE_INSTDIR "${PUBLISHER}\${PRODUCT}\${VERSION}"
 
 ; Registry key from which to obtain a previously stored installation folder. 
 ; It will be retrieved from HKCU for per-user and HKLM for per-machine.
 ; Will set $MultiUser.InstDir and $INSTDIR
-!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_KEY "SOFTWARE\${PRODUCT}"
-!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME "${INSTALL_LOCATION_KEY}"
+!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_KEY "${PERSISTENT_KEY_FOLDER}"
+!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME "${INSTALL_LOCATION_KEY_NAME}"
 
 ; Multi-user not yet functional
 ;!define MULTIUSER_EXECUTIONLEVEL Highest
@@ -69,17 +99,20 @@ SetCompressor /SOLID lzma
 ; command line parameters.
 
 ; The name of the installer. Displayed as windows title.
-Name "GNU ARM Eclipse ${PRODNAME}"
+Name "${PUBLISHER} ${PRODUCT}"
 
 ; The file to write.
 OutFile "${OUTFILE}"
 
+; Preserve the parent of the install folder. Set in .onInit.
+Var Parent.INSTDIR
+
 ;--------------------------------
 ; Interface Settings.
 
-!define MUI_ICON "${NSIS_FOLDER}\${PRODLCNAME}-nsis.ico"
-!define MUI_UNICON "${NSIS_FOLDER}\${PRODLCNAME}-nsis.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "${NSIS_FOLDER}\${PRODLCNAME}-nsis.bmp"
+!define MUI_ICON "${NSIS_FOLDER}\${PRODUCTLOWERCASE}-nsis.ico"
+!define MUI_UNICON "${NSIS_FOLDER}\${PRODUCTLOWERCASE}-nsis.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "${NSIS_FOLDER}\${PRODUCTLOWERCASE}-nsis.bmp"
 
 ;--------------------------------
 ; Pages.
@@ -90,7 +123,7 @@ OutFile "${OUTFILE}"
 !insertmacro MULTIUSER_PAGE_INSTALLMODE
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
-!define MUI_FINISHPAGE_LINK "Visit the GNU ARM Eclipse site!"
+!define MUI_FINISHPAGE_LINK "Visit the ${PUBLISHER} site!"
 !define MUI_FINISHPAGE_LINK_LOCATION "${URL}"
 !insertmacro MUI_PAGE_FINISH
 
@@ -109,9 +142,12 @@ OutFile "${OUTFILE}"
 ;--------------------------------
 ; The stuff to install.
 
-Section "${PRODNAME} (required)"
+Section "${PRODUCT} (required)"
 
 SectionIn RO
+
+; Preserve the parent of the install folder, without version.
+${GetParent} "$INSTDIR" $Parent.INSTDIR
 
 ; Set output path to the installation directory.
 SetOutPath "$INSTDIR\bin"
@@ -126,42 +162,66 @@ File "${INSTALL_FOLDER}\INFO.txt"
 SetOutPath "$INSTDIR\gnuarmeclipse"
 File /r "${INSTALL_FOLDER}\gnuarmeclipse\*"
 
+WriteUninstaller "${PRODUCTLOWERCASE}-uninstall.exe"
+
 !ifdef W64
 SetRegView 64
 !endif
 
 ${if} $MultiUser.InstallMode == "AllUsers"
 
-  ; Write the installation path into the registry
-  WriteRegStr HKLM "SOFTWARE\${PRODUCT}" "${INSTALL_LOCATION_KEY}" "$INSTDIR"
+  ; Write the installation path into the registry.
+  ; 32/64 will overwrite each other, the last one will survive.
+  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$INSTDIR"
+  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
+  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
+  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
+  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
+
+  ; Write the parent installation path into the registry persistent storage.
+  ; 32/64 are different, will not overwrite each other.
+  WriteRegStr HKLM "${PERSISTENT_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$Parent.INSTDIR"
 
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "SOFTWARE\${UNINST_KEY}" "DisplayName" "GNU ARM Eclipse ${PRODNAME}"
-  WriteRegStr HKLM "SOFTWARE\${UNINST_KEY}" "UninstallString" '"${UNINST_EXE}"'
-  WriteRegDWORD HKLM "SOFTWARE\${UNINST_KEY}" "NoModify" 1
-  WriteRegDWORD HKLM "SOFTWARE\${UNINST_KEY}" "NoRepair" 1
+  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
+  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
+  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
+  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
+  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${UNINSTALL_KEY_NAME}" '"${UNINSTALL_EXE}"'
+  WriteRegDWORD HKLM "${UNINSTALL_KEY_FOLDER}" "NoModify" 1
+  WriteRegDWORD HKLM "${UNINSTALL_KEY_FOLDER}" "NoRepair" 1
 
 ${else}
 
-  ; Write the installation path into the registry
-  WriteRegStr HKCU "Software\${PRODUCT}" "${INSTALL_LOCATION_KEY}" "$INSTDIR"
+  ; Write the installation path into the registry.
+  ; 32/64 will overwrite each other, the last one will survive.
+  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$INSTDIR"
+  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
+  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
+  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
+  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
+
+  ; Write the parent installation path into the registry persistent storage.
+  ; 32/64 are different, will not overwrite each other.
+  WriteRegStr HKCU "${PERSISTENT_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$Parent.INSTDIR"
 
   ; Write the uninstall keys for Windows
-  WriteRegStr HKCU "Software\${UNINST_KEY}" "DisplayName" "GNU ARM Eclipse ${PRODNAME}"
-  WriteRegStr HKCU "Software\${UNINST_KEY}" "UninstallString" '"${UNINST_EXE}"'
-  WriteRegDWORD HKCU "Software\${UNINST_KEY}" "NoModify" 1
-  WriteRegDWORD HKCU "Software\${UNINST_KEY}" "NoRepair" 1
+  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
+  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
+  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
+  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
+  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${UNINSTALL_KEY_NAME}" '"${UNINSTALL_EXE}"'
+  WriteRegDWORD HKCU "${UNINSTALL_KEY_FOLDER}" "NoModify" 1
+  WriteRegDWORD HKCU "${UNINSTALL_KEY_FOLDER}" "NoRepair" 1
 
 ${endif}
-
-WriteUninstaller "${PRODLCNAME}-uninstall.exe"
 
 SectionEnd
 
 ; Optional section (can be disabled by the user)
 Section "Start Menu Shortcuts" SectionMenu
-CreateDirectory "$SMPROGRAMS\${PRODUCT}"
-CreateShortCut "$SMPROGRAMS\${PRODUCT}\Uninstall.lnk" "${UNINST_EXE}" "" "${UNINST_EXE}" 0
+CreateDirectory "$SMPROGRAMS\${LINK_FOLDER}"
+CreateShortCut "$SMPROGRAMS\${LINK_FOLDER}\Uninstall.lnk" "${UNINSTALL_EXE}" "" "${UNINSTALL_EXE}" 0
 SectionEnd
 
 ;--------------------------------
@@ -176,27 +236,31 @@ SetRegView 64
 
 ${if} $MultiUser.InstallMode == "AllUsers"
 
-  DeleteRegKey HKLM "SOFTWARE\${UNINST_KEY}"
-  DeleteRegKey HKLM "SOFTWARE\${PRODUCT}"
+  ; Remove the entire group of uninstall keys.
+  DeleteRegKey HKLM "${UNINSTALL_KEY_FOLDER}"
+  DeleteRegKey HKLM "${INSTALL_KEY_FOLDER}"
 
 ${else}
 
-  DeleteRegKey HKCU "Software\${UNINST_KEY}"
-  DeleteRegKey HKCU "Software\${PRODUCT}"
+  ; Remove the entire group of uninstall keys.
+  DeleteRegKey HKCU "${UNINSTALL_KEY_FOLDER}"
+  DeleteRegKey HKCU "${INSTALL_KEY_FOLDER}"
 
 ${endif}
 
-; Remove shortcuts, if any
-Delete "$SMPROGRAMS\${PRODUCT}\Uninstall.lnk"
-RMDir "$SMPROGRAMS\${PRODUCT}"
+; Remove shortcuts, if any.
+Delete "$SMPROGRAMS\${LINK_FOLDER}\Uninstall.lnk"
+RMDir "$SMPROGRAMS\${LINK_FOLDER}"
 
-; Remove uninstaller
-Delete "${UNINST_EXE}"
+; As the name implies, the PERSISTENT_KEY_FOLDER must NOT be removed.
 
-; Remove files and directories used
+; Remove uninstaller executable.
+Delete "${UNINSTALL_EXE}"
+
+; Remove files and directories used. Do not append version here, since is
+; already present in the variable, it was remembered from te setup.
 SetOutPath "$INSTDIR"
 
-RMDir /r "$INSTDIR\*"
 RMDir /r "$INSTDIR"
 
 SectionEnd
@@ -214,8 +278,18 @@ SectionEnd
 ; Functions.
 
 Function .onInit
+
+!ifdef W64
+  ${IfNot} ${RunningX64}
+    MessageBox MB_OK|MB_ICONEXCLAMATION "This setup can only be run on 64-bit Windows" 
+ 	Abort   
+  ${EndIf}
+!endif
+
   !insertmacro MUI_LANGDLL_DISPLAY
+
   !insertmacro MULTIUSER_INIT
+
 FunctionEnd
 
 Function un.onInit
