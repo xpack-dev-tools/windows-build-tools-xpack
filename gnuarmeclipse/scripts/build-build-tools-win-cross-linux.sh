@@ -322,6 +322,8 @@ echo
 # Copy BusyBox with 3 different names
 mkdir -p "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin"
 cp -v "${BUSYBOX_BUILD_FOLDER}/busybox.exe" \
+ "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin/busybox.exe"
+cp -v "${BUSYBOX_BUILD_FOLDER}/busybox.exe" \
  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin/sh.exe"
 cp -v "${BUSYBOX_BUILD_FOLDER}/busybox.exe" \
  "${BUILDTOOLS_INSTALL_FOLDER}/build-tools/bin/rm.exe"

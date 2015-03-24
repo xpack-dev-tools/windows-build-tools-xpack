@@ -7,6 +7,7 @@ The following binaries are included:
 - rm.exe (copy of busybox.exe)
 - echo.exe (copy of busybox.exe)
 - sh.exe (copy of busybox.exe)
+- busybox.exe (the original; run it to display the version)
 
 MSYS2 is available from:
   https://sourceforge.net/projects/msys2/

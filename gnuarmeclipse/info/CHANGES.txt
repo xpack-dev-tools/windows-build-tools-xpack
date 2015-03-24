@@ -7,7 +7,7 @@ There are currently no changes from the official MSYS2 distribution.
 BusyBox
 =======
 
-The sh.exe was modified to perform local wildcard expansion.
+There are currently no changes from the official BusyBox distribution.
 
 
 Liviu Ionescu

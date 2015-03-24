@@ -20,7 +20,10 @@
 
 ; NSIS_WIN32_MAKENSIS
 
+!include "LogicLib.nsh"
+!include "FileFunc.nsh"
 !include "x64.nsh"
+!include "MUI2.nsh"
 
 !define PUBLISHER 			"GNU ARM Eclipse"
 !define PRODUCT 			"Build Tools"
@@ -35,7 +38,7 @@
 
 ; https://msdn.microsoft.com/en-us/library/aa372105(v=vs.85).aspx
 ; Instead of GUID, use a long key, unique for each version
-!define UNINSTALL_KEY_FOLDER "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PUBLISHER} ${PRODUCT} ${BITS} ${VERSION}"
+!define UNINSTALL_KEY_FOLDER "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${PUBLISHER} ${PRODUCT} ${BITS} ${VERSION}"
 
 !define UNINSTALL_KEY_NAME "UninstallString"
 !define UNINSTALL_EXE "$INSTDIR\${PRODUCTLOWERCASE}-uninstall.exe"
@@ -63,46 +66,14 @@
 ; Use maximum compression.
 SetCompressor /SOLID lzma
 
-; Non-empty registry key that is created during the installation in either 
-; HKCU or HKLM. The default installation mode will automatically be set to 
-; the previously selected mode depending on the location of the key.
-; Will set $MultiUser.DefaultKeyValue
-;;!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_KEY "SOFTWARE\${PROXX}"
-;;!define MULTIUSER_INSTALLMODE_DEFAULT_REGISTRY_VALUENAME "${INSTALL_LOCATION_KEY_NAME}"
-
-; Name of the folder in which to install the application, without a path. 
-; This folder will be located in Program Files for a per-machine installation 
-; and in the local Application Data folder for a per-user installation 
-; (if supported).
-!define MULTIUSER_INSTALLMODE_INSTDIR "${PUBLISHER}\${PRODUCT}\${VERSION}"
-
-; Registry key from which to obtain a previously stored installation folder. 
-; It will be retrieved from HKCU for per-user and HKLM for per-machine.
-; Will set $MultiUser.InstDir and $INSTDIR
-!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_KEY "${PERSISTENT_KEY_FOLDER}"
-!define MULTIUSER_INSTALLMODE_INSTDIR_REGISTRY_VALUENAME "${INSTALL_LOCATION_KEY_NAME}"
-
-; Multi-user not yet functional
-;!define MULTIUSER_EXECUTIONLEVEL Highest
-!define MULTIUSER_EXECUTIONLEVEL Admin
-
-!define MULTIUSER_MUI
-!define MULTIUSER_INSTALLMODE_COMMANDLINE
-!include "${NSIS_FOLDER}/MyMultiUser.nsh"
-
-; The variable $MultiUser.Privileges will contain the current execution level 
-; (Admin, Power, User or Guest).
-; The variable $MultiUser.InstallMode will contain the current installation mode
-; (AllUsers or CurrentUser).
-
-; The installation mode can also be set using the /AllUsers or /CurrentUser 
-; command line parameters.
-
 ; The name of the installer. Displayed as windows title.
 Name "${PUBLISHER} ${PRODUCT}"
 
 ; The file to write.
 OutFile "${OUTFILE}"
+
+; Request administrator privileges.
+RequestExecutionLevel admin
 
 ; Preserve the parent of the install folder. Set in .onInit.
 Var Parent.INSTDIR
@@ -120,7 +91,6 @@ Var Parent.INSTDIR
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "${INSTALL_FOLDER}\COPYING"
 !insertmacro MUI_PAGE_COMPONENTS
-!insertmacro MULTIUSER_PAGE_INSTALLMODE
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !define MUI_FINISHPAGE_LINK "Visit the ${PUBLISHER} site!"
@@ -162,59 +132,34 @@ File "${INSTALL_FOLDER}\INFO.txt"
 SetOutPath "$INSTDIR\gnuarmeclipse"
 File /r "${INSTALL_FOLDER}\gnuarmeclipse\*"
 
-WriteUninstaller "${PRODUCTLOWERCASE}-uninstall.exe"
+; Write the uninstaller file
+WriteUninstaller "${UNINSTALL_EXE}"
 
 !ifdef W64
-SetRegView 64
+  SetRegView 64
 !endif
 
-${if} $MultiUser.InstallMode == "AllUsers"
+; Write the installation path into the registry.
+; 32/64 will overwrite each other, the last one will survive.
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$INSTDIR"
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
 
-  ; Write the installation path into the registry.
-  ; 32/64 will overwrite each other, the last one will survive.
-  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$INSTDIR"
-  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
-  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
-  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
-  WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
+; Write the parent installation path into the registry persistent storage.
+; 32/64 are different, will not overwrite each other.
+WriteRegStr HKLM "${PERSISTENT_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$Parent.INSTDIR"
 
-  ; Write the parent installation path into the registry persistent storage.
-  ; 32/64 are different, will not overwrite each other.
-  WriteRegStr HKLM "${PERSISTENT_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$Parent.INSTDIR"
-
-  ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
-  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
-  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
-  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
-  WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${UNINSTALL_KEY_NAME}" '"${UNINSTALL_EXE}"'
-  WriteRegDWORD HKLM "${UNINSTALL_KEY_FOLDER}" "NoModify" 1
-  WriteRegDWORD HKLM "${UNINSTALL_KEY_FOLDER}" "NoRepair" 1
-
-${else}
-
-  ; Write the installation path into the registry.
-  ; 32/64 will overwrite each other, the last one will survive.
-  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$INSTDIR"
-  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
-  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
-  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
-  WriteRegStr HKCU "${INSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
-
-  ; Write the parent installation path into the registry persistent storage.
-  ; 32/64 are different, will not overwrite each other.
-  WriteRegStr HKCU "${PERSISTENT_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$Parent.INSTDIR"
-
-  ; Write the uninstall keys for Windows
-  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
-  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
-  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
-  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
-  WriteRegStr HKCU "${UNINSTALL_KEY_FOLDER}" "${UNINSTALL_KEY_NAME}" '"${UNINSTALL_EXE}"'
-  WriteRegDWORD HKCU "${UNINSTALL_KEY_FOLDER}" "NoModify" 1
-  WriteRegDWORD HKCU "${UNINSTALL_KEY_FOLDER}" "NoRepair" 1
-
-${endif}
+; Write the uninstall keys for Windows
+WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${UNINSTALL_KEY_NAME}" "${UNINSTALL_EXE}"
+WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$INSTDIR"
+WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
+WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
+WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
+WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
+WriteRegDWORD HKLM "${UNINSTALL_KEY_FOLDER}" "NoModify" 1
+WriteRegDWORD HKLM "${UNINSTALL_KEY_FOLDER}" "NoRepair" 1
 
 SectionEnd
 
@@ -225,32 +170,46 @@ CreateShortCut "$SMPROGRAMS\${LINK_FOLDER}\Uninstall.lnk" "${UNINSTALL_EXE}" "" 
 SectionEnd
 
 ;--------------------------------
+
+Var ux.path
+Var ix.path
+
+;--------------------------------
 ; Uninstaller
 
 Section "Uninstall"
 
 ; Remove registry keys
 !ifdef W64
-SetRegView 64
+  SetRegView 64
 !endif
 
-${if} $MultiUser.InstallMode == "AllUsers"
+ReadRegStr $ux.path HKLM "${UNINSTALL_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}"
+${if} "$ux.path" == "" 
+  ReadRegStr $ux.path HKLM "${UNINSTALL_KEY_FOLDER}" "${UNINSTALL_KEY_NAME}"
+  ${GetParent} "$ux.path" $ux.path
+${endif}
 
-  ; Remove the entire group of uninstall keys.
-  DeleteRegKey HKLM "${UNINSTALL_KEY_FOLDER}"
+ReadRegStr $ix.path HKLM "${INSTALL_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}"
+
+; If this refers to the last install, remove the install keys
+${if} "$ux.path" == "$ix.path"
+
+  ; MessageBox MB_OK|MB_ICONSTOP "remove all install keys"
+
+  ; Remove the entire group of install keys.
   DeleteRegKey HKLM "${INSTALL_KEY_FOLDER}"
 
-${else}
-
-  ; Remove the entire group of uninstall keys.
-  DeleteRegKey HKCU "${UNINSTALL_KEY_FOLDER}"
-  DeleteRegKey HKCU "${INSTALL_KEY_FOLDER}"
+  ; Remove shortcuts, if any.
+  Delete "$SMPROGRAMS\${LINK_FOLDER}\Uninstall.lnk"
+  RMDir "$SMPROGRAMS\${LINK_FOLDER}"
 
 ${endif}
 
-; Remove shortcuts, if any.
-Delete "$SMPROGRAMS\${LINK_FOLDER}\Uninstall.lnk"
-RMDir "$SMPROGRAMS\${LINK_FOLDER}"
+; MessageBox MB_OK|MB_ICONSTOP "${UNINSTALL_KEY_FOLDER}"
+
+; Remove the entire group of uninstall keys.
+DeleteRegKey HKLM "${UNINSTALL_KEY_FOLDER}"
 
 ; As the name implies, the PERSISTENT_KEY_FOLDER must NOT be removed.
 
@@ -259,8 +218,7 @@ Delete "${UNINSTALL_EXE}"
 
 ; Remove files and directories used. Do not append version here, since is
 ; already present in the variable, it was remembered from te setup.
-SetOutPath "$INSTDIR"
-
+SetOutPath "$Parent.INSTDIR"
 RMDir /r "$INSTDIR"
 
 SectionEnd
@@ -279,21 +237,34 @@ SectionEnd
 
 Function .onInit
 
-!ifdef W64
-  ${IfNot} ${RunningX64}
-    MessageBox MB_OK|MB_ICONEXCLAMATION "This setup can only be run on 64-bit Windows" 
- 	Abort   
-  ${EndIf}
-!endif
+  !ifdef W64
+    ${IfNot} ${RunningX64}
+      MessageBox MB_OK|MB_ICONEXCLAMATION "This setup can only be run on 64-bit Windows" 
+ 	  Abort   
+    ${EndIf}
+  !endif
 
   !insertmacro MUI_LANGDLL_DISPLAY
 
-  !insertmacro MULTIUSER_INIT
+  ; Check registry key for previous folder. The key is distinct for 32/64-bit.
+  ReadRegStr $INSTDIR HKLM "${PERSISTENT_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}"
+
+  ${if} $INSTDIR == ""
+    ; The default installation folder, if the key was not found.
+    !ifdef W64
+      StrCpy $INSTDIR "$PROGRAMFILES64\${PUBLISHER}\${PRODUCT}"
+    !else
+      StrCpy $INSTDIR "$PROGRAMFILES\${PUBLISHER}\${PRODUCT}"
+    !endif
+  ${endif}
+
+  ; Append the version, to be seen in the wizard. 
+  StrCpy $INSTDIR "$INSTDIR\${VERSION}"
 
 FunctionEnd
 
 Function un.onInit
-  !insertmacro MULTIUSER_UNINIT
+  ;
 FunctionEnd
 
 ;--------------------------------
