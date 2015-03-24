@@ -9,6 +9,14 @@ BusyBox
 
 There are currently no changes from the official BusyBox distribution.
 
+Build
+=====
+
+[2015-03-22]
+
+- the NSIS script was fixed to prevent removing the keys when 
+uninstalling an older version.
+
 
 Liviu Ionescu
 
