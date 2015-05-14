@@ -1,5 +1,5 @@
 
-These are the GNU ARM Eclipse build tools for 32-bit Windows.
+These are the GNU ARM Eclipse build tools for Windows.
 
 The following binaries are included:
 

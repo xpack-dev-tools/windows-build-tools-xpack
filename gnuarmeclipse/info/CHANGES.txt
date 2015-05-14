@@ -12,6 +12,13 @@ There are currently no changes from the official BusyBox distribution.
 Build
 =====
 
+[2015-05-14]
+
+- the build script was updated to run under Docker.
+- use make-4.1.3
+- use busybox rmyorston commit ec39cb770ddd5c0e085d5c4ee10be65bab5e7a44
+
+
 [2015-03-22]
 
 - the NSIS script was fixed to prevent removing the keys when 
