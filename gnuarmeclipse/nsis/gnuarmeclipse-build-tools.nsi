@@ -121,7 +121,8 @@ ${GetParent} "$INSTDIR" $Parent.INSTDIR
 
 ; Set output path to the installation directory.
 SetOutPath "$INSTDIR\bin"
-File /r "${INSTALL_FOLDER}\bin\*.exe"
+File "${INSTALL_FOLDER}\bin\*.exe"
+File /nonfatal "${INSTALL_FOLDER}\bin\*.dll"
 
 SetOutPath "$INSTDIR\license"
 File /r "${INSTALL_FOLDER}\license\*"
