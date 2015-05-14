@@ -1,0 +1,1 @@
+The **build-build-tools-win-cross-linux.sh** is DEPRECATED, the new build script (using Docker) is now in gnuarmeclipse.se/scripts.
