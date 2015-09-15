@@ -4,7 +4,7 @@ The **GNU ARM Eclipse Windows Build Tools** subproject is a Windows specific pac
 
 ## How to use
 
-* [Overview](http://gnuarmeclipse.github.io/windows-build-tools/overview)  (read me first!)
+* [Overview](http://gnuarmeclipse.github.io/windows-build-tools/)  (read me first!)
 * [Windows Build Tools Install](http://gnuarmeclipse.github.io/windows-build-tools/install)
 * [Support](https://github.com/gnuarmeclipse/windows-build-tools/issues/1)  (using the GitHub Issues)
 
