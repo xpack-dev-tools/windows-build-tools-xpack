@@ -13,5 +13,8 @@ The **GNU ARM Eclipse Windows Build Tools** subproject is a Windows specific pac
 * [How to build](http://gnuarmeclipse.github.io/windows-build-tools/how-to-build) (using Docker containers)
 * [Change log](http://gnuarmeclipse.github.io/windows-build-tools/change-log)
 
-## [Releases](http://gnuarmeclipse.github.io/windows-build-tools/releases)
+## Releases & binaries
+
+See the [releases](http://gnuarmeclipse.github.io/windows-build-tools/releases) page.
+Binaries for Windows can be downloaded from [GitHub Releases](https://github.com/gnuarmeclipse/windows-build-tools/releases).
 
