@@ -28,7 +28,7 @@
 !define PUBLISHER 			"GNU ARM Eclipse"
 !define PRODUCT 			"Build Tools"
 !define PRODUCTLOWERCASE 	"build-tools"
-!define URL     			"http://gnuarmeclipse.livius.net"
+!define URL     			"http://gnuarmeclipse.github.io"
 
 ; Single instance, each new install will overwrite the values
 !define INSTALL_KEY_FOLDER "SOFTWARE\${PUBLISHER}\${PRODUCT}"
@@ -71,6 +71,13 @@ Name "${PUBLISHER} ${PRODUCT}"
 
 ; The file to write.
 OutFile "${OUTFILE}"
+
+; The default installation directory.
+!ifdef W64
+InstallDir "$PROGRAMFILES64\${PUBLISHER}\${PRODUCT}"
+!else
+InstallDir "$PROGRAMFILES\${PUBLISHER}\${PRODUCT}"
+!endif
 
 ; Request administrator privileges.
 RequestExecutionLevel admin
