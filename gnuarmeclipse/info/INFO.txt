@@ -17,8 +17,7 @@ BusyBox is available from:
 
 For more details and support, please read the GNU ARM Eclipe project pages from:
 
-  http://gnuarmeclipse.livius.net/blog/
-  http://gnuarmeclipse.livius.net/wiki/
+  http://gnuarmeclipse.github.io/
 
 
 Thank you for using GNU ARM Eclipse,
