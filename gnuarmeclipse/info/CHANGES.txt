@@ -12,6 +12,12 @@ There are currently no changes from the official BusyBox distribution.
 Build
 =====
 
+[2016-11-22]
+
+- v2.8-20161122 release
+- mkdir.exe added, as a copy of busybox.exe
+- use busybox rmyorston commit 9fa1e4990e655a85025c9d270a1606983e375e47
+
 [2016-10-28]
 
 - v2.7-20161028 released
