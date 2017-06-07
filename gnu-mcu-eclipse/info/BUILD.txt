@@ -1,18 +1,18 @@
 
 This package was build with MinGW-w64 on a Debian 8 64-bits Docker container,  
-running on an OS X machine, using the scripts provided in the GNU ARM Eclipse 
-[build-scripts.git](https://github.com/gnuarmeclipse/build-scripts). 
+running on an OS X machine, using the scripts provided in the GNU MCU Eclipse 
+[build-scripts.git](https://github.com/gnu-mcu-eclipse/build-scripts). 
 
 To build the latest version of the package please use the script from:
 
-```
-$ git clone https://github.com/gnuarmeclipse/build-scripts.git \
+```bash
+$ git clone https://github.com/gnu-mcu-eclipse/build-scripts.git \
   ~/Downloads/build-scripts.git
 $ bash ~/Downloads/build-scripts.git/scripts/build-windows-build-tools.sh --all
 ```
 
 The output of the build script are two setup.exe files in the 
-${WORK_FOLDER}/build-tools/output folder.
+`${WORK_FOLDER}/build-tools/output` folder.
 
 The script was developed on OS X 10.12 with Homebrew, but also runs
 on most GNU/Linux distributions supporting Docker.

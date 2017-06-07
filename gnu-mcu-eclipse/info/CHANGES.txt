@@ -12,6 +12,12 @@ There are currently no changes from the official BusyBox distribution.
 Build
 =====
 
+[2017-06-07]
+
+- v2.9-20170607 released
+- rebranded GNU MCU Eclipse
+- use busybox rmyorston commit c2002eae394c230d6b89073c9ff71bc86a7875e8
+
 [2016-11-22]
 
 - v2.8-20161122 release

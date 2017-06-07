@@ -1,0 +1,27 @@
+
+These are the GNU MCU Eclipse (formerly GNU ARM Eclipse) build tools for Windows.
+
+The following binaries are included:
+
+- `make.exe` (GNU make version 4.1, compiled from MSYS2 sources)
+- `rm.exe` (copy of `busybox.exe`)
+- `echo.exe` (copy of `busybox.exe`)
+- `sh.exe` (copy of `busybox.exe`)
+- `mkdir.exe` (copy of `busybox.exe`)
+- `busybox.exe` (the original; run it to display the version)
+
+MSYS2 is available from:
+  https://sourceforge.net/projects/msys2/
+
+BusyBox is available from: 
+  http://intgat.tigress.co.uk/rmy/busybox/index.html
+
+For more details and support, please read the GNU MCU Eclipe project pages from:
+
+  http://gnuarmeclipse.github.io/
+
+
+Thank you for using GNU MCU Eclipse,
+
+Liviu Ionescu
+

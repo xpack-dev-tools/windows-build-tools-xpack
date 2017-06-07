@@ -1,6 +1,6 @@
 ;!/usr/bin/makensis
 
-; This NSIS script creates an installer for GNU ARM Eclipse Build Tools.
+; This NSIS script creates an installer for GNU MCU Eclipse Build Tools.
 
 ; Copyright (C) 2006-2012 Stefan Weil
 ; Copyright (c) 2014-2015 Liviu Ionescu
@@ -25,16 +25,19 @@
 !include "x64.nsh"
 !include "MUI2.nsh"
 
-!define PUBLISHER 			"GNU ARM Eclipse"
+!define PUBLISHER               "GNU MCU Eclipse"
+!define PUBLISHER_COMPATIBILITY "GNU ARM Eclipse"
 !define PRODUCT 			"Build Tools"
 !define PRODUCTLOWERCASE 	"build-tools"
 !define URL     			"http://gnuarmeclipse.github.io"
 
 ; Single instance, each new install will overwrite the values
 !define INSTALL_KEY_FOLDER "SOFTWARE\${PUBLISHER}\${PRODUCT}"
+!define INSTALL_KEY_FOLDER_COMPATIBILITY "SOFTWARE\${PUBLISHER_COMPATIBILITY}\${PRODUCT}"
 
 ; Unique for each 32/64-bits.
 !define PERSISTENT_KEY_FOLDER "SOFTWARE\${PUBLISHER}\Persistent\${PRODUCT} ${BITS}"
+!define PERSISTENT_KEY_FOLDER_COMPATIBILITY "SOFTWARE\${PUBLISHER_COMPATIBILITY}\Persistent\${PRODUCT} ${BITS}"
 
 ; https://msdn.microsoft.com/en-us/library/aa372105(v=vs.85).aspx
 ; Instead of GUID, use a long key, unique for each version
@@ -137,8 +140,8 @@ File /r "${INSTALL_FOLDER}\license\*"
 SetOutPath "$INSTDIR"
 File "${INSTALL_FOLDER}\INFO.txt"
 
-SetOutPath "$INSTDIR\gnuarmeclipse"
-File /r "${INSTALL_FOLDER}\gnuarmeclipse\*"
+SetOutPath "$INSTDIR\gnu-mcu-eclipse"
+File /r "${INSTALL_FOLDER}\gnu-mcu-eclipse\*"
 
 ; Write the uninstaller file
 WriteUninstaller "${UNINSTALL_EXE}"
@@ -155,9 +158,19 @@ WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}
 WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
 WriteRegStr HKLM "${INSTALL_KEY_FOLDER}" "${URL_KEY_NAME}" "${URL_VALUE}"
 
+; Compatibility keys.
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER_COMPATIBILITY}" "${INSTALL_LOCATION_KEY_NAME}" "$INSTDIR"
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER_COMPATIBILITY}" "${DISPLAY_KEY_NAME}" "${DISPLAY_VALUE}"
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER_COMPATIBILITY}" "${VERSION_KEY_NAME}" "${VERSION_VALUE}"
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER_COMPATIBILITY}" "${CONTACT_KEY_NAME}" "${CONTACT_VALUE}"
+WriteRegStr HKLM "${INSTALL_KEY_FOLDER_COMPATIBILITY}" "${URL_KEY_NAME}" "${URL_VALUE}"
+
 ; Write the parent installation path into the registry persistent storage.
 ; 32/64 are different, will not overwrite each other.
 WriteRegStr HKLM "${PERSISTENT_KEY_FOLDER}" "${INSTALL_LOCATION_KEY_NAME}" "$Parent.INSTDIR"
+
+; Compatibility keys.
+WriteRegStr HKLM "${PERSISTENT_KEY_FOLDER_COMPATIBILITY}" "${INSTALL_LOCATION_KEY_NAME}" "$Parent.INSTDIR"
 
 ; Write the uninstall keys for Windows
 WriteRegStr HKLM "${UNINSTALL_KEY_FOLDER}" "${UNINSTALL_KEY_NAME}" "${UNINSTALL_EXE}"
