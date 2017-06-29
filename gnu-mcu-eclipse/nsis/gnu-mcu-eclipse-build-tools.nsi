@@ -42,6 +42,7 @@
 ; https://msdn.microsoft.com/en-us/library/aa372105(v=vs.85).aspx
 ; Instead of GUID, use a long key, unique for each version
 !define UNINSTALL_KEY_FOLDER "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${PUBLISHER} ${PRODUCT} ${BITS} ${VERSION}"
+!define UNINSTALL_KEY_FOLDER_COMPATIBILITY "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${PUBLISHER_COMPATIBILITY} ${PRODUCT} ${BITS} ${VERSION}"
 
 !define UNINSTALL_KEY_NAME "UninstallString"
 !define UNINSTALL_EXE "$INSTDIR\${PRODUCTLOWERCASE}-uninstall.exe"
@@ -220,6 +221,9 @@ ${if} "$ux.path" == "$ix.path"
 
   ; Remove the entire group of install keys.
   DeleteRegKey HKLM "${INSTALL_KEY_FOLDER}"
+
+  ; Remove the entire group of install keys (compatibility).
+  DeleteRegKey HKLM "${INSTALL_KEY_FOLDER_COMPATIBILITY}"
 
   ; Remove shortcuts, if any.
   Delete "$SMPROGRAMS\${LINK_FOLDER}\Uninstall.lnk"
