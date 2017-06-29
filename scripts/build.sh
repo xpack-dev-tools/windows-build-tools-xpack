@@ -231,8 +231,6 @@ BUSYBOX_SRC_FOLDER="${WORK_FOLDER_PATH}/busybox-w32-${BUSYBOX_COMMIT}"
 
 # ----- Define build constants. -----
 
-GIT_FOLDER_PATH="${WORK_FOLDER_PATH}/gnu-mcu-eclipse-${APP_LC_NAME}.git"
-
 DOWNLOAD_FOLDER_PATH="${WORK_FOLDER_PATH}/download"
 DEPLOY_FOLDER_NAME="deploy"
 
@@ -450,6 +448,7 @@ APP_NAME="${APP_NAME}"
 APP_LC_NAME="${APP_LC_NAME}"
 APP_UC_NAME="${APP_UC_NAME}"
 DISTRIBUTION_FILE_DATE="${DISTRIBUTION_FILE_DATE}"
+PROJECT_GIT_FOLDER_NAME="${PROJECT_GIT_FOLDER_NAME}"
 
 MAKE_VERSION="${MAKE_VERSION}"
 MAKE_ARCH="${MAKE_ARCH}"
@@ -545,7 +544,9 @@ do
   esac
 done
 
-git_folder_path="${work_folder_path}/gnu-mcu-eclipse-${APP_LC_NAME}.git"
+download_folder_path=${download_folder_path:-"${work_folder_path}/download"}
+git_folder_path="${work_folder_path}/${PROJECT_GIT_FOLDER_NAME}"
+distribution_file_version=$(cat "${git_folder_path}/gnu-mcu-eclipse/VERSION")-${DISTRIBUTION_FILE_DATE}
 
 echo
 uname -a
@@ -800,8 +801,6 @@ do_unix2dos "${install_folder}/build-tools/COPYING"
 # ----- Create the distribution setup. -----
 
 mkdir -p "${output_folder_path}"
-
-distribution_file_version=$(cat "${git_folder_path}/gnu-mcu-eclipse/VERSION")-${DISTRIBUTION_FILE_DATE}
 
 do_container_create_distribution
 
