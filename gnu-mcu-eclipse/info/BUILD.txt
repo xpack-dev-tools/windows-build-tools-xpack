@@ -6,9 +6,9 @@ running on an OS X machine, using the scripts provided in the GNU MCU Eclipse
 To build the latest version of the package please use the script from:
 
 ```bash
-$ git clone https://github.com/gnu-mcu-eclipse/build-scripts.git \
-  ~/Downloads/build-scripts.git
-$ bash ~/Downloads/build-scripts.git/scripts/build-windows-build-tools.sh --all
+$ git clone https://github.com/gnu-mcu-eclipse/build-windows-build-tools.git \
+  ~/Downloads/build-windows-build-tools.git
+$ bash ~/Downloads/build-windows-build-tools.git/scripts/build.sh --all
 ```
 
 The output of the build script are two setup.exe files in the 
@@ -19,7 +19,7 @@ on most GNU/Linux distributions supporting Docker.
 
 Up-to-date build information is available in the GNU ARM Eclipse project web:
 
-  http://gnuarmeclipse.github.io/
+  http://gnu-mcu-eclipse.github.io/
 
 Many thanks to my friend Dan Maiorescu for his major contributions 
 to this project.

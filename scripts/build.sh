@@ -49,38 +49,45 @@ APP_NAME="Windows Build Tools"
 APP_LC_NAME="build-tools"
 APP_UC_NAME="Build Tools"
 
+jobs="--jobs=8"
+
 # On Parallels virtual machines, prefer host Work folder.
 # Second choice are Work folders on secondary disks.
 # Final choice is a Work folder in HOME.
 if [ -d /media/psf/Home/Work ]
 then
-  WORK_FOLDER=${WORK_FOLDER:-"/media/psf/Home/Work/${APP_LC_NAME}"}
+  WORK_FOLDER_PATH=${WORK_FOLDER_PATH:-"/media/psf/Home/Work/${APP_LC_NAME}"}
 elif [ -d /media/${USER}/Work ]
 then
-  WORK_FOLDER=${WORK_FOLDER:-"/media/${USER}/Work/${APP_LC_NAME}"}
+  WORK_FOLDER_PATH=${WORK_FOLDER_PATH:-"/media/${USER}/Work/${APP_LC_NAME}"}
 elif [ -d /media/Work ]
 then
-  WORK_FOLDER=${WORK_FOLDER:-"/media/Work/${APP_LC_NAME}"}
+  WORK_FOLDER_PATH=${WORK_FOLDER_PATH:-"/media/Work/${APP_LC_NAME}"}
 else
   # Final choice, a Work folder in HOME.
-  WORK_FOLDER=${WORK_FOLDER:-"${HOME}/Work/${APP_LC_NAME}"}
+  WORK_FOLDER_PATH=${WORK_FOLDER_PATH:-"${HOME}/Work/${APP_LC_NAME}"}
 fi
 
-BUILD_FOLDER="${WORK_FOLDER}/build"
+BUILD_FOLDER_PATH="${WORK_FOLDER_PATH}/build"
+
+PROJECT_GIT_FOLDER_NAME="windows-build-tools.git"
+PROJECT_GIT_FOLDER_PATH="${WORK_FOLDER_PATH}/${PROJECT_GIT_FOLDER_NAME}"
+PROEJCT_GIT_URL="https://github.com/gnu-mcu-eclipse/${PROJECT_GIT_FOLDER_NAME}"
 
 # ----- Create Work folder. -----
 
 echo
-echo "Work folder: \"${WORK_FOLDER}\"."
+echo "Work folder: \"${WORK_FOLDER_PATH}\"."
 
-mkdir -p "${WORK_FOLDER}"
+mkdir -p "${WORK_FOLDER_PATH}"
 
 # ----- Parse actions and command line options. -----
 
 ACTION=""
 DO_BUILD_WIN32=""
 DO_BUILD_WIN64=""
-helper_script=""
+helper_script_path=""
+do_no_pdf=""
 
 while [ $# -gt 0 ]
 do
@@ -106,7 +113,12 @@ do
       ;;
 
     --helper-script)
-      helper_script=$2
+      helper_script_path=$2
+      shift 2
+      ;;
+
+    --jobs)
+      jobs="--jobs=$2"
       shift 2
       ;;
 
@@ -128,54 +140,56 @@ done
 
 # ----- Prepare build scripts. -----
 
-build_script=$0
-if [[ "${build_script}" != /* ]]
+build_script_path=$0
+if [[ "${build_script_path}" != /* ]]
 then
   # Make relative path absolute.
-  build_script=$(pwd)/$0
+  build_script_path=$(pwd)/$0
 fi
 
 # Copy the current script to Work area, to later copy it into the install folder.
-mkdir -p "${WORK_FOLDER}/scripts"
-cp "${build_script}" "${WORK_FOLDER}/scripts/build-${APP_LC_NAME}.sh"
+mkdir -p "${WORK_FOLDER_PATH}/scripts"
+cp "${build_script_path}" "${WORK_FOLDER_PATH}/scripts/build-${APP_LC_NAME}.sh"
 
 # ----- Build helper. -----
 
-if [ -z "${helper_script}" ]
+if [ -z "${helper_script_path}" ]
 then
-  script_folder_path="$(dirname ${build_script})"
+  script_folder_path="$(dirname ${build_script_path})"
   script_folder_name="$(basename ${script_folder_path})"
   if [ \( "${script_folder_name}" == "scripts" \) \
-    -a \( -f "${script_folder_path}/build-helper.sh" \) ]
+    -a \( -f "${script_folder_path}/helper/build-helper.sh" \) ]
   then
-    helper_script="${script_folder_path}/build-helper.sh"
-  elif [ ! -f "${WORK_FOLDER}/scripts/build-helper.sh" ]
+    helper_script_path="${script_folder_path}/helper/build-helper.sh"
+  elif [ \( "${script_folder_name}" == "scripts" \) \
+    -a \( -d "${script_folder_path}/helper" \) ]
   then
-    # Download helper script from GitHub git.
-    echo "Downloading helper script..."
-    curl -L "https://github.com/gnu-mcu-eclipse/build-scripts/raw/master/scripts/build-helper.sh" \
-      --output "${WORK_FOLDER}/scripts/build-helper.sh"
-    helper_script="${WORK_FOLDER}/scripts/build-helper.sh"
-  else
-    helper_script="${WORK_FOLDER}/scripts/build-helper.sh"
+    (
+      cd "$(dirname ${script_folder_path})"
+      git submodule update --init --recursive --remote
+    )
+    helper_script_path="${script_folder_path}/helper/build-helper.sh"
+  elif [ -f "${WORK_FOLDER_PATH}/scripts/build-helper.sh" ]
+  then
+    helper_script_path="${WORK_FOLDER_PATH}/scripts/build-helper.sh"
   fi
 else
-  if [[ "${helper_script}" != /* ]]
+  if [[ "${helper_script_path}" != /* ]]
   then
     # Make relative path absolute.
-    helper_script="$(pwd)/${helper_script}"
+    helper_script_path="$(pwd)/${helper_script_path}"
   fi
 fi
 
 # Copy the current helper script to Work area, to later copy it into the install folder.
-mkdir -p "${WORK_FOLDER}/scripts"
-if [ "${helper_script}" != "${WORK_FOLDER}/scripts/build-helper.sh" ]
+mkdir -p "${WORK_FOLDER_PATH}/scripts"
+if [ "${helper_script_path}" != "${WORK_FOLDER_PATH}/scripts/build-helper.sh" ]
 then
-  cp "${helper_script}" "${WORK_FOLDER}/scripts/build-helper.sh"
+  cp "${helper_script_path}" "${WORK_FOLDER_PATH}/scripts/build-helper.sh"
 fi
 
-echo "Helper script: \"${helper_script}\"."
-source "$helper_script"
+echo "Helper script: \"${helper_script_path}\"."
+source "$helper_script_path"
 
 # ----- Library sources. -----
 
@@ -213,8 +227,14 @@ BUSYBOX_COMMIT="c2002eae394c230d6b89073c9ff71bc86a7875e8"
 BUSYBOX_ARCHIVE="${BUSYBOX_COMMIT}.zip"
 BUSYBOX_URL="https://github.com/rmyorston/busybox-w32/archive/${BUSYBOX_ARCHIVE}"
 
-BUSYBOX_SRC_FOLDER="${WORK_FOLDER}/busybox-w32-${BUSYBOX_COMMIT}"
+BUSYBOX_SRC_FOLDER="${WORK_FOLDER_PATH}/busybox-w32-${BUSYBOX_COMMIT}"
 
+# ----- Define build constants. -----
+
+GIT_FOLDER_PATH="${WORK_FOLDER_PATH}/gnu-mcu-eclipse-${APP_LC_NAME}.git"
+
+DOWNLOAD_FOLDER_PATH="${WORK_FOLDER_PATH}/download"
+DEPLOY_FOLDER_NAME="deploy"
 
 # ----- Process actions. -----
 
@@ -229,17 +249,17 @@ then
     echo 'Remove most of the build folders (except output)...'
   fi
 
-  rm -rf "${BUILD_FOLDER}"
-  rm -rf "${WORK_FOLDER}/install"
+  rm -rf "${BUILD_FOLDER_PATH}"
+  rm -rf "${WORK_FOLDER_PATH}/install"
 
-  rm -rf "${WORK_FOLDER}/msys2"
-  rm -rf "${WORK_FOLDER}/install"
+  rm -rf "${WORK_FOLDER_PATH}/msys2"
+  rm -rf "${WORK_FOLDER_PATH}/install"
 
-  rm -rf "${WORK_FOLDER}/scripts"
+  rm -rf "${WORK_FOLDER_PATH}/scripts"
 
   if [ "${ACTION}" == "cleanall" ]
   then
-    rm -rf "${WORK_FOLDER}/output"
+    rm -rf "${WORK_FOLDER_PATH}/output"
   fi
 
   echo
@@ -253,13 +273,6 @@ fi
 do_host_start_timer
 
 do_host_detect
-
-# ----- Define build constants. -----
-
-GIT_FOLDER="${WORK_FOLDER}/gnu-mcu-eclipse-${APP_LC_NAME}.git"
-
-DOWNLOAD_FOLDER="${WORK_FOLDER}/download"
-
 
 # ----- Prepare prerequisites. -----
 
@@ -331,26 +344,15 @@ tar --version
 echo "Checking host unzip..."
 unzip | grep UnZip
 
-# ----- Get the GNU MCU Eclipse Build Tools git repository. -----
+# ----- Get the project git repository. -----
 
-# The custom Build Tools is available from the dedicated Git repository
-# which is part of the GNU MCU Eclipse project hosted on SourceForge.
-
-if [ ! -d "${GIT_FOLDER}" ]
+if [ ! -d "${PROJECT_GIT_FOLDER_PATH}" ]
 then
 
-  cd "${WORK_FOLDER}"
+  cd "${WORK_FOLDER_PATH}"
 
-  if [ "${USER}" == "ilg" ]
-  then
-    # Shortcut for ilg, who has full access to the repo.
-    echo
-    echo "If asked, enter ${USER} GitHub password for git clone"
-    git clone https://github.com/gnu-mcu-eclipse/build-tools.git gnu-mcu-eclipse-${APP_LC_NAME}.git
-  else
-    # For regular read/only access, use the git url.
-    git clone http://github.com/gnu-mcu-eclipse/build-tools.git gnu-mcu-eclipse-${APP_LC_NAME}.git
-  fi
+  echo "If asked, enter ${USER} GitHub password for git clone"
+  git clone "${PROEJCT_GIT_URL}" "${PROJECT_GIT_FOLDER_PATH}"
 
 fi
 
@@ -369,25 +371,25 @@ do_host_get_current_date
 # the open source MSYS2 project.
 # https://sourceforge.net/projects/msys2/
 
-if [ ! -f "${DOWNLOAD_FOLDER}/${MSYS2_MAKE_PACK_ARCH}" ]
+if [ ! -f "${DOWNLOAD_FOLDER_PATH}/${MSYS2_MAKE_PACK_ARCH}" ]
 then
-  mkdir -p "${DOWNLOAD_FOLDER}"
+  mkdir -p "${DOWNLOAD_FOLDER_PATH}"
 
-  cd "${DOWNLOAD_FOLDER}"
+  cd "${DOWNLOAD_FOLDER_PATH}"
   echo "Downloading \"${MSYS2_MAKE_PACK_ARCH}\"..."
   curl -L "${MSYS2_MAKE_PACK_URL}" \
     --output "${MSYS2_MAKE_PACK_ARCH}"
 fi
 
 MAKE_ARCH="make-${MAKE_VERSION}.tar.bz2"
-if [ ! -f "${WORK_FOLDER}/msys2/make/${MAKE_ARCH}" ]
+if [ ! -f "${WORK_FOLDER_PATH}/msys2/make/${MAKE_ARCH}" ]
 then
-  mkdir -p "${WORK_FOLDER}/msys2"
+  mkdir -p "${WORK_FOLDER_PATH}/msys2"
 
   echo
   echo "Unpacking ${MSYS2_MAKE_PACK_ARCH}..."
-  cd "${WORK_FOLDER}/msys2"
-  tar -xvf "${DOWNLOAD_FOLDER}/${MSYS2_MAKE_PACK_ARCH}"
+  cd "${WORK_FOLDER_PATH}/msys2"
+  tar -xvf "${DOWNLOAD_FOLDER_PATH}/${MSYS2_MAKE_PACK_ARCH}"
 fi
 
 # The actual unpack will be done later, directly in the build folder.
@@ -396,9 +398,9 @@ fi
 
 # http://intgat.tigress.co.uk/rmy/busybox/index.html
 
-if [ ! -f "${DOWNLOAD_FOLDER}/${BUSYBOX_ARCHIVE}" ]
+if [ ! -f "${DOWNLOAD_FOLDER_PATH}/${BUSYBOX_ARCHIVE}" ]
 then
-  cd "${DOWNLOAD_FOLDER}"
+  cd "${DOWNLOAD_FOLDER_PATH}"
   echo "Downloading \"${BUSYBOX_ARCHIVE}\"..."
   curl -L "${BUSYBOX_URL}" --output "${BUSYBOX_ARCHIVE}"
 fi
@@ -409,14 +411,14 @@ fi
 # Create the build script (needs to be separate for Docker).
 
 script_name="build.sh"
-script_file="${WORK_FOLDER}/scripts/${script_name}"
+script_file_path="${WORK_FOLDER_PATH}/scripts/${script_name}"
 
-rm -f "${script_file}"
-mkdir -p "$(dirname ${script_file})"
-touch "${script_file}"
+rm -f "${script_file_path}"
+mkdir -p "$(dirname ${script_file_path})"
+touch "${script_file_path}"
 
 # Note: EOF is quoted to prevent substitutions here.
-cat <<'EOF' >> "${script_file}"
+cat <<'EOF' >> "${script_file_path}"
 #!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
@@ -442,7 +444,7 @@ EOF
 # The above marker must start in the first column.
 
 # Note: EOF is not quoted to allow local substitutions.
-cat <<EOF >> "${script_file}"
+cat <<EOF >> "${script_file_path}"
 
 APP_NAME="${APP_NAME}"
 APP_LC_NAME="${APP_LC_NAME}"
@@ -455,6 +457,8 @@ MAKE_ARCH="${MAKE_ARCH}"
 BUSYBOX_COMMIT="${BUSYBOX_COMMIT}"
 BUSYBOX_ARCHIVE="${BUSYBOX_ARCHIVE}"
 
+jobs="${jobs}"
+
 EOF
 # The above marker must start in the first column.
 
@@ -462,13 +466,13 @@ EOF
 set +u
 if [[ ! -z ${DEBUG} ]]
 then
-  echo "DEBUG=${DEBUG}" "${script_file}"
+  echo "DEBUG=${DEBUG}" "${script_file_path}"
   echo
 fi
 set -u
 
 # Note: EOF is quoted to prevent substitutions here.
-cat <<'EOF' >> "${script_file}"
+cat <<'EOF' >> "${script_file_path}"
 
 PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-""}
 
@@ -484,7 +488,7 @@ while [ $# -gt 0 ]
 do
   case "$1" in
     --build-folder)
-      build_folder="$2"
+      build_folder_path="$2"
       shift 2
       ;;
     --docker-container-name)
@@ -500,11 +504,11 @@ do
       shift 2
       ;;
     --work-folder)
-      work_folder="$2"
+      work_folder_path="$2"
       shift 2
       ;;
     --output-folder)
-      output_folder="$2"
+      output_folder_path="$2"
       shift 2
       ;;
     --distribution-folder)
@@ -520,7 +524,7 @@ do
       shift 2
       ;;
     --helper-script)
-      helper_script="$2"
+      helper_script_path="$2"
       shift 2
       ;;
     --group-id)
@@ -541,13 +545,13 @@ do
   esac
 done
 
-git_folder="${work_folder}/gnu-mcu-eclipse-${APP_LC_NAME}.git"
+git_folder_path="${work_folder_path}/gnu-mcu-eclipse-${APP_LC_NAME}.git"
 
 echo
 uname -a
 
 # Run the helper script in this shell, to get the support functions.
-source "${helper_script}"
+source "${helper_script_path}"
 
 target_folder=${target_name}${target_bits:-""}
 
@@ -570,8 +574,8 @@ then
 
 fi
 
-mkdir -p ${build_folder}
-cd ${build_folder}
+mkdir -p ${build_folder_path}
+cd ${build_folder_path}
 
 # ----- Test if various tools are present -----
 
@@ -598,29 +602,29 @@ zip -v | grep "This is Zip"
 
 # ----- Remove and recreate the output folder. -----
 
-rm -rf "${output_folder}"
-mkdir -p "${output_folder}"
+rm -rf "${output_folder_path}"
+mkdir -p "${output_folder_path}"
 
 
 # ----- Build make. -----
 
-make_build_folder="${build_folder}/make-${MAKE_VERSION}"
+make_build_folder="${build_folder_path}/make-${MAKE_VERSION}"
 
 if [ ! -d "${make_build_folder}" ]
 then
-  mkdir -p "${build_folder}"
+  mkdir -p "${build_folder_path}"
 
-  cd "${build_folder}"
+  cd "${build_folder_path}"
   echo
   echo "Unpacking ${MAKE_ARCH}..."
   set +e
-  tar -xvf "${work_folder}/msys2/make/${MAKE_ARCH}"
+  tar -xvf "${work_folder_path}/msys2/make/${MAKE_ARCH}"
   set -e
 
   cd "${make_build_folder}"
-  if [ -f "${work_folder}/msys2/make/make-autoconf.patch" ]
+  if [ -f "${work_folder_path}/msys2/make/make-autoconf.patch" ]
   then
-    patch -p1 -i "${work_folder}/msys2/make/make-autoconf.patch"
+    patch -p1 -i "${work_folder_path}/msys2/make/make-autoconf.patch"
   fi
 fi
 
@@ -644,24 +648,24 @@ then
   --without-libintl-prefix \
   --without-libiconv-prefix \
   ac_cv_dos_paths=yes \
-  | tee "${output_folder}/configure-output.txt"
+  | tee "${output_folder_path}/configure-output.txt"
 
 fi
 
 cd "${make_build_folder}"
-cp config.* "${output_folder}"
+cp config.* "${output_folder_path}"
 
 cd "${make_build_folder}"
-make all \
-| tee "${output_folder}/make-all-output.txt"
+make  "${jobs}" \
+| tee "${output_folder_path}/make-all-output.txt"
 
 # Always clear the destination folder, to have a consistent package.
 echo
 echo "Removing install..."
 rm -rf "${install_folder}"
 
-make install \
-| tee "${output_folder}/make-install-output.txt"
+make  "${jobs}" install \
+| tee "${output_folder_path}/make-install-output.txt"
 
 ${cross_compile_prefix}-strip "${install_folder}/make-${MAKE_VERSION}/bin/make.exe"
 
@@ -678,7 +682,7 @@ cp -v "${install_folder}/make-${MAKE_VERSION}/bin/make.exe" \
 
 # ----- Build BusyBox. -----
 
-busybox_build_folder="${build_folder}/busybox-w32-${BUSYBOX_COMMIT}"
+busybox_build_folder="${build_folder_path}/busybox-w32-${BUSYBOX_COMMIT}"
 
 if [ ! -f "${busybox_build_folder}/.config" ]
 then
@@ -686,7 +690,7 @@ then
   if [ ! -d "${busybox_build_folder}" ]
   then
 
-    cd "${build_folder}"
+    cd "${build_folder_path}"
     unzip "${download_folder}/${BUSYBOX_ARCHIVE}"
 
     cd "${busybox_build_folder}/configs"
@@ -704,7 +708,7 @@ then
   echo "Running BusyBox make gnu-mcu-eclipse_${target_bits}_mingw_defconfig..."
 
   cd "${busybox_build_folder}"
-  make "gnu-mcu-eclipse_${target_bits}_mingw_defconfig"
+  make  "${jobs}" "gnu-mcu-eclipse_${target_bits}_mingw_defconfig"
 
 fi
 
@@ -720,11 +724,11 @@ then
   cd "${busybox_build_folder}"
   if [ ${target_bits} == "32" ]
   then
-    make
+    make  "${jobs}"
   elif [ ${target_bits} == "64" ]
   then
-    make mingw64_defconfig
-    make
+    make "${jobs}" mingw64_defconfig
+    make "${jobs}"
   fi
 
 fi
@@ -763,45 +767,45 @@ echo "Copying info files..."
 
 mkdir -p "${install_folder}/build-tools/gnu-mcu-eclipse"
 
-cp -v "${git_folder}/gnu-mcu-eclipse/info/INFO.txt" \
+cp -v "${git_folder_path}/gnu-mcu-eclipse/info/INFO.txt" \
   "${install_folder}/build-tools/INFO.txt"
 do_unix2dos "${install_folder}/build-tools/INFO.txt"
-cp -v "${git_folder}/gnu-mcu-eclipse/info/BUILD.txt" \
+cp -v "${git_folder_path}/gnu-mcu-eclipse/info/BUILD.txt" \
   "${install_folder}/build-tools/gnu-mcu-eclipse/BUILD.txt"
 do_unix2dos "${install_folder}/build-tools/gnu-mcu-eclipse/BUILD.txt"
-cp -v "${git_folder}/gnu-mcu-eclipse/info/CHANGES.txt" \
+cp -v "${git_folder_path}/gnu-mcu-eclipse/info/CHANGES.txt" \
   "${install_folder}/build-tools/gnu-mcu-eclipse/"
 do_unix2dos "${install_folder}/build-tools/gnu-mcu-eclipse/CHANGES.txt"
 
 # Copy the current build script
-cp -v "${work_folder}/scripts/build-${APP_LC_NAME}.sh" \
+cp -v "${work_folder_path}/scripts/build-${APP_LC_NAME}.sh" \
   "${install_folder}/${APP_LC_NAME}/gnu-mcu-eclipse/build-${APP_LC_NAME}.sh"
 do_unix2dos "${install_folder}/${APP_LC_NAME}/gnu-mcu-eclipse/build-${APP_LC_NAME}.sh"
 
 # Copy the current build helper script
-cp -v "${work_folder}/scripts/build-helper.sh" \
+cp -v "${work_folder_path}/scripts/build-helper.sh" \
   "${install_folder}/${APP_LC_NAME}/gnu-mcu-eclipse/build-helper.sh"
 do_unix2dos "${install_folder}/${APP_LC_NAME}/gnu-mcu-eclipse/build-helper.sh"
 
-cp -v "${output_folder}/config.log" \
+cp -v "${output_folder_path}/config.log" \
   "${install_folder}/${APP_LC_NAME}/gnu-mcu-eclipse/config.log"
 do_unix2dos "${install_folder}/${APP_LC_NAME}/gnu-mcu-eclipse/config.log"
 
 # Not passed as is, used by makensis for the MUI_PAGE_LICENSE; must be DOS.
-cp -v "${git_folder}/COPYING" \
+cp -v "${git_folder_path}/LICENSE" \
   "${install_folder}/build-tools/COPYING"
 do_unix2dos "${install_folder}/build-tools/COPYING"
 
 
 # ----- Create the distribution setup. -----
 
-mkdir -p "${output_folder}"
+mkdir -p "${output_folder_path}"
 
-distribution_file_version=$(cat "${git_folder}/gnu-mcu-eclipse/VERSION")-${DISTRIBUTION_FILE_DATE}
-
-distribution_executable_name="make"
+distribution_file_version=$(cat "${git_folder_path}/gnu-mcu-eclipse/VERSION")-${DISTRIBUTION_FILE_DATE}
 
 do_container_create_distribution
+
+do_check_application "make" --version
 
 # Requires ${distribution_file} and ${result}
 do_container_completed

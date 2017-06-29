@@ -27,9 +27,9 @@
 
 !define PUBLISHER               "GNU MCU Eclipse"
 !define PUBLISHER_COMPATIBILITY "GNU ARM Eclipse"
-!define PRODUCT 			"Build Tools"
-!define PRODUCTLOWERCASE 	"build-tools"
-!define URL     			"http://gnuarmeclipse.github.io"
+!define PRODUCT                 "Build Tools"
+!define PRODUCTLOWERCASE        "build-tools"
+!define URL                     "http://gnu-mcu-eclipse.github.io"
 
 ; Single instance, each new install will overwrite the values
 !define INSTALL_KEY_FOLDER "SOFTWARE\${PUBLISHER}\${PRODUCT}"
@@ -92,9 +92,9 @@ Var Parent.INSTDIR
 ;--------------------------------
 ; Interface Settings.
 
-!define MUI_ICON "${NSIS_FOLDER}\${PRODUCTLOWERCASE}-nsis.ico"
-!define MUI_UNICON "${NSIS_FOLDER}\${PRODUCTLOWERCASE}-nsis.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "${NSIS_FOLDER}\${PRODUCTLOWERCASE}-nsis.bmp"
+!define MUI_ICON "${NSIS_FOLDER}\nsis.ico"
+!define MUI_UNICON "${NSIS_FOLDER}\nsis.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "${NSIS_FOLDER}\nsis.bmp"
 
 ;--------------------------------
 ; Pages.
@@ -132,17 +132,8 @@ ${GetParent} "$INSTDIR" $Parent.INSTDIR
 
 ; Set output path to the installation directory.
 SetOutPath "$INSTDIR\bin"
-File "${INSTALL_FOLDER}\bin\*.exe"
-File /nonfatal "${INSTALL_FOLDER}\bin\*.dll"
-
-SetOutPath "$INSTDIR\license"
-File /r "${INSTALL_FOLDER}\license\*"
-
-SetOutPath "$INSTDIR"
-File "${INSTALL_FOLDER}\INFO.txt"
-
-SetOutPath "$INSTDIR\gnu-mcu-eclipse"
-File /r "${INSTALL_FOLDER}\gnu-mcu-eclipse\*"
+; Copy everything in one command.
+File /r "${INSTALL_FOLDER}\*"
 
 ; Write the uninstaller file
 WriteUninstaller "${UNINSTALL_EXE}"

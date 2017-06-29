@@ -1,4 +1,4 @@
-These are the additional files required to build the **GNU MCU Eclipse Build Tools**.
+These are the additional files required to build the **GNU MCU Eclipse Windows Build Tools**.
 
 Folders:
 
