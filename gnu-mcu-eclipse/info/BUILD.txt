@@ -6,9 +6,9 @@ running on an OS X machine, using the scripts provided in the GNU MCU Eclipse
 To build the latest version of the package please use the script from:
 
 ```bash
-$ git clone https://github.com/gnu-mcu-eclipse/build-windows-build-tools.git \
-  ~/Downloads/build-windows-build-tools.git
-$ bash ~/Downloads/build-windows-build-tools.git/scripts/build.sh --all
+$ git clone https://github.com/gnu-mcu-eclipse/windows-build-tools.git \
+  ~/Downloads/windows-build-tools.git
+$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh --all
 ```
 
 The output of the build script are two setup.exe files in the 
