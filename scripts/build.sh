@@ -49,7 +49,7 @@ APP_NAME="Windows Build Tools"
 APP_LC_NAME="build-tools"
 APP_UC_NAME="Build Tools"
 
-jobs="--jobs=8"
+jobs="--jobs=2"
 
 # On Parallels virtual machines, prefer host Work folder.
 # Second choice are Work folders on secondary disks.
@@ -68,11 +68,26 @@ else
   WORK_FOLDER_PATH=${WORK_FOLDER_PATH:-"${HOME}/Work/${APP_LC_NAME}"}
 fi
 
-BUILD_FOLDER_PATH="${WORK_FOLDER_PATH}/build"
+# ----- Define build constants. -----
+
+BUILD_FOLDER_NAME=${BUILD_FOLDER_NAME:-"build"}
+BUILD_FOLDER_PATH=${BUILD_FOLDER_PATH:-"${WORK_FOLDER_PATH}/${BUILD_FOLDER_NAME}"}
+
+DOWNLOAD_FOLDER_NAME=${DOWNLOAD_FOLDER_NAME:-"download"}
+DOWNLOAD_FOLDER_PATH=${DOWNLOAD_FOLDER_PATH:-"${WORK_FOLDER_PATH}/${DOWNLOAD_FOLDER_NAME}"}
+DEPLOY_FOLDER_NAME=${DEPLOY_FOLDER_NAME:-"deploy"}
+
+# ----- Define build Git constants. -----
 
 PROJECT_GIT_FOLDER_NAME="windows-build-tools.git"
 PROJECT_GIT_FOLDER_PATH="${WORK_FOLDER_PATH}/${PROJECT_GIT_FOLDER_NAME}"
+PROJECT_GIT_DOWNLOADS_FOLDER_PATH="${HOME}/Downloads/${PROJECT_GIT_FOLDER_NAME}"
 PROEJCT_GIT_URL="https://github.com/gnu-mcu-eclipse/${PROJECT_GIT_FOLDER_NAME}"
+
+# ----- Docker images. -----
+
+docker_linux64_image="ilegeul/centos:6-xbb-tex-v1"
+docker_linux32_image="ilegeul/centos32:6-xbb-tex-v1"
 
 # ----- Create Work folder. -----
 
@@ -88,12 +103,13 @@ DO_BUILD_WIN32=""
 DO_BUILD_WIN64=""
 helper_script_path=""
 do_no_pdf=""
+do_develop=""
 
 while [ $# -gt 0 ]
 do
   case "$1" in
 
-    clean|cleanall|pull|checkout-dev|checkout-stable|build-images|preload-images)
+    clean|cleanall|preload-images)
       ACTION="$1"
       shift
       ;;
@@ -102,10 +118,12 @@ do
       DO_BUILD_WIN32="y"
       shift
       ;;
+
     --win64|--windows64)
       DO_BUILD_WIN64="y"
       shift
       ;;
+
     --all)
       DO_BUILD_WIN32="y"
       DO_BUILD_WIN64="y"
@@ -122,10 +140,15 @@ do
       shift 2
       ;;
 
+    --develop)
+      do_develop="y"
+      shift
+      ;;
+
     --help)
       echo "Build the GNU MCU Eclipse ${APP_NAME} distributions."
       echo "Usage:"
-      echo "    bash $0 [--helper-script file.sh] [--win32] [--win64] [--all] [clean|cleanall|pull|checkput-dev|checkout-stable|build-images] [--help]"
+      echo "    bash $0 [--helper-script file.sh] [--win32] [--win64] [--all] [clean|cleanall|preload-images] [--develop] [--help]"
       echo
       exit 1
       ;;
@@ -204,12 +227,13 @@ MSYS2_MAKE_PACK_URL_BASE="http://sourceforge.net/projects/msys2/files"
 # http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/Sources/
 # http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/Sources/make-4.1-4.src.tar.gz/download
 
-MAKE_VERSION="4.1"
-MSYS2_MAKE_VERSION_RELEASE="${MAKE_VERSION}-4"
+# MAKE_VERSION="4.2"
+# MSYS2_MAKE_VERSION_RELEASE="${MAKE_VERSION}-1"
 
 # Warning! 4.2 does not build on Debian 8, it requires gettext-0.19.4.
-# MAKE_VERSION="4.2.1"
-# MSYS2_MAKE_VERSION_RELEASE="${MAKE_VERSION}-1"
+# 2016-06-15
+MAKE_VERSION="4.2.1"
+MSYS2_MAKE_VERSION_RELEASE="${MAKE_VERSION}-1"
 
 MSYS2_MAKE_PACK_ARCH="make-${MSYS2_MAKE_VERSION_RELEASE}.src.tar.gz"
 MSYS2_MAKE_PACK_URL="${MSYS2_MAKE_PACK_URL_BASE}/REPOS/MSYS2/Sources/${MSYS2_MAKE_PACK_ARCH}"
@@ -222,7 +246,9 @@ MSYS2_MAKE_PACK_URL="${MSYS2_MAKE_PACK_URL_BASE}/REPOS/MSYS2/Sources/${MSYS2_MAK
 # BUSYBOX_COMMIT="9fe16f6102d8ab907c056c484988057904092c06"
 # BUSYBOX_COMMIT="977d65c1bbc57f5cdd0c8bfd67c8b5bb1cd390dd"
 # BUSYBOX_COMMIT="9fa1e4990e655a85025c9d270a1606983e375e47"
-BUSYBOX_COMMIT="c2002eae394c230d6b89073c9ff71bc86a7875e8"
+# BUSYBOX_COMMIT="c2002eae394c230d6b89073c9ff71bc86a7875e8"
+# Dec 9, 2017
+BUSYBOX_COMMIT="096aee2bb468d1ab044de36e176ed1f6c7e3674d"
 
 BUSYBOX_ARCHIVE="${BUSYBOX_COMMIT}.zip"
 BUSYBOX_URL="https://github.com/rmyorston/busybox-w32/archive/${BUSYBOX_ARCHIVE}"
@@ -286,8 +312,10 @@ then
   echo "Check/Preload Docker images..."
 
   echo
-  docker run --interactive --tty ilegeul/debian:8-gnuarm-mingw \
-  lsb_release --description --short
+  docker run --interactive --tty "${docker_linux64_image}" \
+    lsb_release --description --short
+  docker run --interactive --tty "${docker_linux32_image}" \
+    lsb_release --description --short
 
   echo
   docker images
@@ -297,29 +325,6 @@ then
   exit 0
 fi
 
-
-# ----- Process "build-images" action. -----
-
-if [ "${ACTION}" == "build-images" ]
-then
-  echo
-  echo "Build Docker images..."
-
-  # Be sure it will not crash on errors, in case the images are already there.
-  set +e
-
-  docker build --tag "ilegeul/debian:8-gnuarm-gcc" \
-  https://github.com/ilg-ul/docker/raw/master/debian/8-gnuarm-gcc/Dockerfile
-
-  docker build --tag "ilegeul/debian:8-gnuarm-mingw" \
-  https://github.com/ilg-ul/docker/raw/master/debian/8-gnuarm-mingw/Dockerfile
-
-  docker images
-
-  do_host_stop_timer
-
-  exit 0
-fi
 
 # ----- Prepare Docker. -----
 
@@ -354,10 +359,6 @@ then
 
 fi
 
-# ----- Get the current Git branch name. -----
-
-# do_host_get_git_head
-
 
 # ----- Get current date. -----
 
@@ -375,7 +376,7 @@ then
 
   cd "${DOWNLOAD_FOLDER_PATH}"
   echo "Downloading \"${MSYS2_MAKE_PACK_ARCH}\"..."
-  curl -L "${MSYS2_MAKE_PACK_URL}" \
+  curl --fail -L "${MSYS2_MAKE_PACK_URL}" \
     --output "${MSYS2_MAKE_PACK_ARCH}"
 fi
 
@@ -400,7 +401,7 @@ if [ ! -f "${DOWNLOAD_FOLDER_PATH}/${BUSYBOX_ARCHIVE}" ]
 then
   cd "${DOWNLOAD_FOLDER_PATH}"
   echo "Downloading \"${BUSYBOX_ARCHIVE}\"..."
-  curl -L "${BUSYBOX_URL}" --output "${BUSYBOX_ARCHIVE}"
+  curl --fail -L "${BUSYBOX_URL}" --output "${BUSYBOX_ARCHIVE}"
 fi
 
 # The unpack will be done later, directly in the build folder.
@@ -415,8 +416,8 @@ rm -f "${script_file_path}"
 mkdir -p "$(dirname ${script_file_path})"
 touch "${script_file_path}"
 
-# Note: EOF is quoted to prevent substitutions here.
-cat <<'EOF' >> "${script_file_path}"
+# Note: __EOF__ is quoted to prevent substitutions here.
+cat <<'__EOF__' >> "${script_file_path}"
 #!/usr/bin/env bash
 
 # -----------------------------------------------------------------------------
@@ -438,11 +439,11 @@ IFS=$'\n\t'
 
 # -----------------------------------------------------------------------------
 
-EOF
+__EOF__
 # The above marker must start in the first column.
 
-# Note: EOF is not quoted to allow local substitutions.
-cat <<EOF >> "${script_file_path}"
+# Note: __EOF__ is not quoted to allow local substitutions.
+cat <<__EOF__ >> "${script_file_path}"
 
 APP_NAME="${APP_NAME}"
 APP_LC_NAME="${APP_LC_NAME}"
@@ -458,7 +459,7 @@ BUSYBOX_ARCHIVE="${BUSYBOX_ARCHIVE}"
 
 jobs="${jobs}"
 
-EOF
+__EOF__
 # The above marker must start in the first column.
 
 # Propagate DEBUG to guest.
@@ -470,8 +471,8 @@ then
 fi
 set -u
 
-# Note: EOF is quoted to prevent substitutions here.
-cat <<'EOF' >> "${script_file_path}"
+# Note: __EOF__ is quoted to prevent substitutions here.
+cat <<'__EOF__' >> "${script_file_path}"
 
 PKG_CONFIG_LIBDIR=${PKG_CONFIG_LIBDIR:-""}
 
@@ -486,94 +487,136 @@ docker_container_name=""
 while [ $# -gt 0 ]
 do
   case "$1" in
-    --build-folder)
-      build_folder_path="$2"
+    --container-build-folder)
+      container_build_folder_path="$2"
       shift 2
       ;;
+
+    --container-install-folder)
+      container_install_folder_path="$2"
+      shift 2
+      ;;
+
+    --container-output-folder)
+      container_output_folder_path="$2"
+      shift 2
+      ;;
+
+    --shared-install-folder)
+      shared_install_folder_path="$2"
+      shift 2
+      ;;
+
     --docker-container-name)
       docker_container_name="$2"
       shift 2
       ;;
-    --target-name)
-      target_name="$2"
+
+    --target-os)
+      target_os="$2"
       shift 2
       ;;
+
     --target-bits)
       target_bits="$2"
       shift 2
       ;;
+
     --work-folder)
       work_folder_path="$2"
       shift 2
       ;;
-    --output-folder)
-      output_folder_path="$2"
-      shift 2
-      ;;
+
     --distribution-folder)
       distribution_folder="$2"
       shift 2
       ;;
-    --install-folder)
-      install_folder="$2"
-      shift 2
-      ;;
+
     --download-folder)
       download_folder="$2"
       shift 2
       ;;
+
     --helper-script)
       helper_script_path="$2"
       shift 2
       ;;
+
     --group-id)
       group_id="$2"
       shift 2
       ;;
+
     --user-id)
       user_id="$2"
       shift 2
       ;;
+
     --host-uname)
       host_uname="$2"
       shift 2
       ;;
+
     *)
       echo "Unknown option $1, exit."
       exit 1
   esac
 done
 
-download_folder_path=${download_folder_path:-"${work_folder_path}/download"}
-git_folder_path="${work_folder_path}/${PROJECT_GIT_FOLDER_NAME}"
-distribution_file_version=$(cat "${git_folder_path}/gnu-mcu-eclipse/VERSION")-${DISTRIBUTION_FILE_DATE}
+# -----------------------------------------------------------------------------
 
-echo
-uname -a
+# XBB not available when running from macOS.
+if [ -f "/opt/xbb/xbb.sh" ]
+then
+  source "/opt/xbb/xbb.sh"
+fi
+
+# -----------------------------------------------------------------------------
 
 # Run the helper script in this shell, to get the support functions.
 source "${helper_script_path}"
 
-target_folder=${target_name}${target_bits:-""}
+# Requires XBB_FOLDER.
+do_container_detect
 
-if [ "${target_name}" == "win" ]
+if [ -f "/opt/xbb/xbb.sh" ]
 then
 
-  # For Windows targets, decide which cross toolchain to use.
-  if [ ${target_bits} == "32" ]
-  then
-    cross_compile_prefix="i686-w64-mingw32"
-  elif [ ${target_bits} == "64" ]
-  then
-    cross_compile_prefix="x86_64-w64-mingw32"
-  fi
+  # Required by jimtcl, building their bootstrap fails on 32-bits.
+  # Must be installed befoare activating XBB, otherwise yum fails,
+  # with python failing some crypto.
+  yum install -y tcl
 
-elif [ "${target_name}" == "osx" ]
-then
+  xbb_activate
 
-  target_bits="64"
+  # Don't forget to add `-static-libstdc++` to app LDFLAGS,
+  # otherwise the final executable may have a reference to 
+  # a wrong `libstdc++.so.6`.
+
+  export PATH="/opt/texlive/bin/${CONTAINER_MACHINE}-linux":${PATH}
 
 fi
+
+# -----------------------------------------------------------------------------
+
+git_folder_path="${work_folder_path}/${PROJECT_GIT_FOLDER_NAME}"
+
+EXTRA_CFLAGS="-ffunction-sections -fdata-sections -m${target_bits} -pipe"
+EXTRA_CXXFLAGS="-ffunction-sections -fdata-sections -m${target_bits} -pipe"
+EXTRA_CPPFLAGS="-I${install_folder}/include"
+EXTRA_LDFLAGS="-L${install_folder}/lib64 -L${install_folder}/lib -static-libstdc++ -Wl,--gc-sections"
+
+# export PKG_CONFIG_PREFIX="${install_folder}"
+# export PKG_CONFIG="${git_folder_path}/gnu-mcu-eclipse/scripts/cross-pkg-config"
+export PKG_CONFIG=pkg-config-verbose
+export PKG_CONFIG_LIBDIR="${install_folder}/lib64/pkgconfig":"${install_folder}/lib/pkgconfig"
+
+# -----------------------------------------------------------------------------
+
+download_folder_path=${download_folder_path:-"${work_folder_path}/download"}
+distribution_file_version=$(cat "${git_folder_path}/gnu-mcu-eclipse/VERSION")-${DISTRIBUTION_FILE_DATE}
+
+# -----------------------------------------------------------------------------
 
 mkdir -p ${build_folder_path}
 cd ${build_folder_path}
@@ -596,16 +639,18 @@ echo "makensis $(makensis -VERSION)"
 echo "Checking shasum..."
 shasum --version
 
-apt-get --yes install zip
-
 echo "Checking zip..."
 zip -v | grep "This is Zip"
 
-# ----- Remove and recreate the output folder. -----
+# ----- Recreate the output folder. -----
 
-rm -rf "${output_folder_path}"
+# rm -rf "${output_folder_path}"
 mkdir -p "${output_folder_path}"
 
+# Always clear the destination folder, to have a consistent package.
+echo
+echo "Removing install..."
+rm -rf "${install_folder}"
 
 # ----- Build make. -----
 
@@ -629,53 +674,59 @@ then
   fi
 fi
 
-if [ ! -f "${make_build_folder}/config.h" ]
-then
+(
+  if [ ! -f "${make_build_folder}/config.h" ]
+  then
+
+    cd "${make_build_folder}"
+
+    echo
+    echo "Running make autoreconf..."
+    autoreconf -fi
+
+    echo
+    echo "Running make configure..."
+
+    cd "${make_build_folder}"
+
+    bash "configure" --help
+
+    export CFLAGS="${EXTRA_CFLAGS}"
+    export LDFLAGS="${EXTRA_LDFLAGS} -static"
+
+    bash "configure" \
+      --prefix="${install_folder}/make-${MAKE_VERSION}"  \
+      --build=${BUILD} \
+      --host=${HOST} \
+      --target=${TARGET} \
+      --without-libintl-prefix \
+      --without-libiconv-prefix \
+      ac_cv_dos_paths=yes \
+      | tee "${output_folder_path}/configure-output.txt"
+
+  fi
 
   cd "${make_build_folder}"
-
-  echo
-  echo "Running make autoreconf..."
-  autoreconf -fi
-
-  echo
-  echo "Running make configure..."
+  # Read only files
+  rm -rf "${output_folder_path}"/config.*
+  cp config.* "${output_folder_path}"
 
   cd "${make_build_folder}"
+  make  "${jobs}" \
+    | tee "${output_folder_path}/make-all-output.txt"
 
-  bash "configure" \
-  --host=${cross_compile_prefix} \
-  --prefix="${install_folder}/make-${MAKE_VERSION}"  \
-  --without-libintl-prefix \
-  --without-libiconv-prefix \
-  ac_cv_dos_paths=yes \
-  | tee "${output_folder_path}/configure-output.txt"
+  make  "${jobs}" install \
+    | tee "${output_folder_path}/make-install-output.txt"
 
-fi
-
-cd "${make_build_folder}"
-cp config.* "${output_folder_path}"
-
-cd "${make_build_folder}"
-make  "${jobs}" \
-| tee "${output_folder_path}/make-all-output.txt"
-
-# Always clear the destination folder, to have a consistent package.
-echo
-echo "Removing install..."
-rm -rf "${install_folder}"
-
-make  "${jobs}" install \
-| tee "${output_folder_path}/make-install-output.txt"
-
-${cross_compile_prefix}-strip "${install_folder}/make-${MAKE_VERSION}/bin/make.exe"
+  ${cross_compile_prefix}-strip "${install_folder}/make-${MAKE_VERSION}/bin/make.exe"
+)
 
 # ----- Copy files to the install bin folder -----
 
 echo 
 mkdir -p "${install_folder}/${APP_LC_NAME}/bin"
 cp -v "${install_folder}/make-${MAKE_VERSION}/bin/make.exe" \
- "${install_folder}/${APP_LC_NAME}/bin"
+  "${install_folder}/${APP_LC_NAME}/bin"
 
 # ----- Copy dynamic libraries to the install bin folder. -----
 
@@ -685,54 +736,56 @@ cp -v "${install_folder}/make-${MAKE_VERSION}/bin/make.exe" \
 
 busybox_build_folder="${build_folder_path}/busybox-w32-${BUSYBOX_COMMIT}"
 
-if [ ! -f "${busybox_build_folder}/.config" ]
-then
-
-  if [ ! -d "${busybox_build_folder}" ]
+(
+  if [ ! -f "${busybox_build_folder}/.config" ]
   then
 
-    cd "${build_folder_path}"
-    unzip "${download_folder}/${BUSYBOX_ARCHIVE}"
+    if [ ! -d "${busybox_build_folder}" ]
+    then
 
-    cd "${busybox_build_folder}/configs"
-    sed \
-    -e 's/CONFIG_CROSS_COMPILER_PREFIX=".*"/CONFIG_CROSS_COMPILER_PREFIX="i686-w64-mingw32-"/' \
-    <mingw32_defconfig >gnu-mcu-eclipse_32_mingw_defconfig
+      cd "${build_folder_path}"
+      unzip "${download_folder}/${BUSYBOX_ARCHIVE}"
 
-    sed \
-    -e 's/CONFIG_CROSS_COMPILER_PREFIX=".*"/CONFIG_CROSS_COMPILER_PREFIX="x86_64-w64-mingw32-"/' \
-    <mingw32_defconfig >gnu-mcu-eclipse_64_mingw_defconfig
+      cd "${busybox_build_folder}/configs"
+      sed \
+      -e 's/CONFIG_CROSS_COMPILER_PREFIX=".*"/CONFIG_CROSS_COMPILER_PREFIX="i686-w64-mingw32-"/' \
+      <mingw32_defconfig >gnu-mcu-eclipse_32_mingw_defconfig
+
+      sed \
+      -e 's/CONFIG_CROSS_COMPILER_PREFIX=".*"/CONFIG_CROSS_COMPILER_PREFIX="x86_64-w64-mingw32-"/' \
+      <mingw32_defconfig >gnu-mcu-eclipse_64_mingw_defconfig
+
+    fi
+
+    echo 
+    echo "Running BusyBox make gnu-mcu-eclipse_${target_bits}_mingw_defconfig..."
+
+    cd "${busybox_build_folder}"
+    make  "${jobs}" "gnu-mcu-eclipse_${target_bits}_mingw_defconfig"
 
   fi
 
-  echo 
-  echo "Running BusyBox make gnu-mcu-eclipse_${target_bits}_mingw_defconfig..."
-
-  cd "${busybox_build_folder}"
-  make  "${jobs}" "gnu-mcu-eclipse_${target_bits}_mingw_defconfig"
-
-fi
-
-if [ ! -f "${busybox_build_folder}/busybox.exe" ]
-then
-
-  echo 
-  echo "Running BusyBox make..."
-
-  # Not used.
-  cflags="-Wno-format-extra-args -Wno-format -Wno-overflow -Wno-unused-variable -Wno-implicit-function-declaration -Wno-unused-parameter -Wno-maybe-uninitialized -Wno-pointer-to-int-cast -Wno-strict-prototypes -Wno-old-style-definition -Wno-implicit-function-declaration"
-
-  cd "${busybox_build_folder}"
-  if [ ${target_bits} == "32" ]
+  if [ ! -f "${busybox_build_folder}/busybox.exe" ]
   then
-    make  "${jobs}"
-  elif [ ${target_bits} == "64" ]
-  then
-    make "${jobs}" mingw64_defconfig
-    make "${jobs}"
+
+    echo 
+    echo "Running BusyBox make..."
+
+    export CFLAGS="${EXTRA_CFLAGS} -Wno-format-extra-args -Wno-format -Wno-overflow -Wno-unused-variable -Wno-implicit-function-declaration -Wno-unused-parameter -Wno-maybe-uninitialized -Wno-pointer-to-int-cast -Wno-strict-prototypes -Wno-old-style-definition -Wno-implicit-function-declaration -Wno-incompatible-pointer-types -Wno-discarded-qualifiers -Wno-strict-prototypes -Wno-old-style-definition -Wno-unused-function -Wno-int-to-pointer-cast"
+    export LDFLAGS="${EXTRA_LDFLAGS} -static"
+
+    cd "${busybox_build_folder}"
+    if [ ${target_bits} == "32" ]
+    then
+      make  "${jobs}"
+    elif [ ${target_bits} == "64" ]
+    then
+      make "${jobs}" mingw64_defconfig
+      make "${jobs}"
+    fi
+
   fi
-
-fi
+)
 
 # ----- Copy BusyBox with 3 different names. -----
 
@@ -757,7 +810,7 @@ do_container_copy_license "${make_build_folder}" "make-${MAKE_VERSION}"
 do_container_copy_license "${busybox_build_folder}" "busybox"
 
 # For Windows, process cr lf
-find "${install_folder}/${APP_LC_NAME}/license" -type f \
+find "${install_folder}/${APP_LC_NAME}/licenses" -type f \
   -exec unix2dos {} \;
 
 
@@ -811,30 +864,29 @@ do_container_completed
 
 exit 0
 
-EOF
+__EOF__
 # The above marker must start in the first column.
 # ^===========================================================================^
-
 
 
 # ----- Build the Windows 64-bits distribution. -----
 
 if [ "${DO_BUILD_WIN64}" == "y" ]
 then
-  do_host_build_target "Creating Windows 64-bits setup..." \
-    --target-name win \
+  do_host_build_target "Creating the Windows 64-bits distribution..." \
+    --target-os win \
     --target-bits 64 \
-    --docker-image "ilegeul/debian:8-gnuarm-mingw-v2"
+    --docker-image "${docker_linux64_image}"
 fi
 
 # ----- Build the Windows 32-bits distribution. -----
 
 if [ "${DO_BUILD_WIN32}" == "y" ]
 then
-  do_host_build_target "Creating Windows 32-bits setup..." \
-    --target-name win \
+  do_host_build_target "Creating the Windows 32-bits distribution..." \
+    --target-os win \
     --target-bits 32 \
-    --docker-image "ilegeul/debian:8-gnuarm-mingw-v2"
+    --docker-image "${docker_linux32_image}"
 fi
 
 do_host_show_sha
