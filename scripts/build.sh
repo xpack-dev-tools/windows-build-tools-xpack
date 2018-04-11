@@ -86,8 +86,8 @@ PROEJCT_GIT_URL="https://github.com/gnu-mcu-eclipse/${PROJECT_GIT_FOLDER_NAME}"
 
 # ----- Docker images. -----
 
-docker_linux64_image="ilegeul/centos:6-xbb-tex-v1"
-docker_linux32_image="ilegeul/centos32:6-xbb-tex-v1"
+docker_linux64_image="ilegeul/centos:6-xbb-v1"
+docker_linux32_image="ilegeul/centos32:6-xbb-v1"
 
 # ----- Create Work folder. -----
 
