@@ -49,6 +49,9 @@ APP_NAME="Windows Build Tools"
 APP_LC_NAME="build-tools"
 APP_UC_NAME="Build Tools"
 
+DISTRO_UC_NAME="GNU MCU Eclipse"
+DISTRO_LC_NAME="gnu-mcu-eclipse"
+
 jobs="--jobs=2"
 
 # On Parallels virtual machines, prefer host Work folder.
@@ -448,6 +451,9 @@ cat <<__EOF__ >> "${script_file_path}"
 APP_NAME="${APP_NAME}"
 APP_LC_NAME="${APP_LC_NAME}"
 APP_UC_NAME="${APP_UC_NAME}"
+DISTRO_UC_NAME="${DISTRO_UC_NAME}"
+DISTRO_LC_NAME="${DISTRO_LC_NAME}"
+
 DISTRIBUTION_FILE_DATE="${DISTRIBUTION_FILE_DATE}"
 PROJECT_GIT_FOLDER_NAME="${PROJECT_GIT_FOLDER_NAME}"
 
