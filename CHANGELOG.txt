@@ -12,9 +12,14 @@ There are currently no changes from the official BusyBox distribution.
 Build
 =====
 
+[2018-04-26]
+
+- v2.11 released
+- build with the latest XBB scripts
+
 [2018-01-03]
 
-- v2.10 
+- v2.10 released
 - update to make 4.2.1
 - update to latest busybox rmyorston commit 096aee2bb468d1ab044de36e176ed1f6c7e3674d
 - no more setup.exe files
@@ -81,4 +86,3 @@ uninstalling an older version.
 
 
 Liviu Ionescu
-

@@ -1,20 +1,167 @@
 # The Windows Build Tools
 
-The **GNU MCU Eclipse Windows Build Tools** subproject (formerly GNU ARM Eclipse Windows Build Tools) is a Windows specific package, customised for the requirements of the Eclipse CDT managed build projects. It includes a recent version of **GNU make** and a recent version of **BusyBox**, which provides a convenient implementation for `sh/rm/echo`.
+The **GNU MCU Eclipse Windows Build Tools** subproject (formerly GNU ARM Eclipse Windows Build Tools) is a Windows specific package, customised for the requirements of the Eclipse CDT managed build projects. It includes a recent version of **GNU make** and a recent version of **BusyBox**, which provides a convenient implementation for `sh`/`rm`/`echo`.
 
-## How to use
+## Prerequisites
 
-* [Overview](http://gnu-mcu-eclipse.github.io/windows-build-tools/)  (read me first!)
-* [Windows Build Tools Install](http://gnu-mcu-eclipse.github.io/windows-build-tools/install)
-* [Support](https://github.com/gnu-mcu-eclipse/windows-build-tools/issues/1)  (using the GitHub Issues)
+The prerequisites are common to all binary builds. Please follow the instructions in the separate [Prerequisites for building binaries](https://gnu-mcu-eclipse.github.io/developer/build-binaries-prerequisites-xbb/) page and return when ready.
 
-## How to build
+## Download the build scripts repo
 
-* [How to build](http://gnu-mcu-eclipse.github.io/windows-build-tools/build-procedure/) (using Docker containers)
-* [Change log](http://gnu-mcu-eclipse.github.io/windows-build-tools/change-log)
+The build script is available from GitHub and can be [viewed online](https://github.com/gnu-mcu-eclipse/windows-build-tools/blob/master/scripts/build.sh).
 
-## Releases & binaries
+To download it, clone the [gnu-mcu-eclipse/windows-build-tools](https://github.com/gnu-mcu-eclipse/windows-build-tools) Git repo, including submodules. 
 
-See the [releases](http://gnu-mcu-eclipse.github.io/windows-build-tools/releases) page.
-Binaries for Windows can be downloaded from [GitHub Releases](https://github.com/gnu-mcu-eclipse/windows-build-tools/releases).
+```console
+$ rm -rf ~/Downloads/windows-build-tools.git
+$ git clone --recurse-submodules https://github.com/gnu-mcu-eclipse/windows-build-tools.git \
+  ~/Downloads/windows-build-tools.git
+```
+
+## Check the script
+
+The script creates a temporary build `Work/build-tools` folder in the user home. Although not recommended, if for any reasons you need to change this, you can redefine `WORK_FOLDER_PATH` variable before invoking the script.
+
+## Preload the Docker images
+
+Docker does not require to explicitly download new images, but does this automatically at first use.
+
+However, since the images used for this build are relatively large, it is recommended to load them explicitly before starting the build:
+
+```console
+$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh preload-images
+```
+
+The result should look similar to:
+
+```console
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ilegeul/centos32    6-xbb-v1            f695dd6cb46e        2 weeks ago         2.92GB
+ilegeul/centos      6-xbb-v1            294dd5ee82f3        2 weeks ago         3.09GB
+hello-world         latest              f2a91732366c        2 months ago        1.85kB
+```
+
+## Prepare release
+
+To prepare a new release, first determine the version (like `2.10`) and update the `scripts/VERSION` file. 
+
+## Update CHANGELOG.txt
+
+Check `windows-build-tools.git/CHANGELOG.txt` and add the new release.
+
+## Build
+
+The current platform for Windows production builds is an Ubuntu 17.10 VirtualBox image running on a macMini with 16 GB of RAM and a fast SSD.
+
+Before starting a multi-platform build, check if Docker is started:
+
+```console
+$ docker info
+```
+
+To build both the 32/64-bits Windows use `--all`; to build selectively, use `--win64` or `--win32`.
+
+```console
+$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh 
+```
+
+Several minutes later, the output of the build script is a set of 2 files and their SHA signatures, created in the `deploy` folder:
+
+```console
+$ ls -l deploy
+...
+```
+
+To copy the files from the build machine to the current development machine, open the `deploy` folder in a terminal and use `scp`:
+
+```console
+$ scp * ilg@ilg-mbp.local:Downloads
+```
+
+## Subsequent runs
+
+### Separate platform specific builds
+
+Instead of `--all`, you can use any combination of:
+
+```
+--win32 --win64
+```
+
+### clean
+
+To remove most build files, use:
+
+```console
+$ bash ~/Downloads/arm-none-eabi-gcc-build.git/scripts/build.sh clean
+```
+
+To also remove the repository and the output files, use:
+
+```console
+$ bash ~/Downloads/arm-none-eabi-gcc-build.git/scripts/build.sh cleanall
+```
+
+For production builds it is recommended to completely remove the build folder.
+
+### --develop
+
+For performance reasons, the actual build folders are internal to each Docker run, and are not persistent. This gives the best speed, but has the disadvantage that interrupted builds cannot be resumed.
+
+For development builds, it is possible to define the build folders in the host file system, and resume an interrupted build.
+
+### --debug
+
+For development builds, it is also possible to create everything with `-g -O0` and be able to run debug sessions.
+
+### Interrupted builds
+
+The Docker scripts run with root privileges. This is generally not a problem, since at the end of the script the output files are reassigned to the actual user.
+
+However, for an interrupted build, this step is skipped, and files in the install folder will remain owned by root. Thus, before removing the build folder, it might be necessary to run a recursive `chown`.
+
+## Install
+
+The procedure to install GNU MCU Eclipse Windows Build Tools is relatively straight forward, expanding a .zip archive on Windows.
+
+A portable method is to use [`xpm`](https://www.npmjs.com/package/xpm):
+
+```console
+$ xpm install @gnu-mcu-eclipse/arm-none-eabi-gcc --global
+```
+
+More details are available on the [How to install the Windows Build Tools?](https://gnu-mcu-eclipse.github.io/windows-build-tools/install/) page.
+
+After install, the package should create a structure like this (only the first two depth levels are shown):
+
+```console
+$ tree -L 2 /Users/ilg/Library/xPacks/\@gnu-mcu-eclipse/build-tools/2.11/.content/
+/Users/ilg/Library/xPacks/@gnu-mcu-eclipse/arm-none-eabi-gcc/2.11/.content/
+├── README.md
+├── bin
+│   ├── busybox.exe
+│   ├── echo.exe
+│   ├── make.exe
+│   ├── mkdir.exe
+│   ├── rm.exe
+│   └── sh.exe
+└── gnu-mcu-eclipse
+    ├── CHANGELOG.txt
+    ├── licenses
+    ├── patches
+    └── scripts
+
+5 directories, 8 files
+```
+
+No other files are installed in any system folders or other locations.
+
+## Uninstall
+
+The binaries are distributed as portable archives; thus they do not need to run a setup and do not require an uninstall.
+
+## More build details
+
+The build process is split into several scripts. The build starts on the host, with `build.sh`, which runs `container-build.sh` several times, once for each target, in one of the two docker containers. Both scripts include several other helper scripts. The entire process is quite complex, and an attempt to explain its functionality in a few words would not be realistic. Thus, the authoritative source of details remains the source code.
 
