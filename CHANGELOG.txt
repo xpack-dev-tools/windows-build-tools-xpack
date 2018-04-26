@@ -16,6 +16,7 @@ Build
 
 - v2.11 released
 - build with the latest XBB scripts
+- update to latest busybox rmyorston commit 6f7d1af269eed4b42daeb9c6dfd2ba62f9cd47e4
 
 [2018-01-03]
 

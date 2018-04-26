@@ -110,7 +110,7 @@ function do_make()
 
 function do_busybox() 
 {
-  # http://intgat.tigress.co.uk/rmy/busybox/index.html
+  # https://frippery.org/busybox/
   # https://github.com/rmyorston/busybox-w32
 
   # BUSYBOX_COMMIT=master
@@ -119,7 +119,9 @@ function do_busybox()
   # BUSYBOX_COMMIT="9fa1e4990e655a85025c9d270a1606983e375e47"
   # BUSYBOX_COMMIT="c2002eae394c230d6b89073c9ff71bc86a7875e8"
   # Dec 9, 2017
-  BUSYBOX_COMMIT="096aee2bb468d1ab044de36e176ed1f6c7e3674d"
+  # BUSYBOX_COMMIT="096aee2bb468d1ab044de36e176ed1f6c7e3674d"
+  # Apr 13, 2018
+  BUSYBOX_COMMIT="6f7d1af269eed4b42daeb9c6dfd2ba62f9cd47e4"
 
   BUSYBOX_ARCHIVE="${BUSYBOX_COMMIT}.zip"
   BUSYBOX_URL="https://github.com/rmyorston/busybox-w32/archive/${BUSYBOX_ARCHIVE}"
