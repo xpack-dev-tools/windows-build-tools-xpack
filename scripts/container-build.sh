@@ -20,12 +20,7 @@ IFS=$'\n\t'
 # -----------------------------------------------------------------------------
 
 # Inner script to run inside Docker containers to build the 
-# GNU MCU Eclipse ARM Embedded GCC distribution packages.
-
-# For native builds, it runs on the host (macOS build cases,
-# and development builds for GNU/Linux).
-
-# Credits: GNU Tools for Arm Embedded Processors, version 7, by ARM.
+# GNU MCU Eclipse Windows Build Tools distribution packages.
 
 # -----------------------------------------------------------------------------
 
@@ -53,6 +48,10 @@ HOST_UNAME=""
 host_defines_script_path="${script_folder_path}/host-defs-source.sh"
 echo "Host definitions source script: \"${host_defines_script_path}\"."
 source "${host_defines_script_path}"
+
+container_lib_functions_script_path="${script_folder_path}/${CONTAINER_LIB_FUNCTIONS_SCRIPT_NAME}"
+echo "Container lib functions source script: \"${container_lib_functions_script_path}\"."
+source "${container_lib_functions_script_path}"
 
 container_app_functions_script_path="${script_folder_path}/${CONTAINER_APP_FUNCTIONS_SCRIPT_NAME}"
 echo "Container app functions source script: \"${container_app_functions_script_path}\"."
@@ -129,11 +128,6 @@ do
       IS_DEBUG="y"
       WITH_STRIP="n"
       shift
-      ;;
-
-    --linux-install-path)
-      LINUX_INSTALL_PATH="$2"
-      shift 2
       ;;
 
     *)
@@ -246,12 +240,6 @@ export PKG_CONFIG_LIBDIR="${INSTALL_FOLDER_PATH}"/lib/pkgconfig
 APP_PREFIX="${INSTALL_FOLDER_PATH}/${APP_LC_NAME}"
 APP_PREFIX_DOC="${APP_PREFIX}"/share/doc
 
-# APP_PREFIX_NANO="${INSTALL_FOLDER_PATH}/${APP_LC_NAME}"-nano
-
-# The \x2C is a comma in hex; without this trick the regular expression
-# that processes this string in the Makefile, silently fails and the 
-# bfdver.h file remains empty.
-# BRANDING="${BRANDING}\x2C ${TARGET_BITS}-bits"
 CFLAGS_OPTIMIZATIONS_FOR_TARGET="-ffunction-sections -fdata-sections -O2"
 
 # -----------------------------------------------------------------------------
@@ -260,18 +248,28 @@ echo
 echo "Here we go..."
 echo
 
+# Test to build guile
+if false
+then
+
+  do_gmp
+  do_libtool
+  do_libunistring
+  do_libffi
+  do_bdwgc
+  do_libiconv
+
+  do_guile
+fi
+
 do_make
 
 do_busybox
 
 # -----------------------------------------------------------------------------
 
-# tidy_up
-
 copy_binaries
-
 check_binaries
-
 copy_gme_files
 
 create_archive

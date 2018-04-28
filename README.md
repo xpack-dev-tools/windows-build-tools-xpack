@@ -94,13 +94,13 @@ Instead of `--all`, you can use any combination of:
 To remove most build files, use:
 
 ```console
-$ bash ~/Downloads/arm-none-eabi-gcc-build.git/scripts/build.sh clean
+$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh clean
 ```
 
 To also remove the repository and the output files, use:
 
 ```console
-$ bash ~/Downloads/arm-none-eabi-gcc-build.git/scripts/build.sh cleanall
+$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh cleanall
 ```
 
 For production builds it is recommended to completely remove the build folder.
@@ -128,7 +128,7 @@ The procedure to install GNU MCU Eclipse Windows Build Tools is relatively strai
 A portable method is to use [`xpm`](https://www.npmjs.com/package/xpm):
 
 ```console
-$ xpm install @gnu-mcu-eclipse/arm-none-eabi-gcc --global
+$ xpm install @gnu-mcu-eclipse/windows-build-tools --global
 ```
 
 More details are available on the [How to install the Windows Build Tools?](https://gnu-mcu-eclipse.github.io/windows-build-tools/install/) page.
@@ -136,8 +136,7 @@ More details are available on the [How to install the Windows Build Tools?](http
 After install, the package should create a structure like this (only the first two depth levels are shown):
 
 ```console
-$ tree -L 2 /Users/ilg/Library/xPacks/\@gnu-mcu-eclipse/build-tools/2.11/.content/
-/Users/ilg/Library/xPacks/@gnu-mcu-eclipse/arm-none-eabi-gcc/2.11/.content/
+xPacks/@gnu-mcu-eclipse/build-tools/2.11/.content/
 ├── README.md
 ├── bin
 │   ├── busybox.exe

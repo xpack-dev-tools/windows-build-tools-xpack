@@ -20,5 +20,6 @@ DISTRO_LC_NAME=${DISTRO_LC_NAME:-"gnu-mcu-eclipse"}
 
 CONTAINER_SCRIPT_NAME=${CONTAINER_SCRIPT_NAME:-"container-build.sh"}
 CONTAINER_APP_FUNCTIONS_SCRIPT_NAME=${CONTAINER_APP_FUNCTIONS_SCRIPT_NAME:-"container-app-functions-source.sh"}
+CONTAINER_LIB_FUNCTIONS_SCRIPT_NAME=${CONTAINER_LIB_FUNCTIONS_SCRIPT_NAME:-"container-lib-functions-source.sh"}
 
 # -----------------------------------------------------------------------------

@@ -6,6 +6,11 @@
 
 # -----------------------------------------------------------------------------
 
+# The surprise of this build was that building the cross guile requires
+# a native guile; thus the need to build everything twice, first the
+# native build, than the cross build.
+
+# -----------------------------------------------------------------------------
 
 function do_make() 
 {
@@ -17,9 +22,6 @@ function do_make()
 
   # http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/Sources/
   # http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/Sources/make-4.1-4.src.tar.gz/download
-
-  # MAKE_VERSION="4.2"
-  # MSYS2_MAKE_VERSION_RELEASE="${MAKE_VERSION}-1"
 
   # Warning! 4.2 does not build on Debian 8, it requires gettext-0.19.4.
   # 2016-06-15
@@ -47,45 +49,54 @@ function do_make()
       )
     fi
 
-    if [ ! -d "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}" ]
+    if [ ! -d "${WORK_FOLDER_PATH}/${MAKE_FOLDER_NAME}" ]
     then
       (
-        cd "${BUILD_FOLDER_PATH}"
+        cd "${WORK_FOLDER_PATH}"
         echo
         echo "Unpacking ${make_archive}..."
 
         tar -xvf "${WORK_FOLDER_PATH}/msys2/make/${make_archive}"
+
+        cd "${WORK_FOLDER_PATH}/${MAKE_FOLDER_NAME}"
+        
+        xbb_activate
+
+        echo "Running make autoreconf..."
+        autoreconf -fi
       )
     fi
 
     (
+      mkdir -p "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}"
       cd "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}"
 
       xbb_activate
 
       if [ ! -f "config.status" ]
       then 
-        echo "Running make autoreconf..."
-        autoreconf -fi
-
         echo
         echo "Running make configure..."
 
         # cd "${make_build_folder}"
 
-        bash "configure" --help
+        bash "${WORK_FOLDER_PATH}/${MAKE_FOLDER_NAME}"/configure --help
 
         export CFLAGS="${EXTRA_CFLAGS}"
         export LDFLAGS="${EXTRA_LDFLAGS} -static"
 
-        bash "configure" \
+        echo
+        bash "${WORK_FOLDER_PATH}/${MAKE_FOLDER_NAME}"/configure \
           --prefix="${INSTALL_FOLDER_PATH}/make-${MAKE_VERSION}"  \
           --build=${BUILD} \
           --host=${HOST} \
           --target=${TARGET} \
+          \
+          --without-guile \
           --without-libintl-prefix \
           --without-libiconv-prefix \
           ac_cv_dos_paths=yes \
+          \
         | tee "${INSTALL_FOLDER_PATH}/configure-make-output.txt"
         cp "config.log" "${INSTALL_FOLDER_PATH}"/config-make-log.txt
 
@@ -128,15 +139,18 @@ function do_busybox()
 
   BUSYBOX_SRC_FOLDER="${BUSYBOX_COMMIT}/busybox-w32-${BUSYBOX_COMMIT}"
 
+  # Does not use configure and builds in the source folder.
+  cd "${BUILD_FOLDER_PATH}"
+
+  download_and_extract "${BUSYBOX_URL}" "${BUSYBOX_ARCHIVE}" "${BUSYBOX_SRC_FOLDER}"
+
   local busybox_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-busybox-installed"
   if [ ! -f "${busybox_stamp_file_path}" ]
   then
 
-    cd "${BUILD_FOLDER_PATH}"
-
-    download_and_extract "${BUSYBOX_URL}" "${BUSYBOX_ARCHIVE}" "${BUSYBOX_SRC_FOLDER}"
-
     (
+      cd "${BUILD_FOLDER_PATH}"
+
       xbb_activate
 
       if [ ! -f "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}"/.config ]
@@ -255,7 +269,7 @@ function copy_gme_files()
   echo "Copying license files..."
 
   copy_license \
-    "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}" \
+    "${WORK_FOLDER_PATH}/${MAKE_FOLDER_NAME}" \
     "${MAKE_FOLDER_NAME}"
 
   copy_license \
