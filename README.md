@@ -164,3 +164,17 @@ The binaries are distributed as portable archives; thus they do not need to run 
 
 The build process is split into several scripts. The build starts on the host, with `build.sh`, which runs `container-build.sh` several times, once for each target, in one of the two docker containers. Both scripts include several other helper scripts. The entire process is quite complex, and an attempt to explain its functionality in a few words would not be realistic. Thus, the authoritative source of details remains the source code.
 
+## Download analytics
+
+* GitHub [gnu-mcu-eclipse/windows-build-tools.git](https://github.com/gnu-mcu-eclipse/windows-build-tools/)
+  * latest release
+[![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/windows-build-tools/latest/total.svg)](https://github.com/gnu-mcu-eclipse/windows-build-tools/releases/)
+  * all releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/windows-build-tools/total.svg)](https://github.com/gnu-mcu-eclipse/windows-build-tools/releases/)
+* xPack [@gnu-mcu-eclipse/windows-build-tools](https://github.com/gnu-mcu-eclipse/windows-build-tools-xpack/)
+  * latest release, per month 
+[![npm (scoped)](https://img.shields.io/npm/v/@gnu-mcu-eclipse/windows-build-tools.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools/)
+[![npm](https://img.shields.io/npm/dm/@gnu-mcu-eclipse/windows-build-tools.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools/)
+  * all releases [![npm](https://img.shields.io/npm/dt/@gnu-mcu-eclipse/windows-build-tools.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools/)
+* [individual file counters](https://www.somsubhra.com/github-release-stats/?username=gnu-mcu-eclipse&repository=windows-build-tools) (grouped per release)
+  
+Credits to [Shields IO](https://shields.io) and [Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats).
