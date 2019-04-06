@@ -12,6 +12,13 @@ There are currently no changes from the official BusyBox distribution.
 Build
 =====
 
+[2019-04-06]
+
+- prepare v2.12
+- update build for XBB v2.1
+- update to latest busybox rmyorston commit 65ae5b24cc08f898e81b36421b616fc7fc25d2b1
+- fix the 32-bit build bug
+
 [2018-04-28]
 
 - v2.11 released

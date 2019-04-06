@@ -7,7 +7,7 @@ The **GNU MCU Eclipse Windows Build Tools** subproject (formerly GNU ARM Eclipse
 The **GNU MCU Eclipse Windows Build Tools** are also available as a binary [xPack](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools) and can be conveniently installed with [xpm](https://www.npmjs.com/package/xpm):
 
 ```console
-$ xpm install @gnu-mcu-eclipse/windows-build-tools --global
+$ xpm install --global @gnu-mcu-eclipse/windows-build-tools 
 ```
 
 For more details on how to install the Windows Build Tools, please see [How to install the Windows Build Tools?](https://gnu-mcu-eclipse.github.io/windows-build-tools/install/) page.
@@ -20,7 +20,7 @@ There are currently no changes from the official MSYS2 distribution or from the 
 
 The binaries were built using [xPack Build Box (XBB)](https://github.com/xpack/xpack-build-box), a set of build environments based on slightly older systems that should be compatible with most recent systems.
 
-- Windows: all binaries built with mingw-w64 GCC 7.2, running in a CentOS 6 Docker container.
+- Windows: all binaries built with mingw-w64 GCC 7.4, running in a CentOS 6 Docker container.
 
 ## Build
 
