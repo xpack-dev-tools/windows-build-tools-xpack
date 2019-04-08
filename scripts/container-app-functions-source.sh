@@ -208,7 +208,7 @@ function do_busybox()
 
           cd "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}"
 
-          make -j ${JOBS} \
+          make \
             HOSTCC="gcc-7" \
             HOSTCXX="g++-7"
 
