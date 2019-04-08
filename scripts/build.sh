@@ -61,7 +61,7 @@ declare -a rest
 
 help_message="    bash $0 [--win32] [--win64] [--all] [clean|cleanall|preload-images] [--env-file file] [--date YYYYmmdd-HHMM] [--disable-strip] [--without-pdf] [--with-html] [--develop] [--debug] [--jobs N] [--help]"
 
-host_options "${help_message}" $@
+host_options_windows "${help_message}" $@
 
 echo
 echo "Host helper functions source script: \"${host_functions_script_path}\"."
