@@ -87,7 +87,7 @@ function do_gmp()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-gmp-output.txt"
     )
@@ -135,7 +135,7 @@ function do_gmp()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-gmp-output.txt"
     )
@@ -209,7 +209,7 @@ function do_libtool()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-libtool-output.txt"
     )
@@ -254,7 +254,7 @@ function do_libtool()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-libtool-output.txt"
     )
@@ -324,7 +324,7 @@ function do_libunistring()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-libunistring-output.txt"
     )
@@ -367,7 +367,7 @@ function do_libunistring()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-libunistring-output.txt"
     )
@@ -440,7 +440,7 @@ function do_libffi()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-libffi-output.txt"
     )
@@ -483,7 +483,7 @@ function do_libffi()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-libffi-output.txt"
     )
@@ -573,7 +573,7 @@ function do_bdwgc()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-bdwgc-output.txt"
     )
@@ -617,7 +617,7 @@ function do_bdwgc()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-bdwgc-output.txt"
     )
@@ -694,7 +694,7 @@ function do_libiconv()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-libiconv-output.txt"
     )
@@ -740,7 +740,7 @@ function do_libiconv()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-libiconv-output.txt"
     )
@@ -867,7 +867,7 @@ function do_guile()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}"/make-native-guile-output.txt
     )
@@ -927,7 +927,7 @@ function do_guile()
 
       (
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-guile-output.txt"
     )

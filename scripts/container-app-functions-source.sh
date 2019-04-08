@@ -115,7 +115,7 @@ function do_make()
         echo "Running make make..."
 
         # Build.
-        make ${JOBS}
+        make -j ${JOBS}
         make install-strip
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/make-make-output.txt"
     )
@@ -208,7 +208,7 @@ function do_busybox()
 
           cd "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}"
 
-          make "${JOBS}" \
+          make -j ${JOBS} \
             HOSTCC="gcc-7" \
             HOSTCXX="g++-7"
 

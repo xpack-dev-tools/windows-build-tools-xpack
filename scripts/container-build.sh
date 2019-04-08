@@ -84,13 +84,7 @@ IS_DEVELOP=""
 IS_DEBUG=""
 LINUX_INSTALL_PATH=""
 
-# Attempts to use 8 occasionally failed, reduce if necessary.
-if [ "$(uname)" == "Darwin" ]
-then
-  JOBS="--jobs=$(sysctl -n hw.ncpu)"
-else
-  JOBS="--jobs=$(grep ^processor /proc/cpuinfo|wc -l)"
-fi
+JOBS=""
 
 while [ $# -gt 0 ]
 do
@@ -123,7 +117,7 @@ do
       ;;
 
     --jobs)
-      JOBS="--jobs=$2"
+      JOBS=$2
       shift 2
       ;;
 
