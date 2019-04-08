@@ -20,7 +20,7 @@ APP_NAME=${APP_NAME:-"Windows Build Tools"}
 
 # Used as part of file/folder paths.
 APP_UC_NAME=${APP_UC_NAME:-"Build Tools"}
-APP_LC_NAME=${APP_LC_NAME:-"build-tools"}
+APP_LC_NAME=${APP_LC_NAME:-"windows-build-tools"}
 
 DISTRO_UC_NAME=${DISTRO_UC_NAME:-"GNU MCU Eclipse"}
 DISTRO_LC_NAME=${DISTRO_LC_NAME:-"gnu-mcu-eclipse"}
