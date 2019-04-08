@@ -170,20 +170,20 @@ function do_busybox()
 
           cd "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}"
 
-          # with HOSTCC="gcc-7" HOSTCXX="g++-7" it fails
-          # /bin/sh: line 1:   106 Segmentation fault      scripts/basic/fixdep scripts/basic/.fixdep.d scripts/basic/fixdep 
           if [ ${TARGET_BITS} == "32" ]
           then
-            # On 32-bit systems, stat() fails with
-            # 'Value too large for defined data type'
-            # Thus, add _FILE_OFFSET_BITS before the first include.
-            sed -i -e '/#include <sys\/types.h>/i#define _FILE_OFFSET_BITS 64' scripts/basic/fixdep.c
-            sed -i -e '/#include <sys\/stat.h>/i#define _FILE_OFFSET_BITS 64' scripts/basic/split-include.c
-
-            make mingw32_defconfig
+            # On 32-bit containers running on 64-bit systems, stat() fails with
+            # 'Value too large for defined data type'.
+            # The solution is to add _FILE_OFFSET_BITS=64.
+            export HOST_EXTRACFLAGS="-D_FILE_OFFSET_BITS=64"
+            make mingw32_defconfig \
+              HOSTCC="gcc-7" \
+              HOSTCXX="g++-7"
           elif [ ${TARGET_BITS} == "64" ]
           then
-            make mingw64_defconfig
+            make mingw64_defconfig \
+              HOSTCC="gcc-7" \
+              HOSTCXX="g++-7"
           fi
 
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/configure-busybox-output.txt"
@@ -200,9 +200,17 @@ function do_busybox()
           export CFLAGS="${XBB_CFLAGS} -Wno-format-extra-args -Wno-format -Wno-overflow -Wno-unused-variable -Wno-implicit-function-declaration -Wno-unused-parameter -Wno-maybe-uninitialized -Wno-pointer-to-int-cast -Wno-strict-prototypes -Wno-old-style-definition -Wno-implicit-function-declaration -Wno-incompatible-pointer-types -Wno-discarded-qualifiers -Wno-strict-prototypes -Wno-old-style-definition -Wno-unused-function -Wno-int-to-pointer-cast"
           export LDFLAGS="${XBB_LDFLAGS_APP} -static"
 
+          if [ ${TARGET_BITS} == "32" ]
+          then
+            # Required since some of the host tools are built here.
+            export HOST_EXTRACFLAGS="-D_FILE_OFFSET_BITS=64"
+          fi
+
           cd "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}"
 
-          make "${JOBS}"
+          make "${JOBS}" \
+            HOSTCC="gcc-7" \
+            HOSTCXX="g++-7"
 
           mkdir -p "${INSTALL_FOLDER_PATH}/busybox-w32/bin"
           cp busybox.exe "${INSTALL_FOLDER_PATH}/busybox-w32/bin"
