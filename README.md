@@ -60,10 +60,10 @@ Before starting a multi-platform build, check if Docker is started:
 $ docker info
 ```
 
-To build both the 32/64-bits Windows use `--all`; to build selectively, use `--win64` or `--win32`.
+To build both the 32/64-bits Windows use `--all`.
 
 ```console
-$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh 
+$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh --all
 ```
 
 Several minutes later, the output of the build script is a set of 2 files and their SHA signatures, created in the `deploy` folder:

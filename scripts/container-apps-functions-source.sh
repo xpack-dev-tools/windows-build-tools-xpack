@@ -42,7 +42,7 @@ function do_make()
   MAKE_FOLDER_NAME="make-${MAKE_VERSION}"
   local make_archive="${MAKE_FOLDER_NAME}.tar.bz2"
 
-  local make_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-make-installed"
+  local make_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-make-${MSYS2_MAKE_VERSION_RELEASE}-installed"
   if [ ! -f "${make_stamp_file_path}" -o ! -d "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}" ]
   then
 
@@ -154,7 +154,7 @@ function do_busybox()
 
   download_and_extract "${BUSYBOX_URL}" "${BUSYBOX_ARCHIVE}" "${BUSYBOX_SRC_FOLDER}"
 
-  local busybox_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-busybox-installed"
+  local busybox_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-busybox-${BUSYBOX_COMMIT}-installed"
   if [ ! -f "${busybox_stamp_file_path}" ]
   then
     (
@@ -273,28 +273,31 @@ function check_binaries()
   done
 }
 
-function copy_gme_files()
+function copy_distro_files()
 {
-  rm -rf "${APP_PREFIX}/${DISTRO_LC_NAME}"
-  mkdir -p "${APP_PREFIX}/${DISTRO_LC_NAME}"
+  (
+    xbb_activate
 
-  echo
-  echo "Copying license files..."
+    rm -rf "${APP_PREFIX}/${DISTRO_LC_NAME}"
+    mkdir -p "${APP_PREFIX}/${DISTRO_LC_NAME}"
 
-  copy_license \
-    "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}" \
-    "${MAKE_FOLDER_NAME}"
+    echo
+    echo "Copying license files..."
 
-  copy_license \
-    "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}" \
-    "busybox-w32"
+    copy_license \
+      "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}" \
+      "${MAKE_FOLDER_NAME}"
 
-  copy_build_files
+    copy_license \
+      "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}" \
+      "busybox-w32"
 
-  echo
-  echo "Copying GME files..."
+    copy_build_files
 
-  cd "${WORK_FOLDER_PATH}/build.git"
-  /usr/bin/install -v -c -m 644 "README-out.md" \
-    "${APP_PREFIX}/README.md"
+    echo
+    echo "Copying distro files..."
+
+    cd "${WORK_FOLDER_PATH}/build.git"
+    install -v -c -m 644 "README-out.md" "${APP_PREFIX}/README.md"
+  )
 }

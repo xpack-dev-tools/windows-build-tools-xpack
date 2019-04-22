@@ -119,6 +119,8 @@ host_show_sha
 
 host_stop_timer
 
+host_notify_completed
+
 echo
 echo "Use --date ${DISTRIBUTION_FILE_DATE} if needed to resume a build."
 

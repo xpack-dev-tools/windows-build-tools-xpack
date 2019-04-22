@@ -25,8 +25,11 @@ APP_LC_NAME=${APP_LC_NAME:-"windows-build-tools"}
 DISTRO_UC_NAME=${DISTRO_UC_NAME:-"GNU MCU Eclipse"}
 DISTRO_LC_NAME=${DISTRO_LC_NAME:-"gnu-mcu-eclipse"}
 
+# TODO: remove it.
+DISTRO_INFO_NAME=${DISTRO_INFO_NAME:-"${DISTRO_LC_NAME}"}
+
 CONTAINER_SCRIPT_NAME=${CONTAINER_SCRIPT_NAME:-"container-build.sh"}
-CONTAINER_LIBS_FUNCTIONS_SCRIPT_NAME=${CONTAINER_LIBS_FUNCTIONS_SCRIPT_NAME:-"container-lib-functions-source.sh"}
-CONTAINER_APP_FUNCTIONS_SCRIPT_NAME=${CONTAINER_APP_FUNCTIONS_SCRIPT_NAME:-"container-app-functions-source.sh"}
+CONTAINER_LIBS_FUNCTIONS_SCRIPT_NAME=${CONTAINER_LIBS_FUNCTIONS_SCRIPT_NAME:-"container-libs-functions-source.sh"}
+CONTAINER_APPS_FUNCTIONS_SCRIPT_NAME=${CONTAINER_APPS_FUNCTIONS_SCRIPT_NAME:-"container-apps-functions-source.sh"}
 
 # -----------------------------------------------------------------------------
