@@ -1,16 +1,5 @@
 
-Make
-====
-
-There are currently no changes from the official MSYS2 distribution.
-
-BusyBox
-=======
-
-There are currently no changes from the official BusyBox distribution.
-
-Build
-=====
+Entries in this file are in reverse chronological order.
 
 [2019-04-22]
 
@@ -91,10 +80,10 @@ uninstalling an older version.
 [2015-01-24]
 
 - v2.2-201501232303 released
+- use msys2
 
 [2015-01-22]
 
 - v2.1-201501221704 released
+- new version using msys
 
-
-Liviu Ionescu

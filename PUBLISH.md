@@ -19,7 +19,10 @@ The `VERSION` file should refer to the actual release.
 
 ### Push the project git
 
-Push `gnu-mcu-eclipse/windows-build-tools.git` to GitHub.
+In `gnu-mcu-eclipse/windows-build-tools.git`, if necessary, merge 
+the `develop` branch into `master`.
+
+Push it to GitHub.
 
 Possibly push the helper project too.
 
@@ -38,35 +41,23 @@ functional.
 
 - go to the [GitHub Releases](https://github.com/gnu-mcu-eclipse/windows-build-tools/releases) page
 - click **Draft a new release**
-- name the tag like **v2.12-20190422**
+- name the tag like **v2.12-20190422** (mind the dash in the middle!)
 - select the `master` branch
 - name the release like **GNU MCU Eclipse Windows Build Tools v2.12 20190422**
 - as description
   - add a downloads badge like `[![Github Releases (by Release)](https://img.shields.io/github/downloads/gnu-mcu-eclipse/windows-build-tools/v2.12-20190422/total.svg)]()`; use empty URL for now
   - draft a short paragraph explaining what are the main changes
 - **attach binaries** and SHA (drag and drop from the archives folder will do it)
-- enable the pre-release button
+- enable the **pre-release** button
 - click the **Publish Release** button
 
 Note: at this moment the system should send a notification to all clients 
 watching this project.
 
-## Update the Change log
-
-Open the `CHANGELOG.txt` file from `gnu-mcu-eclipse/windows-build-tools.git` 
-and copy entries to the web git.
-
-In the `gnu-mcu-eclipse.github.io-source.git` web git, add new entries to the 
-[Change log](https://gnu-mcu-eclipse.github.io/windows-build-tools/change-log/) 
-(`pages/windows-build-tools/change-log.md`), grouped by days.
-
 ## Prepare a new blog post
 
 In the `gnu-mcu-eclipse.github.io-source.git` web git:
 
-- add new entries to the 
- [Change log](https://gnu-mcu-eclipse.github.io/windows-build-tools/change-log/) 
- (`pages/windows-build-tools/change-log.md`), grouped by days.
 - add a new file to `_posts/windows-build-tools/releases`
 - name the file like `2019-04-22-windows-build-tools-v2-12-20190422-released.md`
 - name the post like: **GNU MCU Eclipse Windows Build Tools v2.12 20190422 released**.
@@ -103,7 +94,7 @@ $ cat *.sha
 ## Update the web
 
 - commit the `gnu-mcu-eclipse.github.io-source.git` project; use a message 
-  like **Windows Build Tools v2.12-20190422 released**
+  like **Windows Build Tools v2.12 20190422 released**
 - push the project
 - wait for the Travis build to complete; occasionally links to not work, 
   and might need to restart the build
