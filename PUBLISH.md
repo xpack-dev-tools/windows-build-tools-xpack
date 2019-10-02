@@ -48,7 +48,7 @@ functional.
   - add a downloads badge like `[![Github Releases (by Release)](https://img.shields.io/github/downloads/gnu-mcu-eclipse/windows-build-tools/v2.12-20190422/total.svg)]()`; use empty URL for now
   - draft a short paragraph explaining what are the main changes
 - **attach binaries** and SHA (drag and drop from the archives folder will do it)
-- enable the **pre-release** button
+- **enable** the **pre-release** button
 - click the **Publish Release** button
 
 Note: at this moment the system should send a notification to all clients 
@@ -103,7 +103,7 @@ $ cat *.sha
 ## Create the xPack release
 
 Follow the instructions on the 
-[gnu-mcu-eclipse/arm-none-eabi-gcc-xpack](https://github.com/gnu-mcu-eclipse/windows-build-tools-xpack/blob/xpack/README.md#maintainer-info)
+[gnu-mcu-eclipse/windows-build-tools-xpack](https://github.com/gnu-mcu-eclipse/windows-build-tools-xpack/blob/xpack/README.md#maintainer-info)
 page.
 
 ## Create a final GitHub release
@@ -115,7 +115,7 @@ page.
 - update the current release version
 - copy/paste the **Download analytics** section
 - update the current release version
-- disable the pre-release button
+- **disable** the **pre-release** button
 - click the **Update Release** button
 
 ## Share on Facebook
