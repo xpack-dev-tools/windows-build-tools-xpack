@@ -1,161 +1,21 @@
-# The Windows Build Tools
+[![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/windows-build-tools.svg)](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools)
+[![npm](https://img.shields.io/npm/dt/@xpack-dev-tools/windows-build-tools.svg)](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools/)
 
-The **GNU MCU Eclipse Windows Build Tools** subproject (formerly GNU ARM
-Eclipse Windows Build Tools) is a Windows specific package, customised
-for the requirements of the Eclipse CDT managed build projects. It
-includes a recent version of **GNU make** and a recent version of
+# The xPack Windows Build Tools
+
+This open source project is hosted on GitHub as
+[`xpack-dev-tools/windows-build-tools-xpack`](https://github.com/xpack-dev-tools/windows-build-tools-xpack).
+
+It is not a full multi-platform xPack but a Windows specific package,
+customised for the requirements of the Eclipse CDT managed build projects;
+it includes a recent version of **GNU make** and a recent version of
 **BusyBox**, which provides a convenient implementation for `sh`/`rm`/`echo`.
 
+The binaries can be installed automatically as **binary xPacks** or manually as
+**portable archives**.
 
-## Prerequisites
-
-The prerequisites are common to all binary builds. Please follow the
-instructions in the separate
-[Prerequisites for building binaries](https://gnu-mcu-eclipse.github.io/developer/build-binaries-prerequisites-xbb/)
-page and return when ready.
-
-## Download the build scripts repo
-
-The build script is available from GitHub and can be
-[viewed online](https://github.com/gnu-mcu-eclipse/windows-build-tools/blob/master/scripts/build.sh).
-
-To download it, clone the
-[gnu-mcu-eclipse/windows-build-tools](https://github.com/gnu-mcu-eclipse/windows-build-tools)
-Git repo, including submodules.
-
-```console
-$ rm -rf ~/Downloads/windows-build-tools.git
-$ git clone --recurse-submodules https://github.com/gnu-mcu-eclipse/windows-build-tools.git \
-  ~/Downloads/windows-build-tools.git
-```
-
-## Check the script
-
-The script creates a temporary build `Work/build-tools` folder in the user
-home. Although not recommended, if for any reasons you need to change this,
-you can redefine `WORK_FOLDER_PATH` variable before invoking the script.
-
-## Preload the Docker images
-
-Docker does not require to explicitly download new images, but does this
-automatically at first use.
-
-However, since the images used for this build are relatively large, it
-is recommended to load them explicitly before starting the build:
-
-```console
-$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh preload-images
-```
-
-The result should look similar to:
-
-```console
-$ docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-ilegeul/centos      6-xbb-v2.1          3644716694e8        2 weeks ago         2.99GB
-ilegeul/centos32    6-xbb-v2.1          921d03805e50        2 weeks ago         2.91GB
-hello-world         latest              f2a91732366c        2 months ago        1.85kB
-```
-
-## Prepare release
-
-To prepare a new release, first determine the version (like `2.10`) and
-update the `scripts/VERSION` file.
-
-## Update CHANGELOG.txt
-
-Check `windows-build-tools.git/CHANGELOG.txt` and add the new release.
-
-## Build
-
-The current platform for Windows production builds is an Ubuntu 18 LTS
-VirtualBox image running on a macMini with 16 GB of RAM and a fast SSD.
-
-Before starting a multi-platform build, check if Docker is started:
-
-```console
-$ docker info
-```
-
-To build both the 32/64-bits Windows use `--all`.
-
-```console
-$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh --all
-```
-
-On macOS, to prevent entering sleep, use:
-
-```console
-$ caffeinate bash ~/Downloads/windows-build-tools.git/scripts/build.sh --all
-```
-
-Several minutes later, the output of the build script is a set of 2
-files and their SHA signatures, created in the `deploy` folder:
-
-```console
-$ ls -l deploy
-total 7384
--rw-rw-rw-@ 1 ilg  staff  1773647 Apr  8 12:07 gnu-mcu-eclipse-windows-build-tools-2.12-20190408-0844-win32.zip
--rw-rw-rw-@ 1 ilg  staff      131 Apr  8 12:07 gnu-mcu-eclipse-windows-build-tools-2.12-20190408-0844-win32.zip.sha
--rw-rw-rw-@ 1 ilg  staff  1992179 Apr  8 11:56 gnu-mcu-eclipse-windows-build-tools-2.12-20190408-0844-win64.zip
--rw-rw-rw-@ 1 ilg  staff      131 Apr  8 11:56 gnu-mcu-eclipse-windows-build-tools-2.12-20190408-0844-win64.zip.sha
-```
-
-To copy the files from the build machine to the current development machine, open the `deploy` folder in a terminal and use `scp`:
-
-```console
-$ scp * ilg@ilg-mbp.local:Downloads/gme-binaries/wbt
-```
-
-## Subsequent runs
-
-### Separate platform specific builds
-
-Instead of `--all`, you can use any combination of:
-
-```
---win32 --win64
-```
-
-### clean
-
-To remove most build files, use:
-
-```console
-$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh clean
-```
-
-To also remove the repository and the output files, use:
-
-```console
-$ bash ~/Downloads/windows-build-tools.git/scripts/build.sh cleanall
-```
-
-For production builds it is recommended to completely remove the build folder.
-
-### --develop
-
-For performance reasons, the actual build folders are internal to each
-Docker run, and are not persistent. This gives the best speed, but has
-the disadvantage that interrupted builds cannot be resumed.
-
-For development builds, it is possible to define the build folders in
-the host file system, and resume an interrupted build.
-
-### --debug
-
-For development builds, it is also possible to create everything
-with `-g -O0` and be able to run debug sessions.
-
-### Interrupted builds
-
-The Docker scripts run with root privileges. This is generally not
-a problem, since at the end of the script the output files are
-reassigned to the actual user.
-
-However, for an interrupted build, this step is skipped, and files
-in the install folder will remain owned by root. Thus, before removing
-the build folder, it might be necessary to run a recursive `chown`.
+In addition to the package meta data, this project also includes
+the build scripts.
 
 ## Install
 
@@ -172,55 +32,103 @@ More details are available on the
 [How to install the Windows Build Tools?](https://gnu-mcu-eclipse.github.io/windows-build-tools/install/)
 page.
 
-After install, the package should create a structure like this (only the
-first two depth levels are shown):
+## User info
+
+This section is intended as a shortcut for those who plan
+to use the GNU Arm Embedded GCC binaries. For full details please read the
+[xPack Windows Build Tools](https://xpack.github.io/windows-build-tools/) pages.
+
+### Easy install
+
+The easiest way to install GNU Arm Embedded GCC is using the **binary xPack**, available as
+[`@xpack-dev-tools/windows-build-tools`](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools)
+from the [`npmjs.com`](https://www.npmjs.com) registry.
+
+#### Prerequisites
+
+The only requirement is a recent
+`xpm`, which is a portable
+[Node.js](https://nodejs.org) command line application. To install it,
+follow the instructions from the
+[xpm](https://xpack.github.io/xpm/install/) page.
+
+#### Install
+
+With the `xpm` tool available, installing
+the latest version of the package is quite easy:
 
 ```console
-xPacks/@gnu-mcu-eclipse/build-tools/2.11/.content/
-├── README.md
-├── bin
-│   ├── busybox.exe
-│   ├── echo.exe
-│   ├── make.exe
-│   ├── mkdir.exe
-│   ├── rm.exe
-│   └── sh.exe
-└── gnu-mcu-eclipse
-    ├── CHANGELOG.txt
-    ├── licenses
-    ├── patches
-    └── scripts
-
-5 directories, 8 files
+$ xpm install --global @xpack-dev-tools/windows-build-tools@latest
 ```
 
-No other files are installed in any system folders or other locations.
+This command will always install the latest available version,
+into the central xPacks repository, which is a platform dependent folder
+(check the output of the `xpm` command for the actual folder used on
+your platform).
 
-## Uninstall
+This location is configurable using the environment variable
+`XPACKS_REPO_FOLDER`; for more details please check the
+[xpm folders](https://xpack.github.io/xpm/folders/) page.
 
-The binaries are distributed as portable archives; thus they do not need
-to run a setup and do not require an uninstall.
+xPacks aware tools, like the **GNU MCU Eclipse plug-ins** automatically
+identify binaries installed with
+`xpm` and provide a convenient method to manage paths.
 
-## More build details
+#### Uninstall
 
-The build process is split into several scripts. The build starts on the
-host, with `build.sh`, which runs `container-build.sh` several times,
-once for each target, in one of the two docker containers. Both scripts
-include several other helper scripts. The entire process is quite complex,
-and an attempt to explain its functionality in a few words would not be
-realistic. Thus, the authoritative source of details remains the source code.
+To remove the installed xPack, the command is similar:
+
+```console
+$ xpm uninstall --global @xpack-dev-tools/windows-build-tools
+```
+
+(Note: not yet implemented. As a temporary workaround, simply remove the
+`xPacks/@xpack-dev-tools/windows-build-tools` folder, or one of the the versioned
+subfolders.)
+
+### Manual install
+
+For all platforms, the **xPack GNU Arm Embedded GCC** binaries are released as portable
+archives that can be installed in any location.
+
+The archives can be downloaded from the
+[GitHub Releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/) page.
+
+For more details please read the [Install](https://xpack.github.io/windows-build-tools/install/) page.
+
+## Maintainer info
+
+- [How to build](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-BUILD.md)
+- [How to publish](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-PUBLISH.md)
+
+## Support
+
+The quick answer is to use the [xPack forums](https://www.tapatalk.com/groups/xpack/);
+please select the correct forum.
+
+For more details please read the [Support](https://xpack.github.io/windows-build-tools/support/) page.
+
+## License
+
+The original content is released under the
+[MIT License](https://opensource.org/licenses/MIT), with all rights
+reserved to [Liviu Ionescu](https://github.com/ilg-ul).
+
+The binary distributions include several open-source components; the
+corresponding licenses are available in the installed
+`distro-info/licenses` folder.
 
 ## Download analytics
 
-* GitHub [gnu-mcu-eclipse/windows-build-tools.git](https://github.com/gnu-mcu-eclipse/windows-build-tools/)
-  * latest release
+- GitHub [gnu-mcu-eclipse/windows-build-tools.git](https://github.com/gnu-mcu-eclipse/windows-build-tools/)
+  - latest release
 [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/windows-build-tools/latest/total.svg)](https://github.com/gnu-mcu-eclipse/windows-build-tools/releases/)
-  * all releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/windows-build-tools/total.svg)](https://github.com/gnu-mcu-eclipse/windows-build-tools/releases/)
-* xPack [@gnu-mcu-eclipse/windows-build-tools](https://github.com/gnu-mcu-eclipse/windows-build-tools-xpack/)
-  * latest release, per month
+  - all releases [![Github All Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/windows-build-tools/total.svg)](https://github.com/gnu-mcu-eclipse/windows-build-tools/releases/)
+- xPack [@gnu-mcu-eclipse/windows-build-tools](https://github.com/gnu-mcu-eclipse/windows-build-tools-xpack/)
+  - latest release, per month
 [![npm (scoped)](https://img.shields.io/npm/v/@gnu-mcu-eclipse/windows-build-tools.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools/)
 [![npm](https://img.shields.io/npm/dm/@gnu-mcu-eclipse/windows-build-tools.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools/)
-  * all releases [![npm](https://img.shields.io/npm/dt/@gnu-mcu-eclipse/windows-build-tools.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools/)
-* [individual file counters](https://www.somsubhra.com/github-release-stats/?username=gnu-mcu-eclipse&repository=windows-build-tools) (grouped per release)
- 
+  - all releases [![npm](https://img.shields.io/npm/dt/@gnu-mcu-eclipse/windows-build-tools.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools/)
+- [individual file counters](https://www.somsubhra.com/github-release-stats/?username=gnu-mcu-eclipse&repository=windows-build-tools) (grouped per release)
+
 Credits to [Shields IO](https://shields.io) and [Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats).
