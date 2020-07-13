@@ -6,11 +6,11 @@ Before starting the build, perform some checks.
 
 ### Check the CHANGELOG file
 
-Open the `CHANGELOG.txt` file from `gnu-mcu-eclipse/windows-build-tools.git` 
+Open the `CHANGELOG.txt` file from `gnu-mcu-eclipse/windows-build-tools.git`
 and check if all new entries are in.
 
-Note: if you missed to update the `CHANGELOG.txt` before starting the build, 
-edit the file and rerun the build, it should take only a few minutes to 
+Note: if you missed to update the `CHANGELOG.txt` before starting the build,
+edit the file and rerun the build, it should take only a few minutes to
 recreate the archives with the correct file.
 
 ### Check the version
@@ -19,7 +19,7 @@ The `VERSION` file should refer to the actual release.
 
 ### Push the project git
 
-In `gnu-mcu-eclipse/windows-build-tools.git`, if necessary, merge 
+In `gnu-mcu-eclipse/windows-build-tools.git`, if necessary, merge
 the `develop` branch into `master`.
 
 Push it to GitHub.
@@ -28,13 +28,13 @@ Possibly push the helper project too.
 
 ### Run the build scripts
 
-When everything is ready, follow the instructions on the 
-[build](https://github.com/gnu-mcu-eclipse/windows-build-tools/blob/master/README.md) 
+When everything is ready, follow the instructions on the
+[build](https://github.com/gnu-mcu-eclipse/windows-build-tools/blob/master/README.md)
 page.
 
 ## Test
 
-Install the binaries on all supported platforms and check if they are 
+Install the binaries on all supported platforms and check if they are
 functional.
 
 ## Create a new GitHub pre-release
@@ -51,7 +51,7 @@ functional.
 - **enable** the **pre-release** button
 - click the **Publish Release** button
 
-Note: at this moment the system should send a notification to all clients 
+Note: at this moment the system should send a notification to all clients
 watching this project.
 
 ## Prepare a new blog post
@@ -64,7 +64,7 @@ In the `gnu-mcu-eclipse.github.io-source.git` web git:
 - as `download_url` use the tagged URL like `https://github.com/gnu-mcu-eclipse/windows-build-tools/releases/tag/v2.12-20190422/`
 - update the `date:` field with the current date
 
-If any, close [issues](https://github.com/gnu-mcu-eclipse/windows-build-tools/issues) 
+If any, close [issues](https://github.com/gnu-mcu-eclipse/windows-build-tools/issues)
 on the way. Refer to them as:
 
 - **[Issue:\[#22\]\(...\)]**.
@@ -93,16 +93,16 @@ $ cat *.sha
 
 ## Update the web
 
-- commit the `gnu-mcu-eclipse.github.io-source.git` project; use a message 
+- commit the `gnu-mcu-eclipse.github.io-source.git` project; use a message
   like **Windows Build Tools v2.12 20190422 released**
 - push the project
-- wait for the Travis build to complete; occasionally links to not work, 
+- wait for the Travis build to complete; occasionally links to not work,
   and might need to restart the build
 - remember the post URL, since it must be updated in the release page
 
 ## Create the xPack release
 
-Follow the instructions on the 
+Follow the instructions on the
 [gnu-mcu-eclipse/windows-build-tools-xpack](https://github.com/gnu-mcu-eclipse/windows-build-tools-xpack/blob/xpack/README.md#maintainer-info)
 page.
 

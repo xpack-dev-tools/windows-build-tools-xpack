@@ -3,12 +3,12 @@
 #   (https://gnu-mcu-eclipse.github.io)
 # Copyright (c) 2019 Liviu Ionescu.
 #
-# Permission to use, copy, modify, and/or distribute this software 
+# Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
-# Helper script used in the second edition of the GNU MCU Eclipse build 
-# scripts. As the name implies, it should contain only functions and 
+# Helper script used in the second edition of the GNU MCU Eclipse build
+# scripts. As the name implies, it should contain only functions and
 # should be included with 'source' by the container build scripts.
 
 # -----------------------------------------------------------------------------
@@ -19,9 +19,9 @@
 
 # -----------------------------------------------------------------------------
 
-function do_make() 
+function do_make()
 {
-  # The make executable is built using the source package from  
+  # The make executable is built using the source package from 
   # the open source MSYS2 project.
   # https://sourceforge.net/projects/msys2/
 
@@ -66,7 +66,7 @@ function do_make()
         tar -xvf "${SOURCES_FOLDER_PATH}/msys2/make/${make_archive}"
 
         cd "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}"
-        
+       
         xbb_activate
 
         echo "Running make autoreconf..."
@@ -81,7 +81,7 @@ function do_make()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
         (
           echo
           echo "Running make configure..."
@@ -127,7 +127,7 @@ function do_make()
   fi
 }
 
-function do_busybox() 
+function do_busybox()
 {
   # https://frippery.org/busybox/
   # https://github.com/rmyorston/busybox-w32
@@ -192,7 +192,7 @@ function do_busybox()
       if [ ! -f "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}/busybox.exe" ]
       then
         (
-          echo 
+          echo
           echo "Running BusyBox make..."
 
           xbb_activate
@@ -267,7 +267,7 @@ function check_binaries()
   echo "Checking binaries for unwanted DLLs..."
 
   local binaries=$(find "${INSTALL_FOLDER_PATH}/${APP_LC_NAME}"/bin -name \*.exe)
-  for bin in ${binaries} 
+  for bin in ${binaries}
   do
     check_binary "${bin}"
   done

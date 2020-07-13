@@ -3,12 +3,12 @@
 #   (https://gnu-mcu-eclipse.github.io)
 # Copyright (c) 2019 Liviu Ionescu.
 #
-# Permission to use, copy, modify, and/or distribute this software 
+# Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
-# Helper script used in the second edition of the GNU MCU Eclipse build 
-# scripts. As the name implies, it should contain only functions and 
+# Helper script used in the second edition of the GNU MCU Eclipse build
+# scripts. As the name implies, it should contain only functions and
 # should be included with 'source' by the container build scripts.
 
 # -----------------------------------------------------------------------------
@@ -19,7 +19,7 @@
 
 # -----------------------------------------------------------------------------
 
-function do_gmp() 
+function do_gmp()
 {
   # https://gmplib.org
   # https://gmplib.org/download/gmp/
@@ -52,7 +52,7 @@ function do_gmp()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running native gmp configure..."
@@ -66,7 +66,7 @@ function do_gmp()
         export CPPFLAGS="-I${INSTALL_FOLDER_PATH}-native/include"
         export LDFLAGS="-L${INSTALL_FOLDER_PATH}-native/lib"
         export ABI="${TARGET_BITS}"
-      
+     
         bash "${WORK_FOLDER_PATH}/${GMP_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}-native" \
           \
@@ -100,7 +100,7 @@ function do_gmp()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running gmp configure..."
@@ -114,7 +114,7 @@ function do_gmp()
         export CPPFLAGS="${EXTRA_CPPFLAGS}"
         export LDFLAGS="${EXTRA_LDFLAGS}"
         export ABI="${TARGET_BITS}"
-      
+     
         bash "${WORK_FOLDER_PATH}/${GMP_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \
@@ -147,7 +147,7 @@ function do_gmp()
   fi
 }
 
-function do_libtool() 
+function do_libtool()
 {
   # https://www.gnu.org/software/libtool/
   # http://gnu.mirrors.linux.ro/libtool/
@@ -177,7 +177,7 @@ function do_libtool()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running native libtool configure..."
@@ -222,7 +222,7 @@ function do_libtool()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running libtool configure..."
@@ -294,7 +294,7 @@ function do_libunistring()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running native libunistring configure..."
@@ -337,7 +337,7 @@ function do_libunistring()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running libunistring configure..."
@@ -409,7 +409,7 @@ function do_libffi()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running native libffi configure..."
@@ -453,7 +453,7 @@ function do_libffi()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running libffi configure..."
@@ -542,7 +542,7 @@ function do_bdwgc()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running native bdwgc configure..."
@@ -586,7 +586,7 @@ function do_bdwgc()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running bdwgc configure..."
@@ -661,7 +661,7 @@ function do_libiconv()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running native libiconv configure..."
@@ -707,7 +707,7 @@ function do_libiconv()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running libiconv configure..."
@@ -827,7 +827,7 @@ function do_guile()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running native guile configure..."
@@ -880,7 +880,7 @@ function do_guile()
       xbb_activate
 
       if [ ! -f "config.status" ]
-      then 
+      then
 
         echo
         echo "Running guile configure..."
@@ -893,7 +893,7 @@ function do_guile()
         export GUILE_FOR_BUILD="${INSTALL_FOLDER_PATH}-native"/bin/guile
 
         # Config inspired from msys2, but with threads, without nls.
-        # --disable-networking due to missing netinet/tcp.h 
+        # --disable-networking due to missing netinet/tcp.h
         bash "${WORK_FOLDER_PATH}/${GUILE_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \

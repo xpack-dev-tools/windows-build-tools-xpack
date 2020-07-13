@@ -7,7 +7,7 @@ The **GNU MCU Eclipse Windows Build Tools** subproject (formerly GNU ARM Eclipse
 The **GNU MCU Eclipse Windows Build Tools** are also available as a binary [xPack](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools) and can be conveniently installed with [xpm](https://www.npmjs.com/package/xpm):
 
 ```console
-$ xpm install --global @gnu-mcu-eclipse/windows-build-tools 
+$ xpm install --global @gnu-mcu-eclipse/windows-build-tools
 ```
 
 For more details on how to install the Windows Build Tools, please see [How to install the Windows Build Tools?](https://gnu-mcu-eclipse.github.io/windows-build-tools/install/) page.
@@ -28,7 +28,7 @@ The scripts used to build this distribution are in:
 
 - `gnu-mcu-eclipse/scripts`
 
-For the prerequisites and more details on the build procedure, please see the [How to build the Windows Build Tools binaries?](https://gnu-mcu-eclipse.github.io/windows-build-tools/build-procedure/) page. 
+For the prerequisites and more details on the build procedure, please see the [How to build the Windows Build Tools binaries?](https://gnu-mcu-eclipse.github.io/windows-build-tools/build-procedure/) page.
 
 ## Documentation
 

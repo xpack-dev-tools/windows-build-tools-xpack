@@ -4,7 +4,7 @@
 #   (https://gnu-mcu-eclipse.github.io)
 # Copyright (c) 2019 Liviu Ionescu.
 #
-# Permission to use, copy, modify, and/or distribute this software 
+# Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
@@ -40,11 +40,11 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-# Script to cross build the 32/64-bit Windows version of Build Tools 
+# Script to cross build the 32/64-bit Windows version of Build Tools
 # with MinGW-w64 on GNU/Linux.
 #
 # Developed on macOS 10.13 High Sierra, but intended to run on
-# CentOS 6 XBB. 
+# CentOS 6 XBB.
 
 # -----------------------------------------------------------------------------
 

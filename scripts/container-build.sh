@@ -4,7 +4,7 @@
 #   (https://gnu-mcu-eclipse.github.io)
 # Copyright (c) 2019 Liviu Ionescu.
 #
-# Permission to use, copy, modify, and/or distribute this software 
+# Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
-# Inner script to run inside Docker containers to build the 
+# Inner script to run inside Docker containers to build the
 # GNU MCU Eclipse Windows Build Tools distribution packages.
 
 defines_script_path="${script_folder_path}/defs-source.sh"
