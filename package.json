@@ -1,0 +1,77 @@
+{
+  "name": "@xpack-dev-tools/windows-build-tools",
+  "version": "2.12.1-1",
+  "description": "An xPack with the Eclipse Embedded CDT Windows Build Tools.",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "git-log": "git log --pretty='%cd * %h %s' --date=short"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xpack-dev-tools/windows-build-tools-xpack.git"
+  },
+  "keywords": [
+    "xpack",
+    "make",
+    "sh",
+    "build"
+  ],
+  "author": {
+    "name": "Liviu Ionescu",
+    "email": "ilg@livius.net",
+    "url": "https://github.com/ilg-ul"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/issues"
+  },
+  "homepage": "https://github.com/xpack-dev-tools/windows-build-tools-xpack",
+  "devDependencies": {},
+  "peerDependencies": {},
+  "bundledDependencies": [],
+  "optionalDependencies": {},
+  "engines": {
+    "node": ">7.7.0"
+  },
+  "xpack": {
+    "binaries": {
+      "destination": "./.content",
+      "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v2.13.1",
+      "skip": 1,
+      "platforms": {
+        "linux-x86": {
+          "skip": true
+        },
+        "arm64": {
+          "skip": true
+        },
+        "arm": {
+          "skip": true
+        },
+        "linux-x64": {
+          "skip": true
+        },
+        "darwin-x64": {
+          "skip": true
+        },
+        "win32-x86": {
+          "sha256": "fb4c6a3a3a93f7ac5dbd88879b782b9b1c31c4b51273dc6c8c4299c23b3c4d98",
+          "fileName": "xpack-windows-build-tools-2.13.1-win32-x32.zip"
+        },
+        "win32-x64": {
+          "sha256": "a8fd184310ffb5bf91660fd09f5b230675ef121deb03722c49562edf4d03318f",
+          "fileName": "xpack-windows-build-tools-2.13.1-win32-x64.zip"
+        }
+      }
+    },
+    "bin": {
+      "make": "./.content/bin/make.exe",
+      "busybox": "./.content/bin/busybox.exe",
+      "echo": "./.content/bin/echo.exe",
+      "mkdir": "./.content/bin/mkdir.exe",
+      "rm": "./.content/bin/rm.exe",
+      "sh": "./.content/bin/sh.exe"
+    }
+  }
+}
