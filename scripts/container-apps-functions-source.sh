@@ -19,7 +19,7 @@
 
 # -----------------------------------------------------------------------------
 
-function do_make()
+function build_make()
 {
   # The make executable is built using the source package from 
   # the open source MSYS2 project.
@@ -43,7 +43,7 @@ function do_make()
   local make_archive="${MAKE_FOLDER_NAME}.tar.bz2"
 
   local make_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-make-${MSYS2_MAKE_VERSION_RELEASE}-installed"
-  if [ ! -f "${make_stamp_file_path}" -o ! -d "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}" ]
+  if [ ! -f "${make_stamp_file_path}" ]
   then
 
     if [ ! -f "${SOURCES_FOLDER_PATH}/msys2/make/${make_archive}" ]
@@ -116,8 +116,15 @@ function do_make()
 
         # Build.
         make -j ${JOBS}
+
         make install-strip
+
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/make-make-output.txt"
+
+      copy_license \
+        "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}" \
+        "${MAKE_FOLDER_NAME}"
+
     )
 
     touch "${make_stamp_file_path}"
@@ -127,7 +134,7 @@ function do_make()
   fi
 }
 
-function do_busybox()
+function build_busybox()
 {
   # https://frippery.org/busybox/
   # https://github.com/rmyorston/busybox-w32
@@ -177,13 +184,13 @@ function do_busybox()
             # The solution is to add _FILE_OFFSET_BITS=64.
             export HOST_EXTRACFLAGS="-D_FILE_OFFSET_BITS=64"
             make mingw32_defconfig \
-              HOSTCC="gcc-7" \
-              HOSTCXX="g++-7"
+              HOSTCC="gcc-xbb" \
+              HOSTCXX="g++-xbb"
           elif [ ${TARGET_BITS} == "64" ]
           then
             make mingw64_defconfig \
-              HOSTCC="gcc-7" \
-              HOSTCXX="g++-7"
+              HOSTCC="gcc-xbb" \
+              HOSTCXX="g++-xbb"
           fi
 
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/configure-busybox-output.txt"
@@ -208,15 +215,22 @@ function do_busybox()
 
           cd "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}"
 
-          make \
-            HOSTCC="gcc-7" \
-            HOSTCXX="g++-7"
+          make -j ${JOBS} \
+            HOSTCC="gcc-xbb" \
+            HOSTCXX="g++-xbb"
 
           mkdir -p "${INSTALL_FOLDER_PATH}/busybox-w32/bin"
           cp busybox.exe "${INSTALL_FOLDER_PATH}/busybox-w32/bin"
+          
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/make-busybox-output.txt"
       fi
+
+      copy_license \
+        "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}" \
+        "busybox-w32"
+
     )
+
     touch "${busybox_stamp_file_path}"
 
   else
@@ -278,26 +292,16 @@ function copy_distro_files()
   (
     xbb_activate
 
-    rm -rf "${APP_PREFIX}/${DISTRO_LC_NAME}"
-    mkdir -p "${APP_PREFIX}/${DISTRO_LC_NAME}"
-
-    echo
-    echo "Copying license files..."
-
-    copy_license \
-      "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}" \
-      "${MAKE_FOLDER_NAME}"
-
-    copy_license \
-      "${BUILD_FOLDER_PATH}/${BUSYBOX_SRC_FOLDER}" \
-      "busybox-w32"
+    rm -rf "${APP_PREFIX}/${DISTRO_INFO_NAME}"
+    mkdir -pv "${APP_PREFIX}/${DISTRO_INFO_NAME}"
 
     copy_build_files
 
     echo
     echo "Copying distro files..."
 
-    cd "${WORK_FOLDER_PATH}/build.git"
-    install -v -c -m 644 "README-out.md" "${APP_PREFIX}/README.md"
+    cd "${BUILD_GIT_PATH}"
+    install -v -c -m 644 "scripts/${README_OUT_FILE_NAME}" \
+      "${APP_PREFIX}/README.md"
   )
 }

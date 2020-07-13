@@ -22,11 +22,12 @@ APP_NAME=${APP_NAME:-"Windows Build Tools"}
 APP_UC_NAME=${APP_UC_NAME:-"Build Tools"}
 APP_LC_NAME=${APP_LC_NAME:-"windows-build-tools"}
 
-DISTRO_UC_NAME=${DISTRO_UC_NAME:-"GNU MCU Eclipse"}
-DISTRO_LC_NAME=${DISTRO_LC_NAME:-"gnu-mcu-eclipse"}
+DISTRO_UC_NAME=${DISTRO_UC_NAME:-"xPack"}
+DISTRO_LC_NAME=${DISTRO_LC_NAME:-"xpack"}
+DISTRO_TOP_FOLDER=${DISTRO_TOP_FOLDER:-"xPacks"}
 
-# TODO: remove it.
-DISTRO_INFO_NAME=${DISTRO_INFO_NAME:-"${DISTRO_LC_NAME}"}
+# Use the new xPack naming convention.
+HAS_NAME_ARCH="y"
 
 CONTAINER_SCRIPT_NAME=${CONTAINER_SCRIPT_NAME:-"container-build.sh"}
 CONTAINER_LIBS_FUNCTIONS_SCRIPT_NAME=${CONTAINER_LIBS_FUNCTIONS_SCRIPT_NAME:-"container-libs-functions-source.sh"}

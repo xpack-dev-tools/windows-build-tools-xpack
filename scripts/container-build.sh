@@ -73,18 +73,27 @@ source "${container_app_functions_script_path}"
 
 if [ ! -z "#{DEBUG}" ]
 then
-  echo $@
+  echo "$@"
 fi
 
 WITH_STRIP="y"
 WITHOUT_MULTILIB=""
 WITH_PDF="y"
 WITH_HTML="n"
+
 IS_DEVELOP=""
 IS_DEBUG=""
 LINUX_INSTALL_PATH=""
 
-JOBS=""
+if [ "$(uname)" == "Linux" ]
+then
+  JOBS="$(nproc)"
+elif [ "$(uname)" == "Darwin" ]
+then
+  JOBS="$(sysctl hw.ncpu | sed 's/hw.ncpu: //')"
+else
+  JOBS="1"
+fi
 
 while [ $# -gt 0 ]
 do
@@ -141,6 +150,20 @@ do
 
 done
 
+if [ "${IS_DEBUG}" == "y" ]
+then
+  export WITH_STRIP="n"
+fi
+
+if [ "${TARGET_PLATFORM}" == "win32" ]
+then
+  export WITH_TESTS="n"
+fi
+
+env | sort
+
+README_OUT_FILE_NAME="README-out.md"
+
 # -----------------------------------------------------------------------------
 
 start_timer
@@ -148,7 +171,6 @@ start_timer
 detect_container
 
 prepare_xbb_env
-
 prepare_xbb_extras
 
 # -----------------------------------------------------------------------------
@@ -171,9 +193,9 @@ then
   do_guile
 fi
 
-do_make
+build_make
 
-do_busybox
+build_busybox
 
 # -----------------------------------------------------------------------------
 
