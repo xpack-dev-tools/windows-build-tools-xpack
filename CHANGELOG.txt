@@ -3,6 +3,7 @@ Entries in this file are in reverse chronological order.
 
 [2020-07-13]
 
+- bump v2.13.1
 - update for XBB v3.2
 
 [2019-04-22]
