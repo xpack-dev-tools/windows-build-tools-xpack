@@ -66,7 +66,7 @@ In the `xpack.github.io` web Git:
 
 - add a new file to `_posts/windows-build-tools/releases`
 - name the file like `2020-07-14-windows-build-tools-v2-12-2-released.md`
-- name the post like: **xPack Windows Build Tools v2.12.2 released**.
+- name the post like: **xPack Windows Build Tools v2.12.2 released**
 - as `download_url` use the tagged URL like `https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v2.12.2/`
 - update the `date:` field with the current date
 

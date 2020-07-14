@@ -6,8 +6,8 @@
 This open source project is hosted on GitHub as
 [`xpack-dev-tools/windows-build-tools-xpack`](https://github.com/xpack-dev-tools/windows-build-tools-xpack).
 
-It is not a full multi-platform xPack but a Windows specific package,
-customised for the requirements of the Eclipse CDT managed build projects;
+It is a Windows specific package (not a full multi-platform xPack), customised
+for the requirements of the Eclipse Embedded CDT managed build projects;
 it includes a recent version of **GNU make** and a recent version of
 **BusyBox**, which provides a convenient implementation for `sh`/`rm`/`echo`.
 
@@ -29,7 +29,7 @@ $ xpm install --global @gnu-mcu-eclipse/windows-build-tools
 ```
 
 More details are available on the
-[How to install the Windows Build Tools?](https://gnu-mcu-eclipse.github.io/windows-build-tools/install/)
+[How to install the Windows Build Tools](https://xpack.github.io/windows-build-tools/install/)
 page.
 
 ## User info
