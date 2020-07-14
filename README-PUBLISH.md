@@ -47,11 +47,11 @@ functional.
 - commit and push the repo
 - go to the [GitHub Releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases) page
 - click **Draft a new release**
-- name the tag like **v2.13.1**
+- name the tag like **v2.12.2**
 - select the `master` branch
-- name the release like **xPack Windows Build Tools v2.13.1**
+- name the release like **xPack Windows Build Tools v2.12.2**
 - as description
-  - add a downloads badge like `![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/v2.13.1/total.svg)`
+  - add a downloads badge like `![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/v2.12.2/total.svg)`
   - draft a short paragraph explaining what are the main changes
 - **attach binaries** and SHA (drag and drop from the archives folder will do it)
 - **enable** the **pre-release** button
@@ -65,9 +65,9 @@ watching this project.
 In the `xpack.github.io` web Git:
 
 - add a new file to `_posts/windows-build-tools/releases`
-- name the file like `2020-07-14-windows-build-tools-v2-13-1-released.md`
-- name the post like: **xPack Windows Build Tools v2.13.1 released**.
-- as `download_url` use the tagged URL like `https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v2.13.1/`
+- name the file like `2020-07-14-windows-build-tools-v2-12-2-released.md`
+- name the post like: **xPack Windows Build Tools v2.12.2 released**.
+- as `download_url` use the tagged URL like `https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v2.12.2/`
 - update the `date:` field with the current date
 
 If any, close [issues](https://github.com/xpack-dev-tools/windows-build-tools-xpack/issues)
@@ -83,11 +83,11 @@ Copy/paste the build report at the end of the post as:
 ## Checksums
 The SHA-256 hashes for the files are:
 
-c844341cfbb96bd8f2f76a38f567674df10946810c7375c766a5718b7b8e2847
-xpack-windows-build-tools-2.13.1-win32-x32.zip
+96a796420ae47f5ef0e85af99be40ce28ed960f515121ad9b7ce4264a4765822
+xpack-windows-build-tools-2.12.2-win32-x32.zip
 
-1fde46d99e5c20e98e877d46223bc053456743f25473f90ed57db73b69c70e58
-xpack-windows-build-tools-2.13.1-win32-x64.zip
+54e443420bfe355e7d0b0f3e896eed311847c02fab1fee6e8db89a474987a9a2
+xpack-windows-build-tools-2.12.2-win32-x64.zip
 ```
 
 If you missed this, `cat` the content of the `.sha` files:
@@ -100,7 +100,7 @@ $ cat *.sha
 ## Update the web
 
 - commit the `xpack.github.io` web Git; use a message
-  like **xPack Windows Build Tools v2.13.1 released**
+  like **xPack Windows Build Tools v2.12.2 released**
 - adjust timestamps
 - push the project
 - wait for the GitHub Pages build to complete
@@ -113,11 +113,11 @@ $ cat *.sha
 - update the `baseUrl:` with the file URLs (including the tag/version)
 - from the release, copy the SHA & file names
 - check the executable names
-- commit all changes, use a message like `package.json: update urls for 2.13.1 release` (without `v`)
+- commit all changes, use a message like `package.json: update urls for 2.12.2 release` (without `v`)
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`; commit with a message like
-  _CHANGELOG: prepare npm v2.13.1-1_
-- `npm version 2.13.1-1`; the first 3 numbers are the same as the
+  _CHANGELOG: prepare npm v2.12.2-1_
+- `npm version 2.12.2-1`; the first 3 numbers are the same as the
   GitHub release; the fourth number is the npm specific version
 - `npm pack` and check the content of the archive
 - push all changes to GitHub
@@ -126,7 +126,7 @@ $ cat *.sha
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack-dev-tools/windows-build-tools`
-- `npm dist-tag add @xpack-dev-tools/windows-build-tools@2.13.1-1 latest`
+- `npm dist-tag add @xpack-dev-tools/windows-build-tools@2.12.2-1 latest`
 - `npm dist-tag ls @xpack-dev-tools/windows-build-tools`
 
 ## Test npm binaries

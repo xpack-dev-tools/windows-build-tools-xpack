@@ -68,7 +68,7 @@ page and return when ready.
 
 ## Prepare release
 
-To prepare a new release, first determine the version (like `2.10`) and
+To prepare a new release, first determine the version (like `2.12.2`) and
 update the `scripts/VERSION` file.
 
 ## Update CHANGELOG.txt
@@ -142,12 +142,11 @@ files and their SHA signatures, created in the `deploy` folder:
 
 ```console
 $ ls -l deploy
-total 3560
-drwxrwxr-x 4 ilg ilg    4096 Jul 13 15:41 xpack-windows-build-tools-2.13.1
--rw-rw-r-- 1 ilg ilg 1700499 Jul 13 17:32 xpack-windows-build-tools-2.13.1-win32-x32.zip
--rw-rw-r-- 1 ilg ilg     113 Jul 13 17:32 xpack-windows-build-tools-2.13.1-win32-x32.zip.sha
--rw-rw-r-- 1 ilg ilg 1926733 Jul 13 17:32 xpack-windows-build-tools-2.13.1-win32-x64.zip
--rw-rw-r-- 1 ilg ilg     113 Jul 13 17:32 xpack-windows-build-tools-2.13.1-win32-x64.zip.sha
+total 3556
+-rw-rw-r-- 1 ilg ilg 1700582 Jul 14 11:26 xpack-windows-build-tools-2.12.2-win32-x32.zip
+-rw-rw-r-- 1 ilg ilg     113 Jul 14 11:26 xpack-windows-build-tools-2.12.2-win32-x32.zip.sha
+-rw-rw-r-- 1 ilg ilg 1926825 Jul 14 11:25 xpack-windows-build-tools-2.12.2-win32-x64.zip
+-rw-rw-r-- 1 ilg ilg     113 Jul 14 11:25 xpack-windows-build-tools-2.12.2-win32-x64.zip.sha
 ```
 
 To copy the files from the build machine to the current development machine, open the `deploy` folder in a terminal and use `scp`:
@@ -218,7 +217,7 @@ After install, the package should create a structure like this (only the
 first two depth levels are shown):
 
 ```console
-xPacks/@xpack-dev-tools/build-tools/2.11/.content/
+xPacks/@xpack-dev-tools/windows-build-tools/2.12.2-1/.content/
 ├── README.md
 ├── bin
 │   ├── busybox.exe

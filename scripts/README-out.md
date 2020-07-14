@@ -38,10 +38,10 @@ be compatible with most recent systems.
 
 The scripts used to build this distribution are in:
 
-- `gnu-mcu-eclipse/scripts`
+- `distro-info/scripts`
 
 For the prerequisites and more details on the build procedure, please see the
-[How to build the Windows Build Tools binaries](https://gnu-mcu-eclipse.github.io/windows-build-tools/build-procedure/) page.
+[How to build the Windows Build Tools binaries](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-BUILD.md) page.
 
 ## Documentation
 
