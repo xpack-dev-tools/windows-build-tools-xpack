@@ -116,8 +116,8 @@ $ cat *.sha
 - commit all changes, use a message like `package.json: update urls for 2.12.2 release` (without `v`)
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`; commit with a message like
-  _CHANGELOG: prepare npm v2.12.2-1_
-- `npm version 2.12.2-1`; the first 3 numbers are the same as the
+  _CHANGELOG: prepare npm v2.12.2-2_
+- `npm version 2.12.2-2`; the first 3 numbers are the same as the
   GitHub release; the fourth number is the npm specific version
 - `npm pack` and check the content of the archive
 - push all changes to GitHub
@@ -126,7 +126,7 @@ $ cat *.sha
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack-dev-tools/windows-build-tools`
-- `npm dist-tag add @xpack-dev-tools/windows-build-tools@2.12.2-1 latest`
+- `npm dist-tag add @xpack-dev-tools/windows-build-tools@2.12.2-2 latest`
 - `npm dist-tag ls @xpack-dev-tools/windows-build-tools`
 
 ## Test npm binaries
