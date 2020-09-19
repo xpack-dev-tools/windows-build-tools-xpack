@@ -43,10 +43,10 @@
         "linux-x86": {
           "skip": true
         },
-        "arm64": {
+        "linux-arm64": {
           "skip": true
         },
-        "arm": {
+        "linux-arm": {
           "skip": true
         },
         "linux-x64": {
