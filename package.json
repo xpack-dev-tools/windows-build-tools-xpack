@@ -1,6 +1,6 @@
 {
   "name": "@xpack-dev-tools/windows-build-tools",
-  "version": "2.12.2-2",
+  "version": "4.2.1-1.1",
   "description": "An xPack with the Eclipse Embedded CDT Windows Build Tools.",
   "main": "",
   "scripts": {
