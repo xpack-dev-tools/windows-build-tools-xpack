@@ -101,7 +101,7 @@ Before running a build for the first time, it is recommended to preload the
 docker images.
 
 ```console
-$ bash ~/Downloads/arm-none-eabi-gcc-xpack.git/scripts/build.sh preload-images
+$ bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh preload-images
 ```
 
 The result should look similar to:
