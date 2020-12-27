@@ -13,7 +13,7 @@ The **xPack Windows Build Tools** are also available as a binary
 and can be conveniently installed with [xpm](https://www.npmjs.com/package/xpm):
 
 ```console
-$ xpm install --global @xpack-dev-tools/windows-build-tools
+$ xpm install --global @xpack-dev-tools/windows-build-tools@latest
 ```
 
 For more details please see the
@@ -21,8 +21,8 @@ For more details please see the
 
 ## Changes
 
-There are currently no changes from the official MSYS2 distribution
-the official BusyBox distribution.
+There are currently no changes from the official GNU distribution
+and the official BusyBox distribution.
 
 ## Compatibility
 

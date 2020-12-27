@@ -83,13 +83,13 @@ From here it'll be cloned on the production machines.
 
 ### Run the build scripts
 
-On the macOS machine (`xbbm`) open ssh sessions to the Linux machine `xbbi`:
+Open a ssh session to the Linux machine `xbbi`:
 
 ```sh
 caffeinate ssh xbbi
 ```
 
-On all machines, clone the `xpack-develop` branch:
+Clone the `xpack-develop` branch:
 
 ```sh
 rm -rf ~/Downloads/windows-build-tools-xpack.git; \
@@ -100,7 +100,7 @@ git clone \
   ~/Downloads/windows-build-tools-xpack.git
 ```
 
-On all machines, remove any previous build:
+Remove any previous build:
 
 ```sh
 sudo rm -rf ~/Work/windows-build-tools-*
@@ -108,13 +108,11 @@ sudo rm -rf ~/Work/windows-build-tools-*
 
 Empty trash.
 
-On `xbbi`:
-
 ```sh
 bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh --all
 ```
 
-A typical run on the Arm machine it takes about 60 minutes.
+A typical run takes about 2 minutes.
 
 ### Clean the destination folder
 
@@ -127,7 +125,7 @@ rm -f ~/Downloads/xpack-binaries/windows-build-tools/*
 
 ### Copy the binaries to the development machine
 
-On all three machines:
+On `xbbi`:
 
 ```sh
 (cd ~/Work/windows-build-tools-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/windows-build-tools)
