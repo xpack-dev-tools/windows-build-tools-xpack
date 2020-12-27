@@ -238,7 +238,7 @@ xpm-js.git/bin/xpm-dev.js binaries-update '4.2.1-1' "${HOME}/Downloads/xpack-bin
 - compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
 - commit all changes, use a message like
-  `package.json: update urls for 4.2.1-1.1 release` (without `v`)
+  `package.json: update urls for 4.2.1-1 release` (without `v`)
 
 ## Publish on the npmjs.com server
 
@@ -246,8 +246,8 @@ xpm-js.git/bin/xpm-dev.js binaries-update '4.2.1-1' "${HOME}/Downloads/xpack-bin
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`; commit with a message like
   _CHANGELOG: prepare npm v4.2.1-1.1_
-- `npm version 4.2.1-1.1`; the first 5 numbers are the same as the
-  GitHub release; the sixth number is the npm specific version
+- `npm version 4.2.1-1.1`; the first 4 numbers are the same as the
+  GitHub release; the fifth number is the npm specific version
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`
 - push the `xpack-develop` branch to GitHub
