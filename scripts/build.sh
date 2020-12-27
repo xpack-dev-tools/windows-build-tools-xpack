@@ -40,6 +40,10 @@ script_folder_name="$(basename "${script_folder_path}")"
 
 # =============================================================================
 
+helper_folder_path="${script_folder_path}/helper"
+
+# -----------------------------------------------------------------------------
+
 # Script to cross build the 32/64-bit Windows version of Build Tools
 # with MinGW-w64 on GNU/Linux.
 #
@@ -49,7 +53,7 @@ script_folder_name="$(basename "${script_folder_path}")"
 # -----------------------------------------------------------------------------
 
 echo
-echo "GNU MCU Eclipse Windows Build Tools distribution build script."
+echo "xPack Windows Build Tools build script."
 
 host_functions_script_path="${script_folder_path}/helper/host-functions-source.sh"
 source "${host_functions_script_path}"
@@ -116,7 +120,7 @@ then
     --script "${CONTAINER_WORK_FOLDER_PATH}/${CONTAINER_BUILD_SCRIPT_REL_PATH}" \
     --env-file "${ENV_FILE}" \
     --target-platform "win32" \
-    --target-arch "x32" \
+    --target-arch "ia32" \
     --target-bits 32 \
     --docker-image "${docker_linux32_image}" \
     -- \

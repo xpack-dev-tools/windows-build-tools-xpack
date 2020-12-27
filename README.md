@@ -17,30 +17,16 @@ The binaries can be installed automatically as **binary xPacks** or manually as
 In addition to the package meta data, this project also includes
 the build scripts.
 
-## Install
-
-The procedure to install GNU MCU Eclipse Windows Build Tools is
-relatively straight forward, expanding a .zip archive on Windows.
-
-A portable method is to use [`xpm`](https://www.npmjs.com/package/xpm):
-
-```console
-$ xpm install --global @gnu-mcu-eclipse/windows-build-tools
-```
-
-More details are available on the
-[How to install the Windows Build Tools](https://xpack.github.io/windows-build-tools/install/)
-page.
-
 ## User info
 
 This section is intended as a shortcut for those who plan
-to use the GNU Arm Embedded GCC binaries. For full details please read the
+to use the xPack Windows Build Tools binaries. For full details please read the
 [xPack Windows Build Tools](https://xpack.github.io/windows-build-tools/) pages.
 
 ### Easy install
 
-The easiest way to install GNU Arm Embedded GCC is using the **binary xPack**, available as
+The easiest way to install xPack Windows Build Tools is using
+the **binary xPack**, available as
 [`@xpack-dev-tools/windows-build-tools`](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools)
 from the [`npmjs.com`](https://www.npmjs.com) registry.
 

@@ -21,64 +21,36 @@
 
 function build_make()
 {
-  # The make executable is built using the source package from 
-  # the open source MSYS2 project.
-  # https://sourceforge.net/projects/msys2/
+  # https://www.gnu.org/software/make/
+  # ftp://ftp.gnu.org/gnu/make/
+  # http://ftpmirror.gnu.org/make/
 
-  MSYS2_MAKE_PACK_URL_BASE="http://sourceforge.net/projects/msys2/files"
+  MAKE_VERSION="$1"
 
-  # http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/Sources/
-  # http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/Sources/make-4.1-4.src.tar.gz/download
+  # The folder name as resulted after being extracted from the archive.
+  MAKE_SRC_FOLDER_NAME="make-${MAKE_VERSION}"
+  # The folder name  for build, licenses, etc.
+  MAKE_FOLDER_NAME="${MAKE_SRC_FOLDER_NAME}"
 
-  # Warning! 4.2 requires gettext-0.19.4. it does not build on Debian 8.
-  # 2016-06-15
-  MAKE_VERSION="4.2.1"
-  MSYS2_MAKE_VERSION_RELEASE="${MAKE_VERSION}-1"
+  local make_archive_file_name="${MAKE_FOLDER_NAME}.tar.gz"
 
-  MSYS2_MAKE_FOLDER_NAME="make-${MSYS2_MAKE_VERSION_RELEASE}"
-  local msys2_make_archive="${MSYS2_MAKE_FOLDER_NAME}.src.tar.gz"
-  local msys2_make_url="${MSYS2_MAKE_PACK_URL_BASE}/REPOS/MSYS2/Sources/${msys2_make_archive}"
+  local make_url="https://ftp.gnu.org/gnu/make/${make_archive_file_name}"
 
-  MAKE_FOLDER_NAME="make-${MAKE_VERSION}"
-  local make_archive="${MAKE_FOLDER_NAME}.tar.bz2"
-
-  local make_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-make-${MSYS2_MAKE_VERSION_RELEASE}-installed"
+  local make_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-make-${MAKE_VERSION}-installed"
   if [ ! -f "${make_stamp_file_path}" ]
   then
 
-    if [ ! -f "${SOURCES_FOLDER_PATH}/msys2/make/${make_archive}" ]
-    then
-      (
-        mkdir -p "${SOURCES_FOLDER_PATH}/msys2"
-        cd "${SOURCES_FOLDER_PATH}/msys2"
+    cd "${SOURCES_FOLDER_PATH}"
 
-        download_and_extract "${msys2_make_url}" "${msys2_make_archive}" "make"
-      )
-    fi
-
-    if [ ! -d "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}" ]
-    then
-      (
-        cd "${SOURCES_FOLDER_PATH}"
-        echo
-        echo "Unpacking ${make_archive}..."
-
-        tar -xvf "${SOURCES_FOLDER_PATH}/msys2/make/${make_archive}"
-
-        cd "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}"
-       
-        xbb_activate
-
-        echo "Running make autoreconf..."
-        autoreconf -fi
-      )
-    fi
+    download_and_extract "${make_url}" "${make_archive_file_name}" \
+      "${MAKE_SRC_FOLDER_NAME}" 
 
     (
       mkdir -p "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}"
       cd "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}"
 
       xbb_activate
+      xbb_activate_installed_bin
 
       if [ ! -f "config.status" ]
       then
@@ -88,13 +60,23 @@ function build_make()
 
           # cd "${make_build_folder}"
 
-          bash "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}/configure" --help
+          run_verbose bash "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}/configure" --help
 
-          export CFLAGS="${XBB_CFLAGS}"
-          export LDFLAGS="${XBB_LDFLAGS_APP} -static"
+          # CPPFLAGS="${XBB_CPPFLAGS} -I${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}/glob"
+          CPPFLAGS="${XBB_CPPFLAGS}"
+          CFLAGS="${XBB_CFLAGS}"
+          LDFLAGS="${XBB_LDFLAGS_APP} -static"
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            LDFLAGS+=" -v"
+          fi
+
+          export CPPFLAGS
+          export CFLAGS
+          export LDFLAGS
 
           echo
-          bash "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}/configure" \
+          run_verbose bash "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}/configure" \
             --prefix="${INSTALL_FOLDER_PATH}/make-${MAKE_VERSION}"  \
             --build=${BUILD} \
             --host=${HOST} \
@@ -115,9 +97,12 @@ function build_make()
         echo "Running make make..."
 
         # Build.
-        make -j ${JOBS}
+        run_verbose make -j ${JOBS}
 
-        make install-strip
+        # Not on mingw.
+        # run_verbose make check
+
+        run_verbose make install-strip
 
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/make-make-output.txt"
 
@@ -144,12 +129,20 @@ function build_busybox()
   # BUSYBOX_COMMIT="977d65c1bbc57f5cdd0c8bfd67c8b5bb1cd390dd"
   # BUSYBOX_COMMIT="9fa1e4990e655a85025c9d270a1606983e375e47"
   # BUSYBOX_COMMIT="c2002eae394c230d6b89073c9ff71bc86a7875e8"
+
   # Dec 9, 2017
   # BUSYBOX_COMMIT="096aee2bb468d1ab044de36e176ed1f6c7e3674d"
+
   # Apr 13, 2018
   # BUSYBOX_COMMIT="6f7d1af269eed4b42daeb9c6dfd2ba62f9cd47e4"
+
   # Apr 06, 2019
-  BUSYBOX_COMMIT="65ae5b24cc08f898e81b36421b616fc7fc25d2b1"
+  # BUSYBOX_COMMIT="65ae5b24cc08f898e81b36421b616fc7fc25d2b1"
+
+  # Dec 12, 2020
+  # BUSYBOX_COMMIT="f902184fa8aa37b0ce8b725da5657ef2ed2005dd
+
+  BUSYBOX_COMMIT="$1"
 
   BUSYBOX_ARCHIVE="${BUSYBOX_COMMIT}.zip"
   BUSYBOX_URL="https://github.com/rmyorston/busybox-w32/archive/${BUSYBOX_ARCHIVE}"

@@ -56,6 +56,14 @@ common_helper_functions_script_path="${script_folder_path}/helper/common-functio
 echo "Common helper functions source script: \"${common_helper_functions_script_path}\"."
 source "${common_helper_functions_script_path}"
 
+common_helper_apps_functions_script_path="${script_folder_path}/helper/common-apps-functions-source.sh"
+echo "Common helper apps functions source script: \"${common_helper_apps_functions_script_path}\"."
+source "${common_helper_apps_functions_script_path}"
+
+common_versions_script_path="${script_folder_path}/common-versions-source.sh"
+echo "Common versions source script: \"${common_versions_script_path}\"."
+source "${common_versions_script_path}"
+
 container_functions_script_path="${script_folder_path}/helper/container-functions-source.sh"
 echo "Container helper functions source script: \"${container_functions_script_path}\"."
 source "${container_functions_script_path}"
@@ -80,6 +88,7 @@ WITH_STRIP="y"
 WITHOUT_MULTILIB=""
 WITH_PDF="y"
 WITH_HTML="n"
+WITH_TESTS="y"
 
 IS_DEVELOP=""
 IS_DEBUG=""
@@ -102,6 +111,11 @@ do
 
     --disable-strip)
       WITH_STRIP="n"
+      shift
+      ;;
+
+    --disable-tests)
+      WITH_TESTS="n"
       shift
       ;;
 
@@ -171,6 +185,7 @@ start_timer
 detect_container
 
 prepare_xbb_env
+
 prepare_xbb_extras
 
 # -----------------------------------------------------------------------------
@@ -179,23 +194,7 @@ echo
 echo "Here we go..."
 echo
 
-# Test to build guile
-if false
-then
-
-  do_gmp
-  do_libtool
-  do_libunistring
-  do_libffi
-  do_bdwgc
-  do_libiconv
-
-  do_guile
-fi
-
-build_make
-
-build_busybox
+build_versions
 
 # -----------------------------------------------------------------------------
 
@@ -203,9 +202,9 @@ copy_binaries
 
 # -----------------------------------------------------------------------------
 
-check_binaries
-
 copy_distro_files
+
+check_binaries
 
 create_archive
 
