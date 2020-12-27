@@ -36,7 +36,7 @@ When everything is ready, follow the instructions on the
 [build](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/master/README.md)
 page.
 
-## Test
+## Testing
 
 Install the binaries on all supported platforms and check if they are
 functional.
@@ -45,7 +45,7 @@ functional.
 
 - in `CHANGELOG.md`, add release date
 - commit and push the repo
-- go to the [GitHub Releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases) page
+- go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases) page
 - click **Draft a new release**
 - name the tag like **v2.12.2**
 - select the `master` branch
@@ -101,26 +101,32 @@ $ cat *.sha
 
 - commit the `xpack.github.io` web Git; use a message
   like **xPack Windows Build Tools v2.12.2 released**
-- adjust timestamps
 - push the project
 - wait for the GitHub Pages build to complete
 - remember the post URL, since it must be updated in the release page
 
 ## Publish on the npmjs.com server
 
-- open [GitHub Releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases)
-  and select the latest release
-- update the `baseUrl:` with the file URLs (including the tag/version)
+- select the `xpack-develop` branch
+- open the `package.json` file
+- open the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases)
+  page and select the latest release
+- check the download counter, it should match the number of tests
+- update the `baseUrl:` with the file URLs (including the tag/version);
+  no terminating `/` is required
 - from the release, copy the SHA & file names
+- compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
-- commit all changes, use a message like `package.json: update urls for 2.12.2 release` (without `v`)
+- commit all changes, use a message like
+  `package.json: update urls for 2.12.2 release` (without `v`)
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`; commit with a message like
   _CHANGELOG: prepare npm v2.12.2-2_
 - `npm version 2.12.2-2`; the first 3 numbers are the same as the
   GitHub release; the fourth number is the npm specific version
-- `npm pack` and check the content of the archive
-- push all changes to GitHub
+- `npm pack` and check the content of the archive, which should list
+  only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`
+- push the `xpack-develop` branch to GitHub
 - `npm publish --tag next` (use `--access public` when publishing for the first time)
 
 When the release is considered stable, promote it as `latest`:
@@ -139,7 +145,7 @@ $ xpm install --global @xpack-dev-tools/windows-build-tools@next
 
 ## Create a final GitHub release
 
-- go to the [GitHub Releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases) page
+- go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases) page
 - check the download counter, it should match the number of tests
 - add a link to the Web page `[Continue reading »]()`; use an same blog URL
 - **disable** the **pre-release** button
