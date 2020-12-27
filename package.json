@@ -37,10 +37,10 @@
   "xpack": {
     "binaries": {
       "destination": "./.content",
-      "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v2.12.2",
+      "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v4.2.1-1",
       "skip": 1,
       "platforms": {
-        "linux-x86": {
+        "linux-ia32": {
           "skip": true
         },
         "linux-arm64": {
@@ -55,13 +55,13 @@
         "darwin-x64": {
           "skip": true
         },
-        "win32-x86": {
-          "sha256": "0076cf109d08f7a176267c12aa3f8df9bce9a02b386379ad199f169b98193897",
-          "fileName": "xpack-windows-build-tools-2.12.2-win32-x32.zip"
+        "win32-ia32": {
+          "fileName": "xpack-windows-build-tools-4.2.1-1-win32-ia32.zip",
+          "sha256": "b8f7cdbaa23f6e3fc82c8f16ad165f0c945917c251c41726e270e6f335d03c5a"
         },
         "win32-x64": {
-          "sha256": "b45514eece3fd28a26e69a4e16364021309900791699f4167f4172c20c81e9cf",
-          "fileName": "xpack-windows-build-tools-2.12.2-win32-x64.zip"
+          "fileName": "xpack-windows-build-tools-4.2.1-1-win32-x64.zip",
+          "sha256": "14e81cceae9e990edb3a6b682cc9b8ad8bf2e29ffa36410fdc887525b7040128"
         }
       }
     },
