@@ -25,6 +25,9 @@ function build_make()
   # ftp://ftp.gnu.org/gnu/make/
   # http://ftpmirror.gnu.org/make/
 
+  # 2016-06-11, "4.2.1"
+  # 2020-01-20, "4.3" (fails with mings 7)
+
   MAKE_VERSION="$1"
 
   # The folder name as resulted after being extracted from the archive.
