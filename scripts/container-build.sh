@@ -89,6 +89,7 @@ WITHOUT_MULTILIB=""
 WITH_PDF="y"
 WITH_HTML="n"
 WITH_TESTS="y"
+LINUX_INSTALL_RELATIVE_PATH=""
 
 IS_DEVELOP=""
 IS_DEBUG=""
@@ -155,6 +156,11 @@ do
       shift
       ;;
 
+    --linux-install-relative-path)
+      LINUX_INSTALL_RELATIVE_PATH="$2"
+      shift 2
+      ;;
+
     *)
       echo "Unknown action/option $1"
       exit 1
@@ -195,10 +201,6 @@ echo "Here we go..."
 echo
 
 build_versions
-
-# -----------------------------------------------------------------------------
-
-copy_binaries
 
 # -----------------------------------------------------------------------------
 
