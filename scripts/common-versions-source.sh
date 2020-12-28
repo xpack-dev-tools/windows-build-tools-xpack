@@ -42,6 +42,13 @@ function build_versions()
   if [[ "${RELEASE_VERSION}" =~ 4\.3\.0-* ]]
   then
 
+    (
+      prepare_gcc_env "" "-xbb"
+
+      # Required by make 4.3
+      build_automake "1.16.3"
+    )
+
     build_make "4.3" # fails on gcc 9 & mingw 7
 
     build_busybox "f902184fa8aa37b0ce8b725da5657ef2ed2005dd"

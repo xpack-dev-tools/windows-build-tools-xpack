@@ -45,8 +45,24 @@ function build_make()
 
     cd "${SOURCES_FOLDER_PATH}"
 
-    download_and_extract "${make_url}" "${make_archive_file_name}" \
-      "${make_src_folder_name}" 
+    if [ ! -d "${SOURCES_FOLDER_PATH}/${make_src_folder_name}" ]
+    then
+      download_and_extract "${make_url}" "${make_archive_file_name}" \
+        "${make_src_folder_name}" 
+
+      if false
+      then
+      (
+        cd "${SOURCES_FOLDER_PATH}/${make_src_folder_name}"
+
+        xbb_activate
+        xbb_activate_installed_bin
+
+        echo "Running make autoreconf..."
+        autoreconf -fi
+      )
+      fi
+    fi
 
     (
       mkdir -p "${BUILD_FOLDER_PATH}/${make_folder_name}"
@@ -97,6 +113,7 @@ function build_make()
           if [ "${TARGET_PLATFORM}" == "win32" ]
           then
             config_options+=("ac_cv_dos_paths=yes")
+            # config_options+=("ac_cv_func_fcntl=no")
           fi
 
           run_verbose bash "${SOURCES_FOLDER_PATH}/${make_folder_name}/configure" \
