@@ -39,7 +39,14 @@ function build_versions()
     )
   fi
 
-  if [[ "${RELEASE_VERSION}" =~ 4\.2\.1-* ]]
+  if [[ "${RELEASE_VERSION}" =~ 4\.3\.0-* ]]
+  then
+
+    build_make "4.3" # fails on gcc 9 & mingw 7
+
+    build_busybox "f902184fa8aa37b0ce8b725da5657ef2ed2005dd"
+
+  elif [[ "${RELEASE_VERSION}" =~ 4\.2\.1-* ]]
   then
 
     build_make "4.2.1" # "4.3" fails on gcc 9 & mingw 7
