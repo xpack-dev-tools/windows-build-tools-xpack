@@ -28,29 +28,29 @@ function build_make()
   # 2016-06-11, "4.2.1"
   # 2020-01-20, "4.3" (fails with mings 7)
 
-  MAKE_VERSION="$1"
+  local make_version="$1"
 
   # The folder name as resulted after being extracted from the archive.
-  MAKE_SRC_FOLDER_NAME="make-${MAKE_VERSION}"
+  local make_src_folder_name="make-${make_version}"
   # The folder name  for build, licenses, etc.
-  MAKE_FOLDER_NAME="${MAKE_SRC_FOLDER_NAME}"
+  local make_folder_name="${make_src_folder_name}"
 
-  local make_archive_file_name="${MAKE_FOLDER_NAME}.tar.gz"
+  local make_archive_file_name="${make_folder_name}.tar.gz"
 
   local make_url="https://ftp.gnu.org/gnu/make/${make_archive_file_name}"
 
-  local make_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-make-${MAKE_VERSION}-installed"
+  local make_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-make-${make_version}-installed"
   if [ ! -f "${make_stamp_file_path}" ]
   then
 
     cd "${SOURCES_FOLDER_PATH}"
 
     download_and_extract "${make_url}" "${make_archive_file_name}" \
-      "${MAKE_SRC_FOLDER_NAME}" 
+      "${make_src_folder_name}" 
 
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}/${MAKE_FOLDER_NAME}"
+      mkdir -p "${BUILD_FOLDER_PATH}/${make_folder_name}"
+      cd "${BUILD_FOLDER_PATH}/${make_folder_name}"
 
       xbb_activate
       xbb_activate_installed_bin
@@ -63,12 +63,16 @@ function build_make()
 
           # cd "${make_build_folder}"
 
-          run_verbose bash "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}/configure" --help
+          run_verbose bash "${SOURCES_FOLDER_PATH}/${make_folder_name}/configure" --help
 
-          # CPPFLAGS="${XBB_CPPFLAGS} -I${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}/glob"
+          # CPPFLAGS="${XBB_CPPFLAGS} -I${SOURCES_FOLDER_PATH}/${make_folder_name}/glob"
           CPPFLAGS="${XBB_CPPFLAGS}"
-          CFLAGS="${XBB_CFLAGS}"
-          LDFLAGS="${XBB_LDFLAGS_APP} -static"
+          CFLAGS="${XBB_CFLAGS_NO_W}"
+          LDFLAGS="${XBB_LDFLAGS_APP}"
+          if [ "${TARGET_PLATFORM}" == "win32" ]
+          then
+            LDFLAGS+=" -static"
+          fi
           if [ "${IS_DEVELOP}" == "y" ]
           then
             LDFLAGS+=" -v"
@@ -78,18 +82,26 @@ function build_make()
           export CFLAGS
           export LDFLAGS
 
-          echo
-          run_verbose bash "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}/configure" \
-            --prefix="${INSTALL_FOLDER_PATH}/make-${MAKE_VERSION}"  \
-            --build=${BUILD} \
-            --host=${HOST} \
-            --target=${TARGET} \
-            \
-            --without-guile \
-            --without-libintl-prefix \
-            --without-libiconv-prefix \
-            ac_cv_dos_paths=yes \
-            \
+          config_options=()
+
+          config_options+=("--prefix=${APP_PREFIX}")
+
+          config_options+=("--build=${BUILD}")
+          config_options+=("--host=${HOST}")
+          config_options+=("--target=${TARGET}")
+
+          config_options+=("--without-guile")
+          config_options+=("--without-libintl-prefix")
+          config_options+=("--without-libiconv-prefix")
+
+          if [ "${TARGET_PLATFORM}" == "win32" ]
+          then
+            config_options+=("ac_cv_dos_paths=yes")
+          fi
+
+          run_verbose bash "${SOURCES_FOLDER_PATH}/${make_folder_name}/configure" \
+            ${config_options[@]}
+            
           cp "config.log" "${LOGS_FOLDER_PATH}/config-make-log.txt"
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/configure-make-output.txt"
 
@@ -110,8 +122,8 @@ function build_make()
       ) 2>&1 | tee "${LOGS_FOLDER_PATH}/make-make-output.txt"
 
       copy_license \
-        "${SOURCES_FOLDER_PATH}/${MAKE_FOLDER_NAME}" \
-        "${MAKE_FOLDER_NAME}"
+        "${SOURCES_FOLDER_PATH}/${make_folder_name}" \
+        "${make_folder_name}"
 
     )
 
