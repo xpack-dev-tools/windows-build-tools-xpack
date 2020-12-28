@@ -17,7 +17,7 @@ Before starting the build, perform some checks and tweaks.
 ### Increase the version
 
 Determine the version (like `4.2.1`) and update the `scripts/VERSION`
-file; the format is `4.2.1-1`. The fourth number is the xPack release number
+file; the format is `4.2.1-2`. The fourth number is the xPack release number
 of this version. A fifth number will be added when publishing
 the package on the `npm` server.
 
@@ -27,7 +27,7 @@ Check GitHub issues and pull requests:
 
 - https://github.com/xpack-dev-tools/windows-build-tools-xpack/issues
 
-and fix them; assign them to a milestone (like `4.2.1-1`).
+and fix them; assign them to a milestone (like `4.2.1-2`).
 
 ### Check `README.md`
 
@@ -206,10 +206,10 @@ Copy/paste the build report at the end of the post as:
 The SHA-256 hashes for the files are:
 
 501366492cd73b06fca98b8283f65b53833622995c6e44760eda8f4483648525
-xpack-windows-build-tools-4.2.1-1-win32-ia32.zip
+xpack-windows-build-tools-4.2.1-2-win32-ia32.zip
 
 dffc858d64be5539410aa6d3f3515c6de751cd295c99217091f5ccec79cabf39
-xpack-windows-build-tools-4.2.1-1-win32-x64.zip
+xpack-windows-build-tools-4.2.1-2-win32-x64.zip
 ```
 
 ## Update the preview Web
@@ -226,7 +226,7 @@ xpack-windows-build-tools-4.2.1-1-win32-x64.zip
 
 ```
 cd ~/Downloads/windows-build-tools-xpack.git
-xpm-js.git/bin/xpm-dev.js binaries-update '4.2.1-1' "${HOME}/Downloads/xpack-binaries/windows-build-tools"
+xpm-js.git/bin/xpm-dev.js binaries-update '4.2.1-2' "${HOME}/Downloads/xpack-binaries/windows-build-tools"
 ```
 
 - open the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases)
@@ -238,7 +238,7 @@ xpm-js.git/bin/xpm-dev.js binaries-update '4.2.1-1' "${HOME}/Downloads/xpack-bin
 - compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
 - commit all changes, use a message like
-  `package.json: update urls for 4.2.1-1 release` (without `v`)
+  `package.json: update urls for 4.2.1-2 release` (without `v`)
 
 ## Publish on the npmjs.com server
 
@@ -246,7 +246,7 @@ xpm-js.git/bin/xpm-dev.js binaries-update '4.2.1-1' "${HOME}/Downloads/xpack-bin
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`; commit with a message like
   _CHANGELOG: prepare npm v4.2.1-1.1_
-- `npm version 4.2.1-1.1`; the first 4 numbers are the same as the
+- `npm version 4.2.1-2.1`; the first 4 numbers are the same as the
   GitHub release; the fifth number is the npm specific version
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`
@@ -275,7 +275,7 @@ xpm install --global @xpack-dev-tools/windows-build-tools@next
 ```
 
 ```
-%USERPROFILE%\AppData\Roaming\xPacks\@xpack-dev-tools\windows-build-tools\4.2.1-1.1\.content\bin\make --version
+%USERPROFILE%\AppData\Roaming\xPacks\@xpack-dev-tools\windows-build-tools\4.2.1-2.1\.content\bin\make --version
 
 GNU Make 4.2.1
 ```
@@ -290,7 +290,7 @@ GNU Make 4.2.1
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack-dev-tools/windows-build-tools`
-- `npm dist-tag add @xpack-dev-tools/windows-build-tools@4.2.1-1.1 latest`
+- `npm dist-tag add @xpack-dev-tools/windows-build-tools@4.2.1-2.1 latest`
 - `npm dist-tag ls @xpack-dev-tools/windows-build-tools`
 
 ## Update the Web
