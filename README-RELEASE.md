@@ -251,7 +251,7 @@ The version is visible at:
 
 ## Test if the npm binaries can be installed with xpm
 
-Install manually on both Windows 64/32-bit, .
+Install manually on both Windows 64/32-bit.
 
 ```sh
 xpm install --global @xpack-dev-tools/windows-build-tools@next
