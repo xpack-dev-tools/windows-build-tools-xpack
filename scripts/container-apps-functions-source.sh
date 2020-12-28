@@ -69,7 +69,7 @@ function build_make()
           CPPFLAGS="${XBB_CPPFLAGS}"
           CFLAGS="${XBB_CFLAGS_NO_W}"
           LDFLAGS="${XBB_LDFLAGS_APP}"
-          if [ "${TARGET_PLATFORM}" == "win32" ]
+          if false # [ "${TARGET_PLATFORM}" == "win32" ]
           then
             LDFLAGS+=" -static"
           fi
@@ -196,7 +196,7 @@ function build_busybox()
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if [ "${TARGET_PLATFORM}" == "win32" ]
+      if false # [ "${TARGET_PLATFORM}" == "win32" ]
       then
         LDFLAGS+=" -static"
       fi
