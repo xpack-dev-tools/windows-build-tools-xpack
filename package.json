@@ -37,7 +37,7 @@
   "xpack": {
     "binaries": {
       "destination": "./.content",
-      "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v4.2.1-1",
+      "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v4.2.1-2",
       "skip": 1,
       "platforms": {
         "linux-ia32": {
@@ -56,12 +56,12 @@
           "skip": true
         },
         "win32-ia32": {
-          "fileName": "xpack-windows-build-tools-4.2.1-1-win32-ia32.zip",
-          "sha256": "b8f7cdbaa23f6e3fc82c8f16ad165f0c945917c251c41726e270e6f335d03c5a"
+          "fileName": "xpack-windows-build-tools-4.2.1-2-win32-ia32.zip",
+          "sha256": "77b0aaf70a1b6d497769b6bbce7fb70961bdeb363ae7c41d118fa51092070afb"
         },
         "win32-x64": {
-          "fileName": "xpack-windows-build-tools-4.2.1-1-win32-x64.zip",
-          "sha256": "14e81cceae9e990edb3a6b682cc9b8ad8bf2e29ffa36410fdc887525b7040128"
+          "fileName": "xpack-windows-build-tools-4.2.1-2-win32-x64.zip",
+          "sha256": "b7a3cbe60639f0e913fb7d7309da01533e0d50c030fa2b6764f5c3940eeb7e91"
         }
       }
     },
@@ -71,7 +71,8 @@
       "echo": "./.content/bin/echo.exe",
       "mkdir": "./.content/bin/mkdir.exe",
       "rm": "./.content/bin/rm.exe",
-      "sh": "./.content/bin/sh.exe"
+      "sh": "./.content/bin/sh.exe",
+      "cp": "./.content/bin/cp.exe"
     }
   }
 }

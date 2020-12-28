@@ -148,7 +148,7 @@ functional.
 - as description
   - add a downloads badge like `![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/v4.2.1-2/total.svg)`
   - draft a short paragraph explaining what are the main changes, like
-  _Version v4.2.1-2 is a new release of the **xPack Windows Build Tools** package, following the Windows Build Tools release._
+  _Version v4.2.1-2 is a new/maintenance release of the **xPack Windows Build Tools** package; ..._
   - add _For the moment these binaries are provided only for testing purposes!_
 - **attach binaries** and SHA (drag and drop from the archives folder will do it)
 - **enable** the **pre-release** button
@@ -159,17 +159,7 @@ watching this project.
 
 ## Run the release Travis tests
 
-Using the scripts in `tests/scripts/`, start:
-
-- `trigger-travis-quick.mac.command` (optional)
-- `trigger-travis-stable.mac.command`
-- `trigger-travis-latest.mac.command`
-
-The test results are available from:
-
-- https://travis-ci.org/github/xpack-dev-tools/windows-build-tools-xpack
-
-For more details, see `tests/scripts/README.md`.
+TBD
 
 ## Prepare a new blog post
 
@@ -205,10 +195,10 @@ Copy/paste the build report at the end of the post as:
 ## Checksums
 The SHA-256 hashes for the files are:
 
-501366492cd73b06fca98b8283f65b53833622995c6e44760eda8f4483648525
+70b864f6e2c549744ae50abce87ae84cd5e325136148970bf8ded12350530d8b
 xpack-windows-build-tools-4.2.1-2-win32-ia32.zip
 
-dffc858d64be5539410aa6d3f3515c6de751cd295c99217091f5ccec79cabf39
+ed385c78db6b0c8c0d7489baad2850e296fac0ec11ac497b588374755c10e171
 xpack-windows-build-tools-4.2.1-2-win32-x64.zip
 ```
 
@@ -225,8 +215,9 @@ xpack-windows-build-tools-4.2.1-2-win32-x64.zip
 - run `xpm-dev binaries-update`
 
 ```
-cd ~/Downloads/windows-build-tools-xpack.git
-xpm-js.git/bin/xpm-dev.js binaries-update '4.2.1-2' "${HOME}/Downloads/xpack-binaries/windows-build-tools"
+xpm-dev binaries-update '4.2.1-2' \
+  "${HOME}/Downloads/xpack-binaries/windows-build-tools" \
+  -C "${HOME}/Downloads/windows-build-tools-xpack.git"
 ```
 
 - open the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases)
