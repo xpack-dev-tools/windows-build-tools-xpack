@@ -42,8 +42,8 @@ but in the version specific file (below).
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _v4.2.1-1 prepared_
-- commit commit with a message like _CHANGELOG: prepare v4.2.1-1_
+- add a new entry like _v4.2.1-2 prepared_
+- commit commit with a message like _CHANGELOG: prepare v4.2.1-2_
 
 Note: if you missed to update the `CHANGELOG.md` before starting the build,
 edit the file and rerun the build, it should take only a few minutes to
@@ -109,7 +109,7 @@ sudo rm -rf ~/Work/windows-build-tools-*
 Empty trash.
 
 ```sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh --all
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh --win64 --win32
 ```
 
 A typical run takes about 2 minutes.
@@ -142,13 +142,13 @@ functional.
 - commit and push the `xpack-develop` branch
 - go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases) page
 - click **Draft a new release**, in the `xpack-develop` branch
-- name the tag like **v4.2.1-1** (mind the dash in the middle!)
-- name the release like **xPack Windows Build Tools v4.2.1-1**
+- name the tag like **v4.2.1-2** (mind the dash in the middle!)
+- name the release like **xPack Windows Build Tools v4.2.1-2**
 (mind the dash)
 - as description
-  - add a downloads badge like `![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/v4.2.1-1/total.svg)`
+  - add a downloads badge like `![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/v4.2.1-2/total.svg)`
   - draft a short paragraph explaining what are the main changes, like
-  _Version v4.2.1-1 is a new release of the **xPack Windows Build Tools** package, following the Windows Build Tools release._
+  _Version v4.2.1-2 is a new release of the **xPack Windows Build Tools** package, following the Windows Build Tools release._
   - add _For the moment these binaries are provided only for testing purposes!_
 - **attach binaries** and SHA (drag and drop from the archives folder will do it)
 - **enable** the **pre-release** button
@@ -178,8 +178,8 @@ In the `xpack/web-jekyll` GitHub repo:
 - select the `develop` branch
 - add a new file to `_posts/windows-build-tools/releases`
 - name the file like `2020-12-27-windows-build-tools-v4-2-1-1-released.md`
-- name the post like: **xPack Windows Build Tools v4.2.1-1 released**
-- as `download_url` use the tagged URL like `https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v4.2.1-1/`
+- name the post like: **xPack Windows Build Tools v4.2.1-2 released**
+- as `download_url` use the tagged URL like `https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v4.2.1-2/`
 - update the `date:` field with the current date
 - update the Travis URLs using the actual test pages
 - update the SHA sums via copy/paste from the original build machines
@@ -215,7 +215,7 @@ xpack-windows-build-tools-4.2.1-2-win32-x64.zip
 ## Update the preview Web
 
 - commit the `develop` branch of `xpack/web-jekyll` GitHub repo;
-  use a message like **xPack Windows Build Tools v4.2.1-1 released**
+  use a message like **xPack Windows Build Tools v4.2.1-2 released**
 - wait for the GitHub Pages build to complete
 - the preview web is https://xpack.github.io/web-preview/
 
@@ -245,7 +245,7 @@ xpm-js.git/bin/xpm-dev.js binaries-update '4.2.1-2' "${HOME}/Downloads/xpack-bin
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`; commit with a message like
-  _CHANGELOG: prepare npm v4.2.1-1.1_
+  _CHANGELOG: prepare npm v4.2.1-2.1_
 - `npm version 4.2.1-2.1`; the first 4 numbers are the same as the
   GitHub release; the fifth number is the npm specific version
 - `npm pack` and check the content of the archive, which should list
@@ -312,7 +312,7 @@ When the release is considered stable, promote it as `latest`:
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@xpack_project` account
-- paste the release name like **xPack Windows Build Tools v4.2.1-1 released**
+- paste the release name like **xPack Windows Build Tools v4.2.1-2 released**
 - paste the link to the Web page
   [release](https://xpack.github.io/windows-build-tools/releases/)
 - click the **Tweet** button

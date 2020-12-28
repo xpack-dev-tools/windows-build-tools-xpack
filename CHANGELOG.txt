@@ -1,6 +1,10 @@
 
 Entries in this file are in reverse chronological order.
 
+[2020-12-28]
+
+- v4.2.1-2 prepared (version follows make version)
+
 [2020-12-27]
 
 - v4.2.1-1.1 published on npmjs.com
