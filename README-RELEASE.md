@@ -94,16 +94,14 @@ From here it'll be cloned on the production machines.
 
 The automation is provided by GitHub Actions and three self-hosted runners.
 
-- on the macOS machine (`xbbm`) open ssh sessions to both Linux
-machines (`xbbi` and `xbba`):
+- on the macOS machine (`xbbm`) open ssh sessions to the Linux
+machines (`xbbi`):
 
 ```sh
 caffeinate ssh xbbi
-
-caffeinate ssh xbba
 ```
 
-Start the runner on all three machines:
+Start the runner:
 
 ```sh
 ~/actions-runner/run.sh
@@ -143,15 +141,11 @@ The automation is provided by GitHub Actions.
 To trigger the GitHub Actions tests, use the xPack actions:
 
 - `trigger-workflow-test-prime`
-- `trigger-workflow-test-docker-linux-intel`
-- `trigger-workflow-test-docker-linux-arm`
 
-These are equivalent to:
+This is equivalent to:
 
 ```sh
 bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-workflow-test-prime.sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-intel.sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-arm.sh
 ```
 
 These scripts require the `GITHUB_API_DISPATCH_TOKEN` to be present
@@ -163,24 +157,6 @@ binaries.
 
 The tests results are available from the
 [Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/) page.
-
-Since GitHub Actions provides a single version of macOS, the
-multi-version macOS tests run on Travis.
-
-To trigger the Travis test, use the xPack action:
-
-- `trigger-travis-macos`
-
-This is equivalent to:
-
-```sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-travis-macos.sh
-```
-
-This script requires the `TRAVIS_COM_TOKEN` to be present in the environment.
-
-The test results are available from
-[travis-ci.com](https://app.travis-ci.com/github/xpack-dev-tools/windows-build-tools-xpack/builds/).
 
 ### Manual tests
 
