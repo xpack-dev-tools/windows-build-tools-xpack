@@ -19,7 +19,9 @@
 
 function run_tests()
 {
-  test_openocd
+  test_make
+
+  test_busybox
 }
 
 function update_image()
