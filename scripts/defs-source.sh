@@ -19,18 +19,30 @@
 APP_NAME=${APP_NAME:-"Windows Build Tools"}
 
 # Used as part of file/folder paths.
-APP_UC_NAME=${APP_UC_NAME:-"Build Tools"}
 APP_LC_NAME=${APP_LC_NAME:-"windows-build-tools"}
 
-DISTRO_UC_NAME=${DISTRO_UC_NAME:-"xPack"}
+DISTRO_NAME=${DISTRO_NAME:-"xPack"}
 DISTRO_LC_NAME=${DISTRO_LC_NAME:-"xpack"}
 DISTRO_TOP_FOLDER=${DISTRO_TOP_FOLDER:-"xPacks"}
 
-# Use the new xPack naming convention.
-HAS_NAME_ARCH="y"
+APP_DESCRIPTION="${DISTRO_NAME} ${APP_NAME}"
 
-CONTAINER_SCRIPT_NAME=${CONTAINER_SCRIPT_NAME:-"container-build.sh"}
-CONTAINER_LIBS_FUNCTIONS_SCRIPT_NAME=${CONTAINER_LIBS_FUNCTIONS_SCRIPT_NAME:-"container-libs-functions-source.sh"}
-CONTAINER_APPS_FUNCTIONS_SCRIPT_NAME=${CONTAINER_APPS_FUNCTIONS_SCRIPT_NAME:-"container-apps-functions-source.sh"}
+BRANDING="${BRANDING:-"${DISTRO_NAME} ${APP_NAME}"}"
+
+# -----------------------------------------------------------------------------
+
+DO_BUILD_LINUX_ARM32="n"
+DO_BUILD_LINUX_ARM64="n"
+DO_BUILD_LINUX32="n"
+DO_BUILD_LINUX64="n"
+DO_BUILD_OSX="n"
+
+# -----------------------------------------------------------------------------
+
+GITHUB_ORG="${GITHUB_ORG:-"xpack-dev-tools"}"
+GITHUB_REPO="${GITHUB_REPO:-"${APP_LC_NAME}-xpack"}"
+GITHUB_PRE_RELEASES="${GITHUB_PRE_RELEASES:-"pre-releases"}"
+
+NPM_PACKAGE="${NPM_PACKAGE:-"@xpack-dev-tools/${APP_LC_NAME}@next"}"
 
 # -----------------------------------------------------------------------------

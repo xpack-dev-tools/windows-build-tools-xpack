@@ -11,13 +11,17 @@ Before starting the build, perform some checks and tweaks.
 
 ### Check Git
 
+In the `xpack-dev-tools/windows-build-tools-xpack` Git repo:
+
 - switch to the `xpack-develop` branch
 - if needed, merge the `xpack` branch
+
+No need to add a tag here, it'll be added when the release is created.
 
 ### Increase the version
 
 Determine the version (like `4.2.1`) and update the `scripts/VERSION`
-file; the format is `4.2.1-2`. The fourth number is the xPack release number
+file; the format is `4.2.1-3`. The fourth number is the xPack release number
 of this version. A fifth number will be added when publishing
 the package on the `npm` server.
 
@@ -25,25 +29,28 @@ the package on the `npm` server.
 
 Check GitHub issues and pull requests:
 
-- https://github.com/xpack-dev-tools/windows-build-tools-xpack/issues
+- <https://github.com/xpack-dev-tools/windows-build-tools-xpack/issues/>
 
-and fix them; assign them to a milestone (like `4.2.1-2`).
+and fix them; assign them to a milestone (like `4.2.1-3`).
 
 ### Check `README.md`
 
 Normally `README.md` should not need changes, but better check.
 Information related to the new version should not be included here,
-but in the version specific file (below).
+but in the version specific release page.
 
-- update version in README-RELEASE.md
-- update version in README-BUILD.md
+### Update versions in `README` files
+
+- update version in `README-RELEASE.md`
+- update version in `README-BUILD.md`
+- update version in `README.md`
 
 ## Update `CHANGELOG.md`
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _v4.2.1-2 prepared_
-- commit commit with a message like _CHANGELOG: prepare v4.2.1-2_
+- add a new entry like _v4.2.1-3 prepared_
+- commit with a message like _prepare v4.2.1-3_
 
 Note: if you missed to update the `CHANGELOG.md` before starting the build,
 edit the file and rerun the build, it should take only a few minutes to
@@ -62,17 +69,19 @@ With Sourcetree, go to the helper repo and update to the latest master commit.
 
 ### Development run the build scripts
 
-Before the real build, run a test build on the development machine (`wks`):
+Before the real build, run a test build on the development machine (`wks`)
+or the production machine (`xbbm`):
 
 ```sh
 sudo rm -rf ~/Work/windows-build-tools-*
 
-caffeinate bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh --develop --without-pdf --disable-tests --all
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win64
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win32
 ```
 
 Work on the scripts until all platforms pass the build.
 
-## Push the build script
+## Push the build scripts
 
 In this Git repo:
 
@@ -81,219 +90,210 @@ In this Git repo:
 
 From here it'll be cloned on the production machines.
 
-### Run the build scripts
+## Run the CI build
 
-Open a ssh session to the Linux machine `xbbi`:
+The automation is provided by GitHub Actions and three self-hosted runners.
+
+- on the macOS machine (`xbbm`) open ssh sessions to both Linux
+machines (`xbbi` and `xbba`):
 
 ```sh
 caffeinate ssh xbbi
+
+caffeinate ssh xbba
 ```
 
-Clone the `xpack-develop` branch:
+Start the runner on all three machines:
 
 ```sh
-rm -rf ~/Downloads/windows-build-tools-xpack.git; \
-git clone \
-  --recurse-submodules \
-  --branch xpack-develop \
-  https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
-  ~/Downloads/windows-build-tools-xpack.git
+~/actions-runner/run.sh
 ```
 
-Remove any previous build:
+Check that both the project Git and the submodule are pushed to GitHub.
+
+To trigger the GitHub Actions build, use the xPack action:
+
+- `trigger-workflow-build`
+
+This is equivalent to:
 
 ```sh
-sudo rm -rf ~/Work/windows-build-tools-*
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/trigger-workflow-build.sh
 ```
 
-Empty trash.
+This script requires the `GITHUB_API_DISPATCH_TOKEN` to be present
+in the environment.
 
-```sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh --win64 --win32
-```
+This command uses the `xpack-develop` branch of this repo.
 
-A typical run takes about 2 minutes.
+The builds take about 14 minutes to complete.
 
-### Clean the destination folder
+The workflow result and logs are available from the
+[Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/) page.
 
-On the development machine (`wks`) clear the folder where binaries from all
-build machines will be collected.
-
-```sh
-rm -f ~/Downloads/xpack-binaries/windows-build-tools/*
-```
-
-### Copy the binaries to the development machine
-
-On `xbbi`:
-
-```sh
-(cd ~/Work/windows-build-tools-*/deploy; scp * ilg@wks:Downloads/xpack-binaries/windows-build-tools)
-```
+The resulting binaries are available for testing from
+[pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/).
 
 ## Testing
 
-Install the binaries on all supported platforms and check if they are
-functional.
+### CI tests
 
-## Create a new GitHub pre-release
+The automation is provided by GitHub Actions.
+
+To trigger the GitHub Actions tests, use the xPack actions:
+
+- `trigger-workflow-test-prime`
+- `trigger-workflow-test-docker-linux-intel`
+- `trigger-workflow-test-docker-linux-arm`
+
+These are equivalent to:
+
+```sh
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-workflow-test-prime.sh
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-intel.sh
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-workflow-test-docker-linux-arm.sh
+```
+
+These scripts require the `GITHUB_API_DISPATCH_TOKEN` to be present
+in the environment.
+
+These actions use the `xpack-develop` branch of this repo and the
+[pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
+binaries.
+
+The tests results are available from the
+[Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/) page.
+
+Since GitHub Actions provides a single version of macOS, the
+multi-version macOS tests run on Travis.
+
+To trigger the Travis test, use the xPack action:
+
+- `trigger-travis-macos`
+
+This is equivalent to:
+
+```sh
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-travis-macos.sh
+```
+
+This script requires the `TRAVIS_COM_TOKEN` to be present in the environment.
+
+The test results are available from
+[travis-ci.com](https://app.travis-ci.com/github/xpack-dev-tools/windows-build-tools-xpack/builds/).
+
+### Manual tests
+
+Install the binaries on all supported platforms and check if they are
+functional, possibly by running Eclipse builds.
+
+## Create a new GitHub pre-release draft
 
 - in `CHANGELOG.md`, add release date
 - commit and push the `xpack-develop` branch
-- go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases) page
-- click **Draft a new release**, in the `xpack-develop` branch
-- name the tag like **v4.2.1-2** (mind the dash in the middle!)
-- name the release like **xPack Windows Build Tools v4.2.1-2**
-(mind the dash)
-- as description
-  - add a downloads badge like `![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/v4.2.1-2/total.svg)`
-  - draft a short paragraph explaining what are the main changes, like
-  _Version v4.2.1-2 is a new/maintenance release of the **xPack Windows Build Tools** package; ..._
-  - add _For the moment these binaries are provided only for testing purposes!_
-- **attach binaries** and SHA (drag and drop from the archives folder will do it)
-- **enable** the **pre-release** button
-- click the **Publish Release** button
+- run the xPack action `trigger-workflow-publish-release`
 
-Note: at this moment the system should send a notification to all clients
-watching this project.
-
-## Run the release Travis tests
-
-TBD
+The result is a
+[draft pre-release](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/)
+tagged like **v4.2.1-3** (mind the dash in the middle!) and
+named like **xPack Windows Build Tools v4.2.1-3** (mind the dash),
+with all binaries attached.
 
 ## Prepare a new blog post
+
+Run the xPack action `generate-jekyll-post`; this will leave a file
+on the Desktop.
 
 In the `xpack/web-jekyll` GitHub repo:
 
 - select the `develop` branch
-- add a new file to `_posts/windows-build-tools/releases`
-- name the file like `2020-12-27-windows-build-tools-v4-2-1-1-released.md`
-- name the post like: **xPack Windows Build Tools v4.2.1-2 released**
-- as `download_url` use the tagged URL like `https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v4.2.1-2/`
-- update the `date:` field with the current date
-- update the Travis URLs using the actual test pages
-- update the SHA sums via copy/paste from the original build machines
-(it is very important to use the originals!)
+- copy the new file to `_posts/releases/windows-build-tools`
 
 If any, refer to closed
-[issues](https://github.com/xpack-dev-tools/windows-build-tools-xpack/issues)
-as:
-
-- **[Issue:\[#1\]\(...\)]**.
-
-### Update the SHA sums
-
-On the development machine (`wks`):
-
-```sh
-cat ~/Downloads/xpack-binaries/windows-build-tools/*.sha
-```
-
-Copy/paste the build report at the end of the post as:
-
-```console
-## Checksums
-The SHA-256 hashes for the files are:
-
-70b864f6e2c549744ae50abce87ae84cd5e325136148970bf8ded12350530d8b
-xpack-windows-build-tools-4.2.1-2-win32-ia32.zip
-
-ed385c78db6b0c8c0d7489baad2850e296fac0ec11ac497b588374755c10e171
-xpack-windows-build-tools-4.2.1-2-win32-x64.zip
-```
+[issues](https://github.com/xpack-dev-tools/windows-build-tools-xpack/issues/).
 
 ## Update the preview Web
 
 - commit the `develop` branch of `xpack/web-jekyll` GitHub repo;
-  use a message like **xPack Windows Build Tools v4.2.1-2 released**
+  use a message like **xPack Windows Build Tools v4.2.1-3 released**
+- push to GitHub
 - wait for the GitHub Pages build to complete
-- the preview web is https://xpack.github.io/web-preview/
+- the preview web is <https://xpack.github.io/web-preview/news/>
+
+## Create the pre-release
+
+- go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/) page
+- perform the final edits and check if everything is fine
+- save the release
+
+Note: at this moment the system should send a notification to all clients
+watching this project.
 
 ## Update package.json binaries
 
 - select the `xpack-develop` branch
-- run `xpm-dev binaries-update`
-
-```
-xpm-dev binaries-update '4.2.1-2' \
-  "${HOME}/Downloads/xpack-binaries/windows-build-tools" \
-  -C "${HOME}/Downloads/windows-build-tools-xpack.git"
-```
-
-- open the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases)
-  page and select the latest release
-- check the download counter, it should match the number of tests
+- run the xPack action `update-package-binaries`
+- open the `package.json` file
 - check the `baseUrl:` it should match the file URLs (including the tag/version);
   no terminating `/` is required
 - from the release, check the SHA & file names
 - compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
 - commit all changes, use a message like
-  `package.json: update urls for 4.2.1-2 release` (without `v`)
+  `package.json: update urls for 4.2.1-3.1 release` (without `v`)
 
 ## Publish on the npmjs.com server
 
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
 - update `CHANGELOG.md`; commit with a message like
-  _CHANGELOG: prepare npm v4.2.1-2.1_
-- `npm version 4.2.1-2.1`; the first 4 numbers are the same as the
-  GitHub release; the fifth number is the npm specific version
+  _CHANGELOG: publish npm v4.2.1-3.1_
 - `npm pack` and check the content of the archive, which should list
-  only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`
+  only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
+  possibly adjust `.npmignore`
+- `npm version 4.2.1-3.1`; the first 5 numbers are the same as the
+  GitHub release; the sixth number is the npm specific version
 - push the `xpack-develop` branch to GitHub
+- push tags with `git push origin --tags`
 - `npm publish --tag next` (use `--access public` when publishing for
   the first time)
 
-The version is visible at:
+After a few moments the version will be visible at:
 
-- https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools?activeTab=versions
+- <https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools?activeTab=versions>
 
 ## Test if the npm binaries can be installed with xpm
 
-Install manually on both Windows 64/32-bit.
+Run the `scripts/tests/trigger-travis-xpm-install.sh` script, this
+will install the package via `xpm install` on all supported platforms.
 
-```sh
-xpm install --global @xpack-dev-tools/windows-build-tools@next
-```
+The test results are available from:
 
-## Test the npm binaries
-
-Install the binaries on all platforms.
-
-```sh
-xpm install --global @xpack-dev-tools/windows-build-tools@next
-```
-
-```
-%USERPROFILE%\AppData\Roaming\xPacks\@xpack-dev-tools\windows-build-tools\4.2.1-2.1\.content\bin\make --version
-
-GNU Make 4.2.1
-```
+- <https://travis-ci.com/github/xpack-dev-tools/windows-build-tools-xpack>
 
 ## Update the repo
 
 - merge `xpack-develop` into `xpack`
-- push
+- push to GitHub
 
 ## Tag the npm package as `latest`
 
 When the release is considered stable, promote it as `latest`:
 
 - `npm dist-tag ls @xpack-dev-tools/windows-build-tools`
-- `npm dist-tag add @xpack-dev-tools/windows-build-tools@4.2.1-2.1 latest`
+- `npm dist-tag add @xpack-dev-tools/windows-build-tools@4.2.1-3.1 latest`
 - `npm dist-tag ls @xpack-dev-tools/windows-build-tools`
 
 ## Update the Web
 
 - in the `master` branch, merge the `develop` branch
 - wait for the GitHub Pages build to complete
-- the result is in https://xpack.github.io/news/
+- the result is in <https://xpack.github.io/news/>
 - remember the post URL, since it must be updated in the release page
 
 ## Create the final GitHub release
 
-- go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases) page
+- go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/) page
 - check the download counter, it should match the number of tests
 - add a link to the Web page `[Continue reading »]()`; use an same blog URL
 - **disable** the **pre-release** button
@@ -303,7 +303,12 @@ When the release is considered stable, promote it as `latest`:
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
 - using the `@xpack_project` account
-- paste the release name like **xPack Windows Build Tools v4.2.1-2 released**
+- paste the release name like **xPack Windows Build Tools v4.2.1-3 released**
 - paste the link to the Web page
   [release](https://xpack.github.io/windows-build-tools/releases/)
 - click the **Tweet** button
+
+## Remove pre-release binaries
+
+- go to <https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/>
+- remove the test binaries

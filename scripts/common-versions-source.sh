@@ -15,6 +15,13 @@
 
 function build_versions()
 {
+  if [ "${TARGET_PLATFORM}" != "win32" ]
+  then
+    echo
+    echo "TARGET_PLATFORM ${TARGET_PLATFORM} not supported."
+    exit 1
+  fi
+
   # Test to build guile
   if false
   then
@@ -29,25 +36,8 @@ function build_versions()
     do_guile
   fi
 
-  if false
-  then
-    (
-      prepare_gcc_env "" "-xbb"
-
-      # Required by make 4.3
-      # build_automake "1.16.3"
-    )
-  fi
-
   if [[ "${RELEASE_VERSION}" =~ 4\.3\.0-* ]]
   then
-
-    (
-      prepare_gcc_env "" "-xbb"
-
-      # Required by make 4.3
-      build_automake "1.16.3"
-    )
 
     build_make "4.3" # fails on gcc 9 & mingw 7
 

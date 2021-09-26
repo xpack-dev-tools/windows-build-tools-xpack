@@ -1,0 +1,65 @@
+# -----------------------------------------------------------------------------
+# DO NOT EDIT! Generated from scripts/helper/templates/publish-release-liquid.yml.
+#
+# This file is part of the xPack distribution.
+#   (https://xpack.github.io)
+# Copyright (c) 2021 Liviu Ionescu.
+#
+# Permission to use, copy, modify, and/or distribute this software 
+# for any purpose is hereby granted, under the terms of the MIT license.
+# -----------------------------------------------------------------------------
+
+# https://help.github.com/en/actions
+# https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch
+# https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_dispatch
+# https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event
+
+# -----------------------------------------------------------------------------
+
+name: 'Publish the xPack {{ APP_NAME }} release'
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The semver of the release'
+        required: false
+        default: 'current'
+
+jobs:
+  linux-x64:
+    name: 'Intel Linux {{ APP_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} publish release'
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+          submodules: true
+      - name: 'Create body'
+        run: |
+          npm install
+          cat scripts/templates/body-github-release-liquid.md | npm run liquidjs --silent -- '{ "RELEASE_VERSION": "{% raw %}${{ github.event.inputs.version }}{% endraw %}" }' >.github/workflows/body-github-release.md
+          cat .github/workflows/body-github-release.md
+      - name: 'Publish release'
+        # https://github.com/ncipollo/release-action
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: '~/Work/{{ APP_LC_NAME }}-{% raw %}${{ github.event.inputs.version }}{% endraw %}/deploy/*'
+          bodyFile: '.github/workflows/body-github-release.md'
+          commit: 'master'
+          draft: true
+          name: 'xPack {{ APP_NAME }} v{% raw %}${{ github.event.inputs.version }}{% endraw %}'
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          owner: 'xpack-dev-tools'
+          prerelease: true
+          replacesArtifacts: true
+          repo: '{{ APP_LC_NAME }}-xpack'
+          tag: 'v{% raw %}${{ github.event.inputs.version }}{% endraw %}'
+          token: {% raw %}${{ secrets.PUBLISH_TOKEN }}{% endraw %}
+      - name: 'Show SHA'
+        run: cat ~/Work/{{ APP_LC_NAME }}-{% raw %}${{ github.event.inputs.version }}{% endraw %}/deploy/*.sha

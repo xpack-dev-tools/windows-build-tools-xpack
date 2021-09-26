@@ -32,6 +32,7 @@ function build_make()
 
   # The folder name as resulted after being extracted from the archive.
   local make_src_folder_name="make-${make_version}"
+  
   # The folder name  for build, licenses, etc.
   local make_folder_name="${make_src_folder_name}"
 
@@ -55,7 +56,6 @@ function build_make()
       (
         cd "${SOURCES_FOLDER_PATH}/${make_src_folder_name}"
 
-        xbb_activate
         xbb_activate_installed_bin
 
         echo "Running make autoreconf..."
@@ -68,31 +68,30 @@ function build_make()
       mkdir -p "${BUILD_FOLDER_PATH}/${make_folder_name}"
       cd "${BUILD_FOLDER_PATH}/${make_folder_name}"
 
-      xbb_activate
       xbb_activate_installed_bin
 
       if [ ! -f "config.status" ]
       then
         (
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            env | sort
+          fi
+
           echo
           echo "Running make configure..."
 
           # cd "${make_build_folder}"
 
-          run_verbose bash "${SOURCES_FOLDER_PATH}/${make_folder_name}/configure" --help
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            run_verbose bash "${SOURCES_FOLDER_PATH}/${make_folder_name}/configure" --help
+          fi
 
           # CPPFLAGS="${XBB_CPPFLAGS} -I${SOURCES_FOLDER_PATH}/${make_folder_name}/glob"
           CPPFLAGS="${XBB_CPPFLAGS}"
           CFLAGS="${XBB_CFLAGS_NO_W}"
           LDFLAGS="${XBB_LDFLAGS_APP}"
-          if false # [ "${TARGET_PLATFORM}" == "win32" ]
-          then
-            LDFLAGS+=" -static"
-          fi
-          if [ "${IS_DEVELOP}" == "y" ]
-          then
-            LDFLAGS+=" -v"
-          fi
 
           export CPPFLAGS
           export CFLAGS
@@ -110,11 +109,8 @@ function build_make()
           config_options+=("--without-libintl-prefix")
           config_options+=("--without-libiconv-prefix")
 
-          if [ "${TARGET_PLATFORM}" == "win32" ]
-          then
-            config_options+=("ac_cv_dos_paths=yes")
-            # config_options+=("ac_cv_func_fcntl=no")
-          fi
+          config_options+=("ac_cv_dos_paths=yes")
+          # config_options+=("ac_cv_func_fcntl=no")
 
           run_verbose bash "${SOURCES_FOLDER_PATH}/${make_folder_name}/configure" \
             ${config_options[@]}
@@ -149,7 +145,33 @@ function build_make()
   else
     echo "make already installed."
   fi
+
+  tests_add "test_make"
 }
+
+function test_make()
+{
+  if [ -d "xpacks/.bin" ]
+  then
+    MAKE="xpacks/.bin/make"
+  elif [ -d "${APP_PREFIX}/bin" ]
+  then
+    MAKE="${APP_PREFIX}/bin/make"
+  else
+    echo "Wrong folder."
+    exit 1
+  fi
+
+  echo
+  echo "Checking the make shared libraries..."
+  show_libs "${MAKE}"
+
+  echo
+  echo "Checking if make starts..."
+
+  run_app "${MAKE}" --version
+}
+
 
 function build_busybox()
 {
@@ -175,12 +197,14 @@ function build_busybox()
   # busybox_commit="f902184fa8aa37b0ce8b725da5657ef2ed2005dd
 
   local busybox_commit="$1"
+  local busybox_src_folder_name="busybox-w32-${busybox_commit}"
 
   local busybox_archive="${busybox_commit}.zip"
   local busybox_url="https://github.com/rmyorston/busybox-w32/archive/${busybox_archive}"
 
-  local busybox_src_folder_name="busybox-w32-${busybox_commit}"
   local busybox_folder_name="${busybox_src_folder_name}"
+
+  mkdir -pv "${LOGS_FOLDER_PATH}/${busybox_folder_name}"
 
   local busybox_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-busybox-${busybox_commit}-installed"
   if [ ! -f "${busybox_stamp_file_path}" ]
@@ -204,8 +228,6 @@ function build_busybox()
         fi
       fi
 
-      mkdir -pv "${LOGS_FOLDER_PATH}/${busybox_folder_name}"
-
       cd "${BUILD_FOLDER_PATH}/${busybox_folder_name}"
 
       xbb_activate
@@ -213,14 +235,6 @@ function build_busybox()
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
-      if false # [ "${TARGET_PLATFORM}" == "win32" ]
-      then
-        LDFLAGS+=" -static"
-      fi
-      if [ "${IS_DEVELOP}" == "y" ]
-      then
-        LDFLAGS+=" -v"
-      fi
 
       if [ ${TARGET_BITS} == "32" ]
       then
@@ -235,6 +249,11 @@ function build_busybox()
       if [ ! -f ".config" ]
       then
         (
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            env | sort
+          fi
+
           echo
           echo "Running BusyBox configure..."
 
@@ -314,6 +333,30 @@ function build_busybox()
     echo "BusyBox already installed."
   fi
 
+  tests_add "test_busybox"
+}
+
+function test_busybox()
+{
+  if [ -d "xpacks/.bin" ]
+  then
+    BUSYBOX="xpacks/.bin/busybox"
+  elif [ -d "${APP_PREFIX}/bin" ]
+  then
+    BUSYBOX="${APP_PREFIX}/bin/busybox"
+  else
+    echo "Wrong folder."
+    exit 1
+  fi
+
+  echo
+  echo "Checking the busybox shared libraries..."
+  show_libs "${BUSYBOX}"
+
+  echo
+  echo "Checking if busybox starts..."
+
+  run_app "${BUSYBOX}" --version
 }
 
 # -----------------------------------------------------------------------------

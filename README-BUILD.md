@@ -1,53 +1,92 @@
-# How to build the xPack Windows Build Tools
+# How to build the xPack Windows Build Tools binaries
 
 ## Introduction
 
-This project includes the scripts and additional files required to
+This project also includes the scripts and additional files required to
 build and publish the
-[xPack Windows Build Tools](https://xpack.github.io/windows-build-tools/) binaries.
+[xPack Windows Build Tools](https://github.com/xpack-dev-tools/windows-build-tools-xpack) binaries.
 
-## Referred URLs
+The build scripts use the
+[xPack Build Box (XBB)](https://github.com/xpack/xpack-build-box),
+a set of elaborate build environments based on recent GCC versions
+(Docker containers
+for GNU/Linux and Windows or a custom folder for MacOS).
 
-The build scripts use sources from the MSYS2 and Busybox projects:
+There are two types of builds:
 
-- `http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/Sources/`
-- `https://github.com/rmyorston/busybox-w32.git`
+- **local/native builds**, which use the tools available on the
+  host machine; generally the binaries do not run on a different system
+  distribution/version; intended mostly for development purposes;
+- **distribution builds**, which create the archives distributed as
+  binaries; expected to run on most modern systems.
 
-## Branches
+This page documents the distribution builds.
+
+For native builds, see the `build-native.sh` script.
+
+## Repositories
+
+- <https://github.com/xpack-dev-tools/windows-build-tools-xpack.git> -
+  the URL of the xPack build scripts repository
+- <https://github.com/xpack-dev-tools/build-helper> - the URL of the
+  xPack build helper, used as the `scripts/helper` submodule.
+- <http://sourceforge.net/projects/msys2/files/REPOS/MSYS2/Sources/>
+- <https://github.com/rmyorston/busybox-w32.git>
+
+The build scripts use the first repo; to merge
+changes from upstream it is necessary to add a remote named
+`upstream`, and merge the `upstream/master` into the local `master`.
+
+### Branches
 
 - `xpack` - the updated content, used during builds
 - `xpack-develop` - the updated content, used during development
 - `master` - no content
 
-## Download the build scripts repo
+## Download the build scripts
 
-The build script is available from GitHub and can be
-[viewed online](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/master/scripts/build.sh).
+The build scripts are available in the `scripts` folder of the
+[`xpack-dev-tools/windows-build-tools-xpack`](https://github.com/xpack-dev-tools/windows-build-tools-xpack)
+Git repo.
 
-To download it, clone the
-[xpack-dev-tools/windows-build-tools-xpack](https://github.com/xpack-dev-tools/windows-build-tools-xpack)
-Git repo, including submodules.
+To download them, issue the following two commands:
 
-```console
-$ rm -rf ~/Downloads/windows-build-tools-xpack.git
-$ git clone --recurse-submodules https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
-  ~/Downloads/windows-build-tools-xpack.git
+```sh
+rm -rf ~/Downloads/windows-build-tools-xpack.git; \
+git clone https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
+  ~/Downloads/windows-build-tools-xpack.git; \
+git -C ~/Downloads/windows-build-tools-xpack.git submodule update --init --recursive 
+```
+
+> Note: the repository uses submodules; for a successful build it is
+> mandatory to recurse the submodules.
+
+For development purposes, clone the `xpack-develop`
+branch:
+
+```sh
+rm -rf ~/Downloads/windows-build-tools-xpack.git; \
+git clone \
+  --branch xpack-develop \
+  https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
+  ~/Downloads/windows-build-tools-xpack.git; \
+git -C ~/Downloads/windows-build-tools-xpack.git submodule update --init --recursive
 ```
 
 ## The `Work` folder
 
-The script creates a temporary build `Work/windows-build-tools-${version}`
-folder in the user home. Although not recommended, if for any reasons
-you need to change the location of the `Work` folder,
+The scripts create a temporary build `Work/windows-build-tools-${version}` folder in
+the user home. Although not recommended, if for any reasons you need to
+change the location of the `Work` folder,
 you can redefine `WORK_FOLDER_PATH` variable before invoking the script.
 
 ## Spaces in folder names
 
-Due to the limitations of `make`, builds started in folders which
-include spaces in the names are known to fail.
+Due to the limitations of `make`, builds started in folders with
+spaces in names are known to fail.
 
-If on your system the work folder in in such a location, redefine it in a
-folder without spaces and set the `WORK_FOLDER_PATH` variable before invoking 
+If on your system the work folder is in such a location, redefine it in a
+folder without spaces and set the `WORK_FOLDER_PATH` variable before invoking
 the script.
 
 ## Customizations
@@ -59,49 +98,57 @@ either passed to Docker or sourced to shell. The Docker syntax
 **is not** identical to shell, so some files may
 not be accepted by bash.
 
-## Prerequisites
+## Versioning
 
-The prerequisites are common to all binary builds. Please follow the
-instructions from the separate
-[Prerequisites for building xPack binaries](https://xpack.github.io/xbb/prerequisites/)
-page and return when ready.
+The version string is an extension to semver, the format looks like `4.2.1-3`.
+It includes the three digits with the original Windows Build Tools version and a fourth
+digit with the xPack release number.
 
-## Prepare release
+When publishing on the **npmjs.com** server, a fifth digit is appended.
 
-To prepare a new release, first determine the version (like `4.2.1-2`) and
-update the `scripts/VERSION` file.
+## Changes
 
-## Update CHANGELOG.txt
+Compared to the original Windows Build Tools distribution, there should be no
+functional changes.
 
-Check `windows-build-tools-xpack.git/CHANGELOG.txt` and add the new release.
+The actual changes for each version are documented in the
+release web pages.
+
+## How to build local/native binaries
+
+### README-DEVELOP.md
+
+The details on how to prepare the development environment for Windows Build Tools are in the
+[`README-DEVELOP.md`](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-DEVELOP.md)
+file.
+
+## How to build distributions
 
 ## Build
 
+The builds currently run on a dedicated machines (Intel GNU/Linux).
+
+### Build the Windows binaries
+
 The current platform for Windows production builds is a
 Debian 10, running on an Intel NUC8i7BEH mini PC with 32 GB of RAM
-and 512 GB of fast M.2 SSD.
+and 512 GB of fast M.2 SSD. The machine name is `xbbi`.
 
-```console
-$ ssh xbbi
+```sh
+caffeinate ssh xbbi
 ```
 
-Before starting a multi-platform build, check if Docker is started:
+Before starting a build, check if Docker is started:
 
-```console
-$ docker info
-```
-
-Eventually run the test image:
-
-```console
-$ docker run hello-world
+```sh
+docker info
 ```
 
 Before running a build for the first time, it is recommended to preload the
 docker images.
 
-```console
-$ bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh preload-images
+```sh
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh preload-images
 ```
 
 The result should look similar to:
@@ -111,7 +158,6 @@ $ docker images
 REPOSITORY          TAG                              IMAGE ID            CREATED             SIZE
 ilegeul/ubuntu      i386-12.04-xbb-v3.2              fadc6405b606        2 days ago          4.55GB
 ilegeul/ubuntu      amd64-12.04-xbb-v3.2             3aba264620ea        2 days ago          4.98GB
-hello-world         latest                           bf756fb1ae65        5 months ago        13.3kB
 ```
 
 It is also recommended to Remove unused Docker space. This is mostly useful
@@ -120,40 +166,47 @@ by Docker.
 
 To check the content of a Docker image:
 
-```console
-$ docker run --interactive --tty ilegeul/ubuntu:amd64-12.04-xbb-v3.2
+```sh
+docker run --interactive --tty ilegeul/ubuntu:amd64-12.04-xbb-v3.2
 ```
 
 To remove unused files:
 
-```console
-$ docker system prune --force
+```sh
+docker system prune --force
 ```
 
-To build both the 32/64-bits Windows use `--all`.
+Since the build takes a while, use `screen` to isolate the build session
+from unexpected events, like a broken
+network connection or a computer entering sleep.
 
-```console
-$ sudo rm -rf ~/Work/windows-build-tools-*
-$ bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh --all
+```sh
+screen -S windows-build-tools
+
+sudo rm -rf ~/Work/windows-build-tools-*
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --all
 ```
+
+or, for development builds:
+
+```sh
+sudo rm -rf ~/Work/windows-build-tools-*
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-pdf --disable-tests --win64 --win32
+```
+
+To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
+`screen -r windows-build-tools`; to kill the session use `Ctrl-a` `Ctrl-k` and confirm.
 
 Several minutes later, the output of the build script is a set of 2
-files and their SHA signatures, created in the `deploy` folder:
+archives and their SHA signatures, created in the `deploy` folder:
 
 ```console
-$ ls -l deploy
+$ ls -l ~/Work/windows-build-tools-*/deploy
 total 3556
--rw-rw-r-- 1 ilg ilg 1700582 Jul 14 11:26 xpack-windows-build-tools-4.2.1-2-win32-x32.zip
--rw-rw-r-- 1 ilg ilg     113 Jul 14 11:26 xpack-windows-build-tools-4.2.1-2-win32-x32.zip.sha
--rw-rw-r-- 1 ilg ilg 1926825 Jul 14 11:25 xpack-windows-build-tools-4.2.1-2-win32-x64.zip
--rw-rw-r-- 1 ilg ilg     113 Jul 14 11:25 xpack-windows-build-tools-4.2.1-2-win32-x64.zip.sha
-```
-
-To copy the files from the build machine to the current development machine, open the `deploy` folder in a terminal and use `scp`:
-
-```console
-$ cd ~/Work/windows-build-tools-*/deploy
-$ scp * ilg@wks:Downloads/xpack-binaries/wbt
+-rw-rw-r-- 1 ilg ilg 1700582 Jul 14 11:26 xpack-windows-build-tools-4.2.1-3-win32-x32.zip
+-rw-rw-r-- 1 ilg ilg     113 Jul 14 11:26 xpack-windows-build-tools-4.2.1-3-win32-x32.zip.sha
+-rw-rw-r-- 1 ilg ilg 1926825 Jul 14 11:25 xpack-windows-build-tools-4.2.1-3-win32-x64.zip
+-rw-rw-r-- 1 ilg ilg     113 Jul 14 11:25 xpack-windows-build-tools-4.2.1-3-win32-x64.zip.sha
 ```
 
 ## Subsequent runs
@@ -162,27 +215,40 @@ $ scp * ilg@wks:Downloads/xpack-binaries/wbt
 
 Instead of `--all`, you can use any combination of:
 
-```
+```console
 --win32 --win64
 ```
 
-### clean
+### `clean`
 
-To remove most build files, use:
+To remove most build temporary files, use:
 
-```console
-$ bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh clean
+```sh
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --all clean
 ```
 
-To also remove the repository and the output files, use:
+To also remove the library build temporary files, use:
 
-```console
-$ bash ~/Downloads/windows-build-tools-xpack.git/scripts/build.sh cleanall
+```sh
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --all cleanlibs
 ```
 
-For production builds it is recommended to completely remove the build folder.
+To remove all temporary files, use:
 
-### --develop
+```sh
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --all cleanall
+```
+
+Instead of `--all`, any combination of `--win32 --win64`
+will remove the more specific folders.
+
+For production builds it is recommended to **completely remove the build folder**:
+
+```sh
+rm -rf ~/Work/windows-build-tools-*
+```
+
+### `--develop`
 
 For performance reasons, the actual build folders are internal to each
 Docker run, and are not persistent. This gives the best speed, but has
@@ -191,10 +257,12 @@ the disadvantage that interrupted builds cannot be resumed.
 For development builds, it is possible to define the build folders in
 the host file system, and resume an interrupted build.
 
-### --debug
+In addition, the builds are more verbose.
 
-For development builds, it is also possible to create everything
-with `-g -O0` and be able to run debug sessions.
+### `--debug`
+
+For development builds, it is also possible to create everything with
+`-g -O0` and be able to run debug sessions.
 
 ### --jobs
 
@@ -203,13 +271,20 @@ parallel builds fail, it is possible to reduce the load.
 
 ### Interrupted builds
 
-The Docker scripts run with root privileges. This is generally not
-a problem, since at the end of the script the output files are
-reassigned to the actual user.
+The Docker scripts may run with root privileges. This is generally not a
+problem, since at the end of the script the output files are reassigned
+to the actual user.
 
-However, for an interrupted build, this step is skipped, and files
-in the install folder will remain owned by root. Thus, before removing
+However, for an interrupted build, this step is skipped, and files in
+the install folder will remain owned by root. Thus, before removing
 the build folder, it might be necessary to run a recursive `chown`.
+
+## Testing
+
+A simple test is performed by the script at the end, by launching the
+executable to check if all shared/dynamic libraries are correctly used.
+
+For a true test you need to build some Eclipse projects.
 
 ## Installed folders
 
@@ -217,7 +292,7 @@ After install, the package should create a structure like this (only the
 first two depth levels are shown):
 
 ```console
-xPacks/@xpack-dev-tools/windows-build-tools/4.2.1-2/.content/
+xPacks/@xpack-dev-tools/windows-build-tools/4.2.1-3/.content/
 ├── README.md
 ├── bin
 │   ├── busybox.exe
@@ -240,7 +315,8 @@ No other files are installed in any system folders or other locations.
 ## Uninstall
 
 The binaries are distributed as portable archives; thus they do not need
-to run a setup and do not require an uninstall.
+to run a setup and do not require an uninstall; simply removing the
+folder is enough.
 
 ## Files cache
 
@@ -252,14 +328,15 @@ may fail.
 
 The workaround is to manually download the files from an alternate
 location (like
-https://github.com/xpack-dev-tools/files-cache/tree/master/libs),
+<https://github.com/xpack-dev-tools/files-cache/tree/master/libs>),
 place them in the XBB cache (`Work/cache`) and restart the build.
 
 ## More build details
 
-The build process is split into several scripts. The build starts on the
-host, with `build.sh`, which runs `container-build.sh` several times,
-once for each target, in one of the two docker containers. Both scripts
-include several other helper scripts. The entire process is quite complex,
-and an attempt to explain its functionality in a few words would not be
-realistic. Thus, the authoritative source of details remains the source code.
+The build process is split into several scripts. The build starts on
+the host, with `build.sh`, which runs `container-build.sh` several
+times, once for each target, in one of the two docker containers.
+Both scripts include several other helper scripts. The entire process
+is quite complex, and an attempt to explain its functionality in a few
+words would not be realistic. Thus, the authoritative source of details
+remains the source code.

@@ -1,57 +1,13 @@
-# xPack Windows Build Tools
+# The xPack Windows Build Tools
 
-The **xPack Windows Build Tools** subproject (formerly GNU MCU/ARM Eclipse
-Windows Build Tools) is a Windows specific package, customised for the
-requirements of the Eclipse CDT managed build projects. It includes a
-recent version of **GNU make** and a recent version of **BusyBox**,
-which provides a convenient implementation for `sh`/`rm`/`echo`.
+**The xPack Windows Build Tools** is the **xPack** version of
+a standalone Windows binary distribution of
+GNU make and a few of other tools required by the Eclipse Embedded CDT
+(formerly GNU MCU/ARM Eclipse) project.
 
-## Easy install
+For more details, please read the corresponding release pages:
 
-The **xPack Windows Build Tools** are also available as a binary
-[xPack](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools)
-and can be conveniently installed with [xpm](https://www.npmjs.com/package/xpm):
-
-```console
-$ xpm install --global @xpack-dev-tools/windows-build-tools@latest
-```
-
-For more details please see the
-[How to install the Windows Build Tools](https://xpack.github.io/windows-build-tools/install/) page.
-
-## Changes
-
-There are currently no changes from the official GNU distribution
-and the official BusyBox distribution.
-
-## Compatibility
-
-The binaries were built using
-[xPack Build Box (XBB)](https://github.com/xpack/xpack-build-box), a
-set of build environments based on slightly older systems that should
-be compatible with most recent systems.
-
-- Windows: all binaries were built with mingw-w64 GCC 9.3, running in a
-  Ubuntu 12.04 LTS Docker container
-
-## Build
-
-The scripts used to build this distribution are in:
-
-- `distro-info/scripts`
-
-For the prerequisites and more details on the build procedure, please see the
-[How to build the Windows Build Tools binaries](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-BUILD.md) page.
-
-## Documentation
-
-The package does not include any documentation.
-
-## More info
-
-For more info and support, please see the xPack project pages from:
-
-http://xpack.github.io/windows-build-tools/
+- <https://xpack.github.io/windows-build-tools/releases/>
 
 Thank you for using open source software,
 
