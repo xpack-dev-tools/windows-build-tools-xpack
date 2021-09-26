@@ -80,6 +80,7 @@
         "mkdir -p .github/workflows/",
         "cp scripts/helper/templates/body-github-pre-releases-test.md .github/workflows/",
         "cat scripts/templates/build-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\", \"APP_LC_NAME\": \"{{ properties.appLCName }}\" }' > .github/workflows/build.yml",
+        "cat scripts/templates/test-prime-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\", \"APP_LC_NAME\": \"{{ properties.appLCName }}\" }' > .github/workflows/test-prime.yml",
         "cat scripts/templates/publish-release-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\", \"APP_LC_NAME\": \"{{ properties.appLCName }}\" }' > .github/workflows/publish-release.yml",
         "cat scripts/templates/test-xpm-liquid.yml | liquidjs '{ \"APP_NAME\": \"{{ properties.appName }}\", \"APP_LC_NAME\": \"{{ properties.appLCName }}\" }' > .github/workflows/test-xpm.yml"
         ],
