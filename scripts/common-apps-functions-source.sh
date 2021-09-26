@@ -230,8 +230,6 @@ function build_busybox()
 
       cd "${BUILD_FOLDER_PATH}/${busybox_folder_name}"
 
-      xbb_activate
-
       CPPFLAGS="${XBB_CPPFLAGS}"
       CFLAGS="${XBB_CFLAGS_NO_W}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
@@ -257,25 +255,20 @@ function build_busybox()
           echo
           echo "Running BusyBox configure..."
 
-          if [ "${TARGET_PLATFORM}" == "win32" ]
+          if [ ${TARGET_BITS} == "32" ]
           then
-            if [ ${TARGET_BITS} == "32" ]
-            then
-              # On 32-bit containers running on 64-bit systems, stat() fails with
-              # 'Value too large for defined data type'.
-              # The solution is to add _FILE_OFFSET_BITS=64.
-              export HOST_EXTRACFLAGS="-D_FILE_OFFSET_BITS=64"
-              run_verbose make mingw32_defconfig \
-                HOSTCC="${NATIVE_CC}" \
-                HOSTCXX="${NATIVE_CXX}"
-            elif [ ${TARGET_BITS} == "64" ]
-            then
-              run_verbose make mingw64_defconfig \
-                HOSTCC="${NATIVE_CC}" \
-                HOSTCXX="${NATIVE_CXX}"
-            fi
-          else
-            run_verbose make defconfig
+            # On 32-bit containers running on 64-bit systems, stat() fails with
+            # 'Value too large for defined data type'.
+            # The solution is to add _FILE_OFFSET_BITS=64.
+            export HOST_EXTRACFLAGS="-D_FILE_OFFSET_BITS=64"
+            run_verbose make mingw32_defconfig \
+              HOSTCC="${HOSTCC}" \
+              HOSTCXX="${HOSTCXX}"
+          elif [ ${TARGET_BITS} == "64" ]
+          then
+            run_verbose make mingw64_defconfig \
+              HOSTCC="${HOSTCC}" \
+              HOSTCXX="${HOSTCXX}"
           fi
 
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${busybox_folder_name}/configure-output.txt"
@@ -290,8 +283,8 @@ function build_busybox()
           if [ "${TARGET_PLATFORM}" == "win32" ]
           then
             run_verbose make -j ${JOBS} \
-              HOSTCC="${NATIVE_CC}" \
-              HOSTCXX="${NATIVE_CXX}"
+              HOSTCC="${HOSTCC}" \
+              HOSTCXX="${HOSTCXX}"
 
             mkdir -pv "${INSTALL_FOLDER_PATH}/${APP_LC_NAME}/bin"
             cp -v "busybox.exe" \
@@ -356,7 +349,7 @@ function test_busybox()
   echo
   echo "Checking if busybox starts..."
 
-  run_app "${BUSYBOX}" --version
+  run_app "${BUSYBOX}" --help
 }
 
 # -----------------------------------------------------------------------------
