@@ -31,6 +31,7 @@ on:
 jobs:
   linux-x64:
     name: 'Intel Linux Windows Build Tools ${{ github.event.inputs.version }} build'
+    timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, Linux, X64]
     steps:
       - name: 'Checkout'
@@ -41,8 +42,10 @@ jobs:
       - name: 'Clean working area'
         run: rm -rf ~/Work/windows-build-tools-${{ github.event.inputs.version }}*
       - name: 'Build Windows x64 binary'
+        timeout-minutes: 1440
         run: bash scripts/helper/build.sh --version "${{ github.event.inputs.version }}" --win64
       - name: 'Build Windows ia32 binary'
+        timeout-minutes: 1440
         run: bash scripts/helper/build.sh --version "${{ github.event.inputs.version }}" --win32
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action

@@ -31,6 +31,7 @@ on:
 jobs:
   linux-x64:
     name: 'Intel Linux {{ APP_NAME }} {% raw %}${{ github.event.inputs.version }}{% endraw %} build'
+    timeout-minutes: 2880 # 2 days
     runs-on: [self-hosted, Linux, X64]
     steps:
       - name: 'Checkout'
@@ -41,8 +42,10 @@ jobs:
       - name: 'Clean working area'
         run: rm -rf ~/Work/{{ APP_LC_NAME }}-{% raw %}${{ github.event.inputs.version }}{% endraw %}*
       - name: 'Build Windows x64 binary'
+        timeout-minutes: 1440
         run: bash scripts/helper/build.sh --version "{% raw %}${{ github.event.inputs.version }}{% endraw %}" --win64
       - name: 'Build Windows ia32 binary'
+        timeout-minutes: 1440
         run: bash scripts/helper/build.sh --version "{% raw %}${{ github.event.inputs.version }}{% endraw %}" --win32
       - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
