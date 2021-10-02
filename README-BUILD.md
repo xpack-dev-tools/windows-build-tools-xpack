@@ -156,8 +156,8 @@ The result should look similar to:
 ```console
 $ docker images
 REPOSITORY          TAG                              IMAGE ID            CREATED             SIZE
-ilegeul/ubuntu      i386-12.04-xbb-v3.2              fadc6405b606        2 days ago          4.55GB
-ilegeul/ubuntu      amd64-12.04-xbb-v3.2             3aba264620ea        2 days ago          4.98GB
+ilegeul/ubuntu      i386-12.04-xbb-v3.3              fadc6405b606        2 days ago          4.55GB
+ilegeul/ubuntu      amd64-12.04-xbb-v3.3             3aba264620ea        2 days ago          4.98GB
 ```
 
 It is also recommended to Remove unused Docker space. This is mostly useful
@@ -167,7 +167,7 @@ by Docker.
 To check the content of a Docker image:
 
 ```sh
-docker run --interactive --tty ilegeul/ubuntu:amd64-12.04-xbb-v3.2
+docker run --interactive --tty ilegeul/ubuntu:amd64-12.04-xbb-v3.3
 ```
 
 To remove unused files:

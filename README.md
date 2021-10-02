@@ -3,9 +3,9 @@
 
 # The xPack Windows Build Tools
 
-A Windows specific package (not a full multi-platform xPack), customised
-for the requirements of the Eclipse Embedded CDT managed build projects;
-it includes a recent version of **GNU make** and a recent version of
+A standalone Windows specific package (not a full multi-platform xPack),
+customised for the requirements of the Eclipse Embedded CDT managed build
+projects; it includes a recent version of **GNU make** and a recent version of
 **BusyBox**, which provides a convenient implementation for `sh`/`rm`/`echo`.
 
 In addition to the package meta data, this project also includes

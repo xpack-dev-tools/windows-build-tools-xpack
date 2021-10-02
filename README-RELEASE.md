@@ -245,7 +245,7 @@ will install the package via `xpm install` on all supported platforms.
 
 The test results are available from:
 
-- <https://travis-ci.com/github/xpack-dev-tools/windows-build-tools-xpack>
+- <https://travis-ci.com/github/xpack-dev-tools/windows-build-tools-xpack/>
 
 ## Update the repo
 
