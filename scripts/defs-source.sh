@@ -27,8 +27,6 @@ DISTRO_TOP_FOLDER=${DISTRO_TOP_FOLDER:-"xPacks"}
 
 APP_DESCRIPTION="${DISTRO_NAME} ${APP_NAME}"
 
-BRANDING="${BRANDING:-"${DISTRO_NAME} ${APP_NAME}"}"
-
 # -----------------------------------------------------------------------------
 
 DO_BUILD_LINUX_ARM32="n"
