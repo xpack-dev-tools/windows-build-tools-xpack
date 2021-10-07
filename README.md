@@ -147,7 +147,7 @@ For more details please read the
 
 The original content is released under the
 [MIT License](https://opensource.org/licenses/MIT), with all rights
-reserved to [Liviu Ionescu](https://github.com/ilg-ul).
+reserved to [Liviu Ionescu](https://github.com/ilg-ul/).
 
 The binary distributions include several open-source components; the
 corresponding licenses are available in the installed

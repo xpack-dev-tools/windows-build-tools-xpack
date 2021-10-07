@@ -49,7 +49,7 @@ The build scripts are available in the `scripts` folder of the
 [`xpack-dev-tools/windows-build-tools-xpack`](https://github.com/xpack-dev-tools/windows-build-tools-xpack)
 Git repo.
 
-To download them, issue the following two commands:
+To download them, issue the following commands:
 
 ```sh
 rm -rf ~/Downloads/windows-build-tools-xpack.git; \
