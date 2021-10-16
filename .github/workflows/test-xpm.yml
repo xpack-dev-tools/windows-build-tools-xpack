@@ -1,6 +1,6 @@
 
 # -----------------------------------------------------------------------------
-# DO NOT EDIT! Generated from scripts/helper/templates/test-native-liquid.yml.
+# DO NOT EDIT! Generated from scripts/helper/templates/*.
 #
 # This file is part of the xPack distribution.
 #   (https://xpack.github.io)
@@ -19,6 +19,7 @@
 
 # -----------------------------------------------------------------------------
 
+
 name: 'Test xPack Windows Build Tools via xpm'
 
 on:
@@ -30,6 +31,7 @@ on:
         default: 'latest'
 
 jobs:
+
   windows-x64:
     name: 'Windows 64-bit Windows Build Tools@${{ github.event.inputs.version }} test'
     runs-on: windows-latest
@@ -42,6 +44,7 @@ jobs:
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/helper/tests/xpm-test.sh --version ${{ github.event.inputs.version }}
 
+  
   windows-ia32:
     name: 'Windows 32-bit Windows Build Tools@${{ github.event.inputs.version }} test'
     runs-on: windows-latest
@@ -53,5 +56,6 @@ jobs:
           submodules: true
       - name: 'Run ${{ github.event.inputs.version }} xpm test'
         run: bash scripts/helper/tests/xpm-test.sh --version ${{ github.event.inputs.version }} --32
+  
 
 # -----------------------------------------------------------------------------
