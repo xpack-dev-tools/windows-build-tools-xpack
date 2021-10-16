@@ -155,9 +155,9 @@ The result should look similar to:
 
 ```console
 $ docker images
-REPOSITORY          TAG                              IMAGE ID            CREATED             SIZE
-ilegeul/ubuntu      i386-12.04-xbb-v3.3              fadc6405b606        2 days ago          4.55GB
-ilegeul/ubuntu      amd64-12.04-xbb-v3.3             3aba264620ea        2 days ago          4.98GB
+REPOSITORY          TAG                    IMAGE ID            CREATED             SIZE
+ilegeul/ubuntu      i386-12.04-xbb-v3.3    35fb0236572c        23 hours ago        5GB
+ilegeul/ubuntu      amd64-12.04-xbb-v3.3   1c4ba2e7e87e        29 hours ago        5.43GB
 ```
 
 It is also recommended to Remove unused Docker space. This is mostly useful
