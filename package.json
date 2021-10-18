@@ -34,7 +34,7 @@
     "minimumXpmRequired": "0.10.2",
     "binaries": {
       "destination": "./.content",
-      "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v4.2.1-2",
+      "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v4.2.1-3",
       "skip": 1,
       "platforms": {
         "linux-ia32": {
@@ -53,12 +53,12 @@
           "skip": true
         },
         "win32-ia32": {
-          "fileName": "xpack-windows-build-tools-4.2.1-2-win32-ia32.zip",
-          "sha256": "77b0aaf70a1b6d497769b6bbce7fb70961bdeb363ae7c41d118fa51092070afb"
+          "fileName": "xpack-windows-build-tools-4.2.1-3-win32-ia32.zip",
+          "sha256": "939edfd488642693fadf564e5285cbb388bad2bd550b6b061a4b54daf58eca47"
         },
         "win32-x64": {
-          "fileName": "xpack-windows-build-tools-4.2.1-2-win32-x64.zip",
-          "sha256": "b7a3cbe60639f0e913fb7d7309da01533e0d50c030fa2b6764f5c3940eeb7e91"
+          "fileName": "xpack-windows-build-tools-4.2.1-3-win32-x64.zip",
+          "sha256": "f3081840c0bb7df1abc4d3379546ea7286b2f0282cc148ed105a23432bbc6f9b"
         }
       }
     },
@@ -85,7 +85,7 @@
         "cat scripts/helper/templates/test-prime-liquid.yml | {{ properties.LIQUIDJS }} > .github/workflows/test-prime.yml",
         "cat scripts/helper/templates/publish-release-liquid.yml | {{ properties.LIQUIDJS }} > .github/workflows/publish-release.yml",
         "cat scripts/helper/templates/test-xpm-liquid.yml | {{ properties.LIQUIDJS }} > .github/workflows/test-xpm.yml"
-        ],
+      ],
       "trigger-workflow-build": "bash scripts/helper/trigger-workflow-build.sh",
       "trigger-workflow-test-prime": "bash scripts/helper/tests/trigger-workflow-test-prime.sh",
       "trigger-workflow-publish-release": "bash scripts/helper/trigger-workflow-publish-release.sh",
