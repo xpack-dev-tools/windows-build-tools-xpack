@@ -45,7 +45,7 @@ but in the version specific release page.
 - update version in `README-BUILD.md`
 - update version in `README.md`
 
-## Update `CHANGELOG.md`
+### Update `CHANGELOG.md`
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
@@ -75,8 +75,8 @@ or the production machine (`xbbm`):
 ```sh
 sudo rm -rf ~/Work/windows-build-tools-*
 
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win64
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win32
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win64
+bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win32
 ```
 
 Work on the scripts until all platforms pass the build.
@@ -165,7 +165,7 @@ functional, possibly by running Eclipse builds.
 
 ## Create a new GitHub pre-release draft
 
-- in `CHANGELOG.md`, add release date
+- in `CHANGELOG.md`, add the release date and a message like _v4.2.1-3 released_
 - commit and push the `xpack-develop` branch
 - run the xPack action `trigger-workflow-publish-release`
 
@@ -200,7 +200,8 @@ If any, refer to closed
 
 - go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/) page
 - perform the final edits and check if everything is fine
-- save the release
+- keep the pre-release button enabled
+- publish the release
 
 Note: at this moment the system should send a notification to all clients
 watching this project.
@@ -222,8 +223,8 @@ watching this project.
 
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
-- update `CHANGELOG.md`; commit with a message like
-  _CHANGELOG: publish npm v4.2.1-3.1_
+- update `CHANGELOG.md`, add a line like _v4.2.1-3.1 published on npmjs.com_
+- commit with a message like _CHANGELOG: publish npm v4.2.1-3.1_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
   possibly adjust `.npmignore`
@@ -240,12 +241,11 @@ After a few moments the version will be visible at:
 
 ## Test if the npm binaries can be installed with xpm
 
-Run the `scripts/tests/trigger-travis-xpm-install.sh` script, this
+Run the xPack action `trigger-workflow-test-xpm`, this
 will install the package via `xpm install` on all supported platforms.
 
-The test results are available from:
-
-- <https://travis-ci.com/github/xpack-dev-tools/windows-build-tools-xpack/>
+The tests results are available from the
+[Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/) page.
 
 ## Update the repo
 
@@ -272,6 +272,7 @@ When the release is considered stable, promote it as `latest`:
 - go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/) page
 - check the download counter, it should match the number of tests
 - add a link to the Web page `[Continue reading »]()`; use an same blog URL
+- remove the _tests only_ notice
 - **disable** the **pre-release** button
 - click the **Update Release** button
 

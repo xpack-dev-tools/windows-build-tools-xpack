@@ -7,7 +7,7 @@ build and publish the
 [xPack Windows Build Tools](https://github.com/xpack-dev-tools/windows-build-tools-xpack) binaries.
 
 The build scripts use the
-[xPack Build Box (XBB)](https://github.com/xpack/xpack-build-box),
+[xPack Build Box (XBB)](https://xpack.github.io/xbb/),
 a set of elaborate build environments based on recent GCC versions
 (Docker containers
 for GNU/Linux and Windows or a custom folder for MacOS).
