@@ -38,6 +38,12 @@ There are separate binaries for **Windows** (Intel 32/64-bit).
 
 The binary files are available from GitHub [releases]({% raw %}{{ page.download_url }}{% endraw %}).
 
+## Prerequisites
+
+- Intel Windows 32/64-bit: Windows 7 with the Universal C Runtime
+  ([UCRT](https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c)),
+  Windows 8, Windows 10
+
 ## Install
 
 The full details of installing the **xPack Windows Build Tools** 
@@ -133,19 +139,12 @@ DLLs are included, so the binaries should run on any Windows system.
 
 - none
 
-## Supported platforms
-
-Only binaries for **Windows** are provided.
+## Build
 
 The binaries were built using the
-[xPack Build Box (XBB)](https://github.com/xpack/xpack-build-box), a set
+[xPack Build Box (XBB)](https://xpack.github.io/xbb/), a set
 of build environments based on slightly older distributions, that should be
 compatible with most recent systems.
-
-- Windows: all binaries were built with mingw-w64 GCC 11.1, running in an
-  Ubuntu 12 Docker container
-
-## Build
 
 The scripts used to build this distribution are in:
 
