@@ -5,6 +5,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2021-10-18
 
+- v4.2.1-3 released
 - v4.2.1-3 prepared
 
 ## 2020-12-28
@@ -22,7 +23,7 @@ Entries in this file are in reverse chronological order.
 ## 2020-09-19
 
 - [#15] Fix arm platform names
-- v2.12.2-2 published on npmjs.com
+- v2.12.2-2 published on npmjs.com 
 
 ## 2020-07-14
 
