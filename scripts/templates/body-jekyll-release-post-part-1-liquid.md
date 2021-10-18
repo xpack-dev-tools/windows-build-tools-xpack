@@ -3,8 +3,11 @@ title:  xPack Windows Build Tools {{ RELEASE_VERSION }} released
 
 TODO: select one summary
 
-summary: "Version {{ RELEASE_VERSION }} is a maintenance release; it updates to
-the latest upstream master."
+summary: "Version {{ RELEASE_VERSION }} is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox."
+
+Or (edit!):
+
+summary: "Version {{ RELEASE_VERSION }} is a new major release of the **xPack Windows Build Tools** package, following the make release."
 
 version: {{ RELEASE_VERSION }}
 npm_subversion: 1
@@ -29,8 +32,9 @@ tags:
 
 [The xPack Windows Build Tools](https://xpack.github.io/windows-build-tools/)
 is a standalone Windows binary distribution of
-GNU make and a few of other tools required by the Eclipse Embedded CDT
-(formerly GNU MCU/ARM Eclipse) project.
+**GNU make** and a few of other tools required by the Eclipse Embedded CDT
+(formerly GNU MCU/ARM Eclipse) project, but the binaries can also be used in
+generic build environments.
 
 There are separate binaries for **Windows** (Intel 32/64-bit).
 
@@ -159,7 +163,6 @@ Before publishing, a set of simple tests were performed on an exhaustive
 set of platforms. The results are available from:
 
 - [GitHub Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/)
-- [travis-ci.com](https://app.travis-ci.com/github/xpack-dev-tools/windows-build-tools-xpack/builds/)
 
 ## Tests
 
@@ -173,7 +176,7 @@ The simple test, consists in starting the binary.
 .../xpack-windows-build-tools-{{ RELEASE_VERSION }}/bin/make --version
 ```
 
-The tests consist in running Eclipse builds.
+A more elaborate test would be to run an Eclipse build.
 
 ## Checksums
 
