@@ -184,6 +184,7 @@ In the `xpack/web-jekyll` GitHub repo:
 
 - select the `develop` branch
 - copy the new file to `_posts/releases/windows-build-tools`
+- refer to the Busybox commit and date
 
 If any, refer to closed
 [issues](https://github.com/xpack-dev-tools/windows-build-tools-xpack/issues/).
