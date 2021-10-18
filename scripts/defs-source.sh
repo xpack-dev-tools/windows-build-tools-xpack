@@ -35,6 +35,10 @@ DO_BUILD_LINUX32="n"
 DO_BUILD_LINUX64="n"
 DO_BUILD_OSX="n"
 
+# Used during publishing.
+SKIP_XBBA="y"
+SKIP_XBBM="y"
+
 # -----------------------------------------------------------------------------
 
 GITHUB_ORG="${GITHUB_ORG:-"xpack-dev-tools"}"
