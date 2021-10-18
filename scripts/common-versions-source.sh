@@ -42,6 +42,7 @@ function build_versions()
 
   prepare_gcc_env "${CROSS_COMPILE_PREFIX}-"
 
+  # Note: 4.3 not functional yet.
   if [[ "${RELEASE_VERSION}" =~ 4\.3\.0-* ]]
   then
     (
@@ -60,9 +61,10 @@ function build_versions()
 
       build_make "4.2.1"
 
+      # https://github.com/rmyorston/busybox-w32
       if [ "${RELEASE_VERSION}" == "4.2.1-3" ]
       then
-        build_busybox "90b3ba992ecb39e32e5a66b2e37579becc56d286"
+        build_busybox "d239d2d5273e1620a6146d8f5076f6532e3569b1" # Oct 17, 2021
       else
         build_busybox "f902184fa8aa37b0ce8b725da5657ef2ed2005dd"
       fi
