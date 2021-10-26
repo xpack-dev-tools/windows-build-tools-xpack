@@ -19,6 +19,9 @@
 
 function run_tests()
 {
+  echo
+  env | sort
+  
   test_make
 
   test_busybox
