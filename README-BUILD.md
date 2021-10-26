@@ -296,18 +296,24 @@ xPacks/@xpack-dev-tools/windows-build-tools/4.2.1-3/.content/
 ├── README.md
 ├── bin
 │   ├── busybox.exe
+│   ├── cp.exe
 │   ├── echo.exe
 │   ├── make.exe
 │   ├── mkdir.exe
 │   ├── rm.exe
 │   └── sh.exe
-└── distro-info
-    ├── CHANGELOG.txt
-    ├── licenses
-    ├── patches
-    └── scripts
+├── distro-info
+│   ├── CHANGELOG.md
+│   ├── licenses
+│   ├── patches
+│   └── scripts
+├── include
+│   └── gnumake.h
+└── share
+    ├── info
+    └── man
 
-5 directories, 8 files
+9 directories, 10 files
 ```
 
 No other files are installed in any system folders or other locations.

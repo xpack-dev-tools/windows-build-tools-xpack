@@ -18,6 +18,10 @@ In the `xpack-dev-tools/windows-build-tools-xpack` Git repo:
 
 No need to add a tag here, it'll be added when the release is created.
 
+### Check the latest upstream release
+
+TODO
+
 ### Increase the version
 
 Determine the version (like `4.2.1`) and update the `scripts/VERSION`
@@ -49,7 +53,7 @@ but in the version specific release page.
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _v4.2.1-3 prepared_
+- add a new entry like _- v4.2.1-3 prepared_
 - commit with a message like _prepare v4.2.1-3_
 
 Note: if you missed to update the `CHANGELOG.md` before starting the build,
@@ -93,6 +97,9 @@ From here it'll be cloned on the production machines.
 ## Run the CI build
 
 The automation is provided by GitHub Actions and three self-hosted runners.
+
+Run the `generate-workflows` to re-generate the
+GitHub workflow files; commit and push if necessary.
 
 - on the macOS machine (`xbbm`) open ssh sessions to the Linux
 machines (`xbbi`):
@@ -148,7 +155,7 @@ This is equivalent to:
 bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-workflow-test-prime.sh
 ```
 
-These scripts require the `GITHUB_API_DISPATCH_TOKEN` to be present
+These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
 in the environment.
 
 These actions use the `xpack-develop` branch of this repo and the
@@ -165,7 +172,7 @@ functional, possibly by running Eclipse builds.
 
 ## Create a new GitHub pre-release draft
 
-- in `CHANGELOG.md`, add the release date and a message like _v4.2.1-3 released_
+- in `CHANGELOG.md`, add the release date and a message like _- v4.2.1-3 released_
 - commit and push the `xpack-develop` branch
 - run the xPack action `trigger-workflow-publish-release`
 
@@ -174,6 +181,9 @@ The result is a
 tagged like **v4.2.1-3** (mind the dash in the middle!) and
 named like **xPack Windows Build Tools v4.2.1-3** (mind the dash),
 with all binaries attached.
+
+- edit the draft and attach it to the `xpack-develop` branch (important!)
+- save the draft (do **not** publish yet!)
 
 ## Prepare a new blog post
 
@@ -199,8 +209,10 @@ If any, refer to closed
 
 ## Create the pre-release
 
-- go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/) page
+- go to the GitHub [Releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/) page
 - perform the final edits and check if everything is fine
+- temporarily fill in the _Continue Reading »_ with the URL of the
+  web-preview release
 - keep the pre-release button enabled
 - publish the release
 
@@ -224,7 +236,7 @@ watching this project.
 
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
-- update `CHANGELOG.md`, add a line like _v4.2.1-3.1 published on npmjs.com_
+- update `CHANGELOG.md`, add a line like _- v4.2.1-3.1 published on npmjs.com_
 - commit with a message like _CHANGELOG: publish npm v4.2.1-3.1_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
@@ -261,6 +273,10 @@ When the release is considered stable, promote it as `latest`:
 - `npm dist-tag add @xpack-dev-tools/windows-build-tools@4.2.1-3.1 latest`
 - `npm dist-tag ls @xpack-dev-tools/windows-build-tools`
 
+In case the previous version is not functional and needs to be unpublished:
+
+- `npm unpublish @xpack-dev-tools/windows-build-tools@4.2.1-3.X`
+
 ## Update the Web
 
 - in the `master` branch, merge the `develop` branch
@@ -270,7 +286,7 @@ When the release is considered stable, promote it as `latest`:
 
 ## Create the final GitHub release
 
-- go to the GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/) page
+- go to the GitHub [Releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/) page
 - check the download counter, it should match the number of tests
 - add a link to the Web page `[Continue reading »]()`; use an same blog URL
 - remove the _tests only_ notice
