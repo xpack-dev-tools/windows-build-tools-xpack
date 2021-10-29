@@ -22,16 +22,41 @@
 function build_make()
 {
   # https://www.gnu.org/software/make/
+  # https://savannah.gnu.org/projects/make/
   # ftp://ftp.gnu.org/gnu/make/
   # http://ftpmirror.gnu.org/make/
 
   # 2016-06-11, "4.2.1"
-  # 2020-01-20, "4.3" (fails with mings 7)
+  # 2020-01-20, "4.3" (fails with duplicate fcntl; fixed in git)
 
   local make_version="$1"
+  shift
+
+  local git_commit=""
+
+  while [ $# -gt 0 ]
+  do
+
+    case "$1" in
+      --git-commit)
+        git_commit="$2"
+        shift 2
+        ;;
+
+      *)
+        echo "Unknown option $1, exit."
+        exit 1
+
+    esac
+
+  done
 
   # The folder name as resulted after being extracted from the archive.
   local make_src_folder_name="make-${make_version}"
+  if [ ! -z "${git_commit}" ]
+  then
+    make_src_folder_name="make-${git_commit}"
+  fi
   
   # The folder name  for build, licenses, etc.
   local make_folder_name="${make_src_folder_name}"
@@ -39,6 +64,7 @@ function build_make()
   local make_archive_file_name="${make_folder_name}.tar.gz"
 
   local make_url="https://ftp.gnu.org/gnu/make/${make_archive_file_name}"
+  local make_git_url="https://git.savannah.gnu.org/git/make.git"
 
   local make_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-make-${make_version}-installed"
   if [ ! -f "${make_stamp_file_path}" ]
@@ -48,19 +74,36 @@ function build_make()
 
     if [ ! -d "${SOURCES_FOLDER_PATH}/${make_src_folder_name}" ]
     then
-      download_and_extract "${make_url}" "${make_archive_file_name}" \
-        "${make_src_folder_name}" 
-
-      if false
+      if [ ! -z "${git_commit}" ]
       then
-      (
-        cd "${SOURCES_FOLDER_PATH}/${make_src_folder_name}"
+        run_verbose git clone "${make_git_url}" "${make_src_folder_name}"
+        (
+          cd "${make_src_folder_name}"
+          run_verbose git checkout -qf "${git_commit}"
 
-        xbb_activate_installed_bin
+          run_verbose sed -i.bak \
+            -e 's|^isatty (int fd)$|__isatty (int fd)|' \
+            -e 's|^ttyname (int fd)$|__ttyname (int fd)|' \
+            src/w32/compat/posixfcn.c
+        )
+      else
+        download_and_extract "${make_url}" "${make_archive_file_name}" \
+          "${make_src_folder_name}" 
+      fi
 
-        echo "Running make autoreconf..."
-        autoreconf -fi
-      )
+      if [ ! -x "${SOURCES_FOLDER_PATH}/${make_src_folder_name}/configure" ]
+      then
+        (
+          cd "${SOURCES_FOLDER_PATH}/${make_src_folder_name}"
+
+          xbb_activate_installed_bin
+
+          if [ -f "bootstrap" ]
+          then
+            echo "Running make bootstrap..."
+            run_verbose bash ${DEBUG} bootstrap      
+          fi
+        )
       fi
     fi
 
@@ -85,7 +128,7 @@ function build_make()
 
           if [ "${IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${make_folder_name}/configure" --help
+            run_verbose bash "${SOURCES_FOLDER_PATH}/${make_src_folder_name}/configure" --help
           fi
 
           # CPPFLAGS="${XBB_CPPFLAGS} -I${SOURCES_FOLDER_PATH}/${make_folder_name}/glob"
