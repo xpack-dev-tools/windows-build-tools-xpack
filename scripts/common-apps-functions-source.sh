@@ -138,7 +138,15 @@ function build_make()
         "${SOURCES_FOLDER_PATH}/${make_folder_name}" \
         "${make_folder_name}"
 
+      (
+        mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/bin"
+
+        run_verbose ${CC} "${BUILD_GIT_PATH}/tests/src/test-env.c" -o "${LIBS_INSTALL_FOLDER_PATH}/bin/test-env.exe"
+        run_verbose ${CC} "${BUILD_GIT_PATH}/tests/src/test-sh.c" -o "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh.exe" -Wno-incompatible-pointer-types
+        run_verbose ${CC} "${BUILD_GIT_PATH}/tests/src/test-sh.c" -o "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh-null.exe" -Wno-incompatible-pointer-types -D__USE_NULL_ENVP
+      )
     )
+
 
     touch "${make_stamp_file_path}"
 
@@ -147,6 +155,27 @@ function build_make()
   fi
 
   tests_add "test_make"
+
+  run_app "${LIBS_INSTALL_FOLDER_PATH}/bin/test-env" one two
+  run_app "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh" -c "${LIBS_INSTALL_FOLDER_PATH}/bin/test-env.exe" one two
+
+  if true
+  then
+  (
+    mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/test"
+    cd "${LIBS_INSTALL_FOLDER_PATH}/test"
+
+    cp -v "${LIBS_INSTALL_FOLDER_PATH}/bin/test-env.exe" "test-env.exe"
+    cp -v "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh.exe" "sh.exe"
+    cp -v "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh-null.exe" "sh-null.exe"
+    cp -v "${APP_PREFIX}/bin/make.exe" "make.exe"
+    cp -v "${BUILD_GIT_PATH}/tests/src/makefile" "makefile"
+    (
+      export WINEPATH="${LIBS_INSTALL_FOLDER_PATH}/test"
+      run_app "${LIBS_INSTALL_FOLDER_PATH}/test/make"
+    )
+  )
+  fi
 }
 
 function test_make()
@@ -175,6 +204,7 @@ function test_make()
 
 function build_busybox()
 {
+  # https://busybox.net
   # https://frippery.org/busybox/
   # https://github.com/rmyorston/busybox-w32
 
