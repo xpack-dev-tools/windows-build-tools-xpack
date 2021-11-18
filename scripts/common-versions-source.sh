@@ -53,6 +53,16 @@ function build_versions()
       build_make "4.3" --git-commit "f8f9d371ff58a7195ca4abc9413f435c2bf2b998"
 
       build_busybox "5b48ca53be57bc907ed8dd00635914556b4472e4" # Oct 28, 2021
+
+      if false
+      then
+        build_ncurses "6.2"
+        # build_readline "8.1" # ncurses
+
+        build_gettext "0.21"
+
+        build_bash "5.1"
+      fi
     )
   elif [[ "${RELEASE_VERSION}" =~ 4\.2\.1-* ]]
   then

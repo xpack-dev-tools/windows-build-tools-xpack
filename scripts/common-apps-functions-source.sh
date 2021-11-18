@@ -426,3 +426,171 @@ function test_busybox()
 }
 
 # -----------------------------------------------------------------------------
+
+
+function build_bash() 
+{
+  # https://www.gnu.org/software/bash/
+  # https://savannah.gnu.org/projects/bash/
+  # https://ftp.gnu.org/gnu/bash/
+  # https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz
+
+  # https://archlinuxarm.org/packages/aarch64/bash/files/PKGBUILD
+  # https://github.com/msys2/MSYS2-packages/blob/master/bash/PKGBUILD
+
+  # 2018-01-30, "4.4.18"
+  # 2019-01-07, "5.0"
+  # 2020-12-06, "5.1"
+
+  local bash_version="$1"
+
+  local bash_src_folder_name="bash-${bash_version}"
+
+  local bash_archive="${bash_src_folder_name}.tar.gz"
+  local bash_url="https://ftp.gnu.org/gnu/bash/${bash_archive}"
+
+  local bash_folder_name="${bash_src_folder_name}"
+
+  mkdir -pv "${LOGS_FOLDER_PATH}/${bash_folder_name}"
+
+  local bash_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${bash_folder_name}-installed"
+  if [ ! -f "${bash_stamp_file_path}" ]
+  then
+
+    echo
+    echo "bash in-source building"
+
+    if [ ! -d "${BUILD_FOLDER_PATH}/${bash_folder_name}" ]
+    then 
+
+      cd "${BUILD_FOLDER_PATH}"
+
+      download_and_extract "${bash_url}" "${bash_archive}" \
+        "${bash_src_folder_name}"
+
+      if [ "${bash_src_folder_name}" != "${bash_folder_name}" ]
+      then
+        mv -v "${bash_src_folder_name}" "${bash_folder_name}"
+      fi
+    fi
+
+
+    (
+      cd "${BUILD_FOLDER_PATH}/${bash_folder_name}"
+
+      xbb_activate_installed_dev
+
+      CPPFLAGS="${XBB_CPPFLAGS} -DWORDEXP_OPTION"
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
+
+      CC_FOR_BUILD="${HOSTCC}" 
+
+      if [ "${TARGET_PLATFORM}" == "linux" ] # Not really.
+      then
+        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
+      fi      
+
+      export CPPFLAGS
+      export CFLAGS
+      export CXXFLAGS
+      export LDFLAGS
+
+      export CC_FOR_BUILD
+
+      env | sort
+
+      if [ ! -f "config.status" ]
+      then
+        (
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            env | sort
+          fi
+
+          run_verbose autoconf
+          
+          echo
+          echo "Running bash configure..."
+
+          run_verbose bash "${BUILD_FOLDER_PATH}/${bash_src_folder_name}/configure" --help
+
+          config_options=()
+          config_options+=("--prefix=${APP_PREFIX}")
+
+          config_options+=("--build=${BUILD}")
+          config_options+=("--host=${HOST}")
+          config_options+=("--target=${TARGET}")
+
+          config_options+=("--with-curses")
+          config_options+=("--without-libintl-prefix")
+          config_options+=("--without-libiconv-prefix")
+          config_options+=("--without-bash-malloc")
+
+          # config_options+=("--with-installed-readline")
+          config_options+=("--enable-readline")
+          config_options+=("--enable-static-link")
+          config_options+=("--enable-threads=windows")
+
+          config_options+=("bash_cv_dev_stdin=present")
+          config_options+=("bash_cv_dev_fd=standard")
+          config_options+=("bash_cv_termcap_lib=libncurses")
+
+          run_verbose bash ${DEBUG} "${BUILD_FOLDER_PATH}/${bash_src_folder_name}/configure" \
+            "${config_options[@]}"
+
+          cp "config.log" "${LOGS_FOLDER_PATH}/${bash_folder_name}/config-log.txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${bash_folder_name}/configure-output.txt"
+      fi
+
+      (
+        echo
+        echo "Running bash make..."
+
+        # Build.
+        run_verbose make -j ${JOBS} \
+          HISTORY_LDFLAGS= \
+          READLINE_LDFLAGS= \
+          LOCAL_LDFLAGS='-Wl,--export-all,--out-implib,lib$(@:.exe=.dll.a)'
+
+        # make install-strip
+        run_verbose make install-strip
+
+        # run_verbose make -j1 check
+
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${bash_folder_name}/make-output.txt"
+    )
+
+    touch "${bash_stamp_file_path}"
+
+  else
+    echo "Component bash already installed."
+  fi
+
+  test_functions+=("test_bash")
+}
+
+function test_bash()
+{
+  (
+    # xbb_activate_installed_bin
+
+    echo
+    echo "Checking the bash binaries shared libraries..."
+
+    show_libs "${APP_PREFIX}/bin/bash"
+
+    echo
+    echo "Testing if bash binaries start properly..."
+
+    run_app "${APP_PREFIX}/bin/bash" --version
+
+    echo
+    echo "Testing if bash binaries display help..."
+
+    run_app "${APP_PREFIX}/bin/bash" --help
+  ) 
+}
+
+# -----------------------------------------------------------------------------
