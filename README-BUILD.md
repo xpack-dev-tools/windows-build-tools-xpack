@@ -100,7 +100,7 @@ not be accepted by bash.
 
 ## Versioning
 
-The version string is an extension to semver, the format looks like `4.2.1-4`.
+The version string is an extension to semver, the format looks like `4.3.0-1`.
 It includes the three digits with the original **GNU make** version and a fourth
 digit with the xPack release number.
 
@@ -203,10 +203,10 @@ archives and their SHA signatures, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/windows-build-tools-*/deploy
 total 3556
--rw-rw-r-- 1 ilg ilg 1700582 Jul 14 11:26 xpack-windows-build-tools-4.2.1-4-win32-x32.zip
--rw-rw-r-- 1 ilg ilg     113 Jul 14 11:26 xpack-windows-build-tools-4.2.1-4-win32-x32.zip.sha
--rw-rw-r-- 1 ilg ilg 1926825 Jul 14 11:25 xpack-windows-build-tools-4.2.1-4-win32-x64.zip
--rw-rw-r-- 1 ilg ilg     113 Jul 14 11:25 xpack-windows-build-tools-4.2.1-4-win32-x64.zip.sha
+-rw-rw-r-- 1 ilg ilg 1700582 Jul 14 11:26 xpack-windows-build-tools-4.3.0-1-win32-x32.zip
+-rw-rw-r-- 1 ilg ilg     113 Jul 14 11:26 xpack-windows-build-tools-4.3.0-1-win32-x32.zip.sha
+-rw-rw-r-- 1 ilg ilg 1926825 Jul 14 11:25 xpack-windows-build-tools-4.3.0-1-win32-x64.zip
+-rw-rw-r-- 1 ilg ilg     113 Jul 14 11:25 xpack-windows-build-tools-4.3.0-1-win32-x64.zip.sha
 ```
 
 ## Subsequent runs
@@ -292,7 +292,7 @@ After install, the package should create a structure like this (only the
 first two depth levels are shown):
 
 ```console
-xPacks/@xpack-dev-tools/windows-build-tools/4.2.1-4/.content/
+xPacks/@xpack-dev-tools/windows-build-tools/4.3.0-1/.content/
 ├── README.md
 ├── bin
 │   ├── busybox.exe
