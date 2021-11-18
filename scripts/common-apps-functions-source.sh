@@ -81,7 +81,7 @@ function build_make()
           cd "${make_src_folder_name}"
           run_verbose git checkout -qf "${git_commit}"
 
-          run_verbose sed -i.bak \
+          run_verbose echo sed -i.bak \
             -e 's|^isatty (int fd)$|__isatty (int fd)|' \
             -e 's|^ttyname (int fd)$|__ttyname (int fd)|' \
             src/w32/compat/posixfcn.c
