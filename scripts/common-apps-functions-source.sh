@@ -132,9 +132,9 @@ function build_make()
           fi
 
           # CPPFLAGS="${XBB_CPPFLAGS} -I${SOURCES_FOLDER_PATH}/${make_folder_name}/glob"
-          CPPFLAGS="${XBB_CPPFLAGS}"
-          CFLAGS="${XBB_CFLAGS_NO_W}"
-          LDFLAGS="${XBB_LDFLAGS_APP}"
+          CPPFLAGS="${XBB_CPPFLAGS} -DWINDOWS32 -DHAVE_CONFIG_H"
+          CFLAGS="${XBB_CFLAGS_NO_W} -mthreads -std=gnu99"
+          LDFLAGS="${XBB_LDFLAGS_APP} -mthreads -std=gnu99 -Wl,--allow-multiple-definition"
 
           export CPPFLAGS
           export CFLAGS
