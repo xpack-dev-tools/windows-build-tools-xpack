@@ -110,7 +110,7 @@ binaries are released as portable
 archives that can be installed in any location.
 
 The archives can be downloaded from the
-GitHub [releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/)
+GitHub [Releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/)
 page.
 
 For more details please read the
@@ -119,15 +119,15 @@ For more details please read the
 ### Versioning
 
 The version strings used by the GCC project are three number string
-like `4.2.1`; to this string the xPack distribution adds a four number,
+like `4.3.0`; to this string the xPack distribution adds a four number,
 but since semver allows only three numbers, all additional ones can
 be added only as pre-release strings, separated by a dash,
-like `4.2.1-3`. When published as a npm package, the version gets
-a fifth number, like `4.2.1-3.1`.
+like `4.3.0-1`. When published as a npm package, the version gets
+a fifth number, like `4.3.0-1.1`.
 
 Since adherance of third party packages to semver is not guaranteed,
-it is recommended to use semver expressions like `^4.2.1` and `~4.2.1`
-with caution, and prefer exact matches, like `4.2.1-3.1`.
+it is recommended to use semver expressions like `^4.3.0` and `~4.3.0`
+with caution, and prefer exact matches, like `4.3.0-1.1`.
 
 ## Maintainer info
 

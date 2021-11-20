@@ -3,6 +3,10 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2021-10-29
+
+- 4.3.0-1 prepared; not yet functional due to UCRT bug affecting BusyBox
+
 ## 2021-10-18
 
 - v4.2.1-3.1 published on npmjs.com

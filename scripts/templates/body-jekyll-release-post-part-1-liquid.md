@@ -3,11 +3,11 @@ title:  xPack Windows Build Tools {{ RELEASE_VERSION }} released
 
 TODO: select one summary
 
-summary: "Version {{ RELEASE_VERSION }} is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox."
+summary: "Version **{{ RELEASE_VERSION }}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox."
 
-Or (edit!):
+Or (TODO: edit!):
 
-summary: "Version {{ RELEASE_VERSION }} is a new major release of the **xPack Windows Build Tools** package, following the make release."
+summary: "Version **{{ RELEASE_VERSION }}** is a new release of the **xPack Windows Build Tools** package, following the make release."
 
 version: {{ RELEASE_VERSION }}
 npm_subversion: 1
@@ -40,7 +40,7 @@ There are separate binaries for **Windows** (Intel 32/64-bit).
 
 ## Download
 
-The binary files are available from GitHub [releases]({% raw %}{{ page.download_url }}{% endraw %}).
+The binary files are available from GitHub [Releases]({% raw %}{{ page.download_url }}{% endraw %}).
 
 ## Prerequisites
 

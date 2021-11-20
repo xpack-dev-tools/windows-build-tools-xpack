@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
-# This file is part of the GNU MCU Eclipse distribution.
-#   (https://gnu-mcu-eclipse.github.io)
+# This file is part of the xPack distribution.
+#   (https://xpack.github.io)
 # Copyright (c) 2019 Liviu Ionescu.
 #
 # Permission to use, copy, modify, and/or distribute this software
@@ -22,16 +22,41 @@
 function build_make()
 {
   # https://www.gnu.org/software/make/
+  # https://savannah.gnu.org/projects/make/
   # ftp://ftp.gnu.org/gnu/make/
   # http://ftpmirror.gnu.org/make/
 
   # 2016-06-11, "4.2.1"
-  # 2020-01-20, "4.3" (fails with mings 7)
+  # 2020-01-20, "4.3" (fails with duplicate fcntl; fixed in git)
 
   local make_version="$1"
+  shift
+
+  local git_commit=""
+
+  while [ $# -gt 0 ]
+  do
+
+    case "$1" in
+      --git-commit)
+        git_commit="$2"
+        shift 2
+        ;;
+
+      *)
+        echo "Unknown option $1, exit."
+        exit 1
+
+    esac
+
+  done
 
   # The folder name as resulted after being extracted from the archive.
   local make_src_folder_name="make-${make_version}"
+  if [ ! -z "${git_commit}" ]
+  then
+    make_src_folder_name="make-${git_commit}"
+  fi
   
   # The folder name  for build, licenses, etc.
   local make_folder_name="${make_src_folder_name}"
@@ -39,6 +64,7 @@ function build_make()
   local make_archive_file_name="${make_folder_name}.tar.gz"
 
   local make_url="https://ftp.gnu.org/gnu/make/${make_archive_file_name}"
+  local make_git_url="https://git.savannah.gnu.org/git/make.git"
 
   local make_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-make-${make_version}-installed"
   if [ ! -f "${make_stamp_file_path}" ]
@@ -48,19 +74,36 @@ function build_make()
 
     if [ ! -d "${SOURCES_FOLDER_PATH}/${make_src_folder_name}" ]
     then
-      download_and_extract "${make_url}" "${make_archive_file_name}" \
-        "${make_src_folder_name}" 
-
-      if false
+      if [ ! -z "${git_commit}" ]
       then
-      (
-        cd "${SOURCES_FOLDER_PATH}/${make_src_folder_name}"
+        run_verbose git clone "${make_git_url}" "${make_src_folder_name}"
+        (
+          cd "${make_src_folder_name}"
+          run_verbose git checkout -qf "${git_commit}"
 
-        xbb_activate_installed_bin
+          run_verbose echo sed -i.bak \
+            -e 's|^isatty (int fd)$|__isatty (int fd)|' \
+            -e 's|^ttyname (int fd)$|__ttyname (int fd)|' \
+            src/w32/compat/posixfcn.c
+        )
+      else
+        download_and_extract "${make_url}" "${make_archive_file_name}" \
+          "${make_src_folder_name}" 
+      fi
 
-        echo "Running make autoreconf..."
-        autoreconf -fi
-      )
+      if [ ! -x "${SOURCES_FOLDER_PATH}/${make_src_folder_name}/configure" ]
+      then
+        (
+          cd "${SOURCES_FOLDER_PATH}/${make_src_folder_name}"
+
+          xbb_activate_installed_bin
+
+          if [ -f "bootstrap" ]
+          then
+            echo "Running make bootstrap..."
+            run_verbose bash ${DEBUG} bootstrap      
+          fi
+        )
       fi
     fi
 
@@ -85,13 +128,13 @@ function build_make()
 
           if [ "${IS_DEVELOP}" == "y" ]
           then
-            run_verbose bash "${SOURCES_FOLDER_PATH}/${make_folder_name}/configure" --help
+            run_verbose bash "${SOURCES_FOLDER_PATH}/${make_src_folder_name}/configure" --help
           fi
 
           # CPPFLAGS="${XBB_CPPFLAGS} -I${SOURCES_FOLDER_PATH}/${make_folder_name}/glob"
-          CPPFLAGS="${XBB_CPPFLAGS}"
-          CFLAGS="${XBB_CFLAGS_NO_W}"
-          LDFLAGS="${XBB_LDFLAGS_APP}"
+          CPPFLAGS="${XBB_CPPFLAGS} -DWINDOWS32 -DHAVE_CONFIG_H"
+          CFLAGS="${XBB_CFLAGS_NO_W} -mthreads -std=gnu99"
+          LDFLAGS="${XBB_LDFLAGS_APP} -mthreads -std=gnu99 -Wl,--allow-multiple-definition"
 
           export CPPFLAGS
           export CFLAGS
@@ -138,7 +181,15 @@ function build_make()
         "${SOURCES_FOLDER_PATH}/${make_folder_name}" \
         "${make_folder_name}"
 
+      (
+        mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/bin"
+
+        run_verbose ${CC} "${BUILD_GIT_PATH}/tests/src/test-env.c" -o "${LIBS_INSTALL_FOLDER_PATH}/bin/test-env.exe"
+        run_verbose ${CC} "${BUILD_GIT_PATH}/tests/src/test-sh.c" -o "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh.exe" -Wno-incompatible-pointer-types
+        run_verbose ${CC} "${BUILD_GIT_PATH}/tests/src/test-sh.c" -o "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh-null.exe" -Wno-incompatible-pointer-types -D__USE_NULL_ENVP
+      )
     )
+
 
     touch "${make_stamp_file_path}"
 
@@ -147,6 +198,27 @@ function build_make()
   fi
 
   tests_add "test_make"
+
+  run_app "${LIBS_INSTALL_FOLDER_PATH}/bin/test-env" one two
+  run_app "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh" -c "${LIBS_INSTALL_FOLDER_PATH}/bin/test-env.exe" one two
+
+  if true
+  then
+  (
+    mkdir -pv "${LIBS_INSTALL_FOLDER_PATH}/test"
+    cd "${LIBS_INSTALL_FOLDER_PATH}/test"
+
+    cp -v "${LIBS_INSTALL_FOLDER_PATH}/bin/test-env.exe" "test-env.exe"
+    cp -v "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh.exe" "sh.exe"
+    cp -v "${LIBS_INSTALL_FOLDER_PATH}/bin/test-sh-null.exe" "sh-null.exe"
+    cp -v "${APP_PREFIX}/bin/make.exe" "make.exe"
+    cp -v "${BUILD_GIT_PATH}/tests/src/makefile" "makefile"
+    (
+      export WINEPATH="${LIBS_INSTALL_FOLDER_PATH}/test"
+      run_app "${LIBS_INSTALL_FOLDER_PATH}/test/make"
+    )
+  )
+  fi
 }
 
 function test_make()
@@ -175,6 +247,7 @@ function test_make()
 
 function build_busybox()
 {
+  # https://busybox.net
   # https://frippery.org/busybox/
   # https://github.com/rmyorston/busybox-w32
 
@@ -350,6 +423,174 @@ function test_busybox()
   echo "Checking if busybox starts..."
 
   run_app "${BUSYBOX}" --help
+}
+
+# -----------------------------------------------------------------------------
+
+
+function build_bash() 
+{
+  # https://www.gnu.org/software/bash/
+  # https://savannah.gnu.org/projects/bash/
+  # https://ftp.gnu.org/gnu/bash/
+  # https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz
+
+  # https://archlinuxarm.org/packages/aarch64/bash/files/PKGBUILD
+  # https://github.com/msys2/MSYS2-packages/blob/master/bash/PKGBUILD
+
+  # 2018-01-30, "4.4.18"
+  # 2019-01-07, "5.0"
+  # 2020-12-06, "5.1"
+
+  local bash_version="$1"
+
+  local bash_src_folder_name="bash-${bash_version}"
+
+  local bash_archive="${bash_src_folder_name}.tar.gz"
+  local bash_url="https://ftp.gnu.org/gnu/bash/${bash_archive}"
+
+  local bash_folder_name="${bash_src_folder_name}"
+
+  mkdir -pv "${LOGS_FOLDER_PATH}/${bash_folder_name}"
+
+  local bash_stamp_file_path="${STAMPS_FOLDER_PATH}/stamp-${bash_folder_name}-installed"
+  if [ ! -f "${bash_stamp_file_path}" ]
+  then
+
+    echo
+    echo "bash in-source building"
+
+    if [ ! -d "${BUILD_FOLDER_PATH}/${bash_folder_name}" ]
+    then 
+
+      cd "${BUILD_FOLDER_PATH}"
+
+      download_and_extract "${bash_url}" "${bash_archive}" \
+        "${bash_src_folder_name}"
+
+      if [ "${bash_src_folder_name}" != "${bash_folder_name}" ]
+      then
+        mv -v "${bash_src_folder_name}" "${bash_folder_name}"
+      fi
+    fi
+
+
+    (
+      cd "${BUILD_FOLDER_PATH}/${bash_folder_name}"
+
+      xbb_activate_installed_dev
+
+      CPPFLAGS="${XBB_CPPFLAGS} -DWORDEXP_OPTION"
+      CFLAGS="${XBB_CFLAGS_NO_W}"
+      CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
+      LDFLAGS="${XBB_LDFLAGS_APP}"
+
+      CC_FOR_BUILD="${HOSTCC}" 
+
+      if [ "${TARGET_PLATFORM}" == "linux" ] # Not really.
+      then
+        LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
+      fi      
+
+      export CPPFLAGS
+      export CFLAGS
+      export CXXFLAGS
+      export LDFLAGS
+
+      export CC_FOR_BUILD
+
+      env | sort
+
+      if [ ! -f "config.status" ]
+      then
+        (
+          if [ "${IS_DEVELOP}" == "y" ]
+          then
+            env | sort
+          fi
+
+          run_verbose autoconf
+          
+          echo
+          echo "Running bash configure..."
+
+          run_verbose bash "${BUILD_FOLDER_PATH}/${bash_src_folder_name}/configure" --help
+
+          config_options=()
+          config_options+=("--prefix=${APP_PREFIX}")
+
+          config_options+=("--build=${BUILD}")
+          config_options+=("--host=${HOST}")
+          config_options+=("--target=${TARGET}")
+
+          config_options+=("--with-curses")
+          config_options+=("--without-libintl-prefix")
+          config_options+=("--without-libiconv-prefix")
+          config_options+=("--without-bash-malloc")
+
+          # config_options+=("--with-installed-readline")
+          config_options+=("--enable-readline")
+          config_options+=("--enable-static-link")
+          config_options+=("--enable-threads=windows")
+
+          config_options+=("bash_cv_dev_stdin=present")
+          config_options+=("bash_cv_dev_fd=standard")
+          config_options+=("bash_cv_termcap_lib=libncurses")
+
+          run_verbose bash ${DEBUG} "${BUILD_FOLDER_PATH}/${bash_src_folder_name}/configure" \
+            "${config_options[@]}"
+
+          cp "config.log" "${LOGS_FOLDER_PATH}/${bash_folder_name}/config-log.txt"
+        ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${bash_folder_name}/configure-output.txt"
+      fi
+
+      (
+        echo
+        echo "Running bash make..."
+
+        # Build.
+        run_verbose make -j ${JOBS} \
+          HISTORY_LDFLAGS= \
+          READLINE_LDFLAGS= \
+          LOCAL_LDFLAGS='-Wl,--export-all,--out-implib,lib$(@:.exe=.dll.a)'
+
+        # make install-strip
+        run_verbose make install-strip
+
+        # run_verbose make -j1 check
+
+      ) 2>&1 | tee "${LOGS_FOLDER_PATH}/${bash_folder_name}/make-output.txt"
+    )
+
+    touch "${bash_stamp_file_path}"
+
+  else
+    echo "Component bash already installed."
+  fi
+
+  test_functions+=("test_bash")
+}
+
+function test_bash()
+{
+  (
+    # xbb_activate_installed_bin
+
+    echo
+    echo "Checking the bash binaries shared libraries..."
+
+    show_libs "${APP_PREFIX}/bin/bash"
+
+    echo
+    echo "Testing if bash binaries start properly..."
+
+    run_app "${APP_PREFIX}/bin/bash" --version
+
+    echo
+    echo "Testing if bash binaries display help..."
+
+    run_app "${APP_PREFIX}/bin/bash" --help
+  ) 
 }
 
 # -----------------------------------------------------------------------------

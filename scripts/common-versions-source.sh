@@ -50,9 +50,19 @@ function build_versions()
 
       # Fails with
       # src/output.h:92:5: error: conflicting types for ‘fcntl’; have ‘int(intptr_t,  int, ...)’ {aka ‘int(long long int,  int, ...)’}
-      build_make "4.3"
+      build_make "4.3" --git-commit "f8f9d371ff58a7195ca4abc9413f435c2bf2b998"
 
-      build_busybox "90b3ba992ecb39e32e5a66b2e37579becc56d286"
+      build_busybox "5b48ca53be57bc907ed8dd00635914556b4472e4" # Oct 28, 2021
+
+      if false
+      then
+        build_ncurses "6.2"
+        # build_readline "8.1" # ncurses
+
+        build_gettext "0.21"
+
+        build_bash "5.1"
+      fi
     )
   elif [[ "${RELEASE_VERSION}" =~ 4\.2\.1-* ]]
   then
@@ -66,7 +76,7 @@ function build_versions()
       then
         build_busybox "d239d2d5273e1620a6146d8f5076f6532e3569b1" # Oct 17, 2021
       else
-        build_busybox "f902184fa8aa37b0ce8b725da5657ef2ed2005dd"
+        build_busybox "f902184fa8aa37b0ce8b725da5657ef2ed2005dd" # Dec 12, 2020
       fi
     )
   else

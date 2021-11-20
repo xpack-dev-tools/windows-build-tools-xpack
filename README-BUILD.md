@@ -100,8 +100,8 @@ not be accepted by bash.
 
 ## Versioning
 
-The version string is an extension to semver, the format looks like `4.2.1-3`.
-It includes the three digits with the original Windows Build Tools version and a fourth
+The version string is an extension to semver, the format looks like `4.3.0-1`.
+It includes the three digits with the original **GNU make** version and a fourth
 digit with the xPack release number.
 
 When publishing on the **npmjs.com** server, a fifth digit is appended.
@@ -203,10 +203,10 @@ archives and their SHA signatures, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/windows-build-tools-*/deploy
 total 3556
--rw-rw-r-- 1 ilg ilg 1700582 Jul 14 11:26 xpack-windows-build-tools-4.2.1-3-win32-x32.zip
--rw-rw-r-- 1 ilg ilg     113 Jul 14 11:26 xpack-windows-build-tools-4.2.1-3-win32-x32.zip.sha
--rw-rw-r-- 1 ilg ilg 1926825 Jul 14 11:25 xpack-windows-build-tools-4.2.1-3-win32-x64.zip
--rw-rw-r-- 1 ilg ilg     113 Jul 14 11:25 xpack-windows-build-tools-4.2.1-3-win32-x64.zip.sha
+-rw-rw-r-- 1 ilg ilg 1700582 Jul 14 11:26 xpack-windows-build-tools-4.3.0-1-win32-x32.zip
+-rw-rw-r-- 1 ilg ilg     113 Jul 14 11:26 xpack-windows-build-tools-4.3.0-1-win32-x32.zip.sha
+-rw-rw-r-- 1 ilg ilg 1926825 Jul 14 11:25 xpack-windows-build-tools-4.3.0-1-win32-x64.zip
+-rw-rw-r-- 1 ilg ilg     113 Jul 14 11:25 xpack-windows-build-tools-4.3.0-1-win32-x64.zip.sha
 ```
 
 ## Subsequent runs
@@ -292,22 +292,28 @@ After install, the package should create a structure like this (only the
 first two depth levels are shown):
 
 ```console
-xPacks/@xpack-dev-tools/windows-build-tools/4.2.1-3/.content/
+xPacks/@xpack-dev-tools/windows-build-tools/4.3.0-1/.content/
 ├── README.md
 ├── bin
 │   ├── busybox.exe
+│   ├── cp.exe
 │   ├── echo.exe
 │   ├── make.exe
 │   ├── mkdir.exe
 │   ├── rm.exe
 │   └── sh.exe
-└── distro-info
-    ├── CHANGELOG.txt
-    ├── licenses
-    ├── patches
-    └── scripts
+├── distro-info
+│   ├── CHANGELOG.md
+│   ├── licenses
+│   ├── patches
+│   └── scripts
+├── include
+│   └── gnumake.h
+└── share
+    ├── info
+    └── man
 
-5 directories, 8 files
+9 directories, 10 files
 ```
 
 No other files are installed in any system folders or other locations.
