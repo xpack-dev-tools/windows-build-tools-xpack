@@ -6,7 +6,7 @@
 #   (https://xpack.github.io)
 # Copyright (c) 2021 Liviu Ionescu.
 #
-# Permission to use, copy, modify, and/or distribute this software 
+# Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
@@ -36,6 +36,8 @@ jobs:
     name: 'Windows 64-bit Windows Build Tools@${{ github.event.inputs.version }} test'
     runs-on: windows-latest
     steps:
+      - name: 'Machine'
+        run: uname -a
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:

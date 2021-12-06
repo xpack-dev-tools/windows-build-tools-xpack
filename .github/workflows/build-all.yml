@@ -19,7 +19,7 @@
 # -----------------------------------------------------------------------------
 
 
-name: 'Publish the xPack Windows Build Tools release'
+name: 'Build xPack Windows Build Tools'
 
 on:
   workflow_dispatch:
@@ -32,41 +32,49 @@ on:
 jobs:
 
   linux-x64:
-    name: 'Linux Intel - Windows Build Tools ${{ github.event.inputs.version }} publish release'
+    name: 'Linux Intel - Windows Build Tools ${{ github.event.inputs.version }} build'
+    timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     steps:
       - name: 'Machine'
         run: uname -a
+
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 3
           submodules: true
-      - name: 'Create body'
-        run: |
-          npm install
-          cat scripts/templates/body-github-release-liquid.md | npm run liquidjs --silent -- '{ "RELEASE_VERSION": "${{ github.event.inputs.version }}" }' >.github/workflows/body-github-release.md
-          cat .github/workflows/body-github-release.md
-      - name: 'Publish release'
+
+      - name: 'Clean working area'
+        run: rm -rf ~/Work/windows-build-tools-${{ github.event.inputs.version }}*
+
+      - name: 'Build Windows x64 binary'
+        timeout-minutes: 1440
+        run: bash scripts/helper/build.sh --version "${{ github.event.inputs.version }}" --win64
+    
+      - name: 'Build Windows ia32 binary'
+        timeout-minutes: 1440
+        run: bash scripts/helper/build.sh --version "${{ github.event.inputs.version }}" --win32
+  
+      - name: 'Publish pre-release'
         # https://github.com/ncipollo/release-action
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           artifacts: '~/Work/windows-build-tools-${{ github.event.inputs.version }}/deploy/*'
-          bodyFile: '.github/workflows/body-github-release.md'
+          bodyFile: '.github/workflows/body-github-pre-releases-test.md'
           commit: 'master'
-          draft: true
-          name: 'xPack Windows Build Tools v${{ github.event.inputs.version }}'
+          draft: false
+          name: 'Test binaries'
           omitBodyDuringUpdate: true
           omitNameDuringUpdate: true
           owner: 'xpack-dev-tools'
           prerelease: true
           replacesArtifacts: true
-          repo: 'windows-build-tools-xpack'
-          tag: 'v${{ github.event.inputs.version }}'
+          repo: 'pre-releases'
+          tag: 'test'
           token: ${{ secrets.PUBLISH_TOKEN }}
-      - name: 'Show SHA'
-        run: cat ~/Work/windows-build-tools-${{ github.event.inputs.version }}/deploy/*.sha
+
 
 
 
