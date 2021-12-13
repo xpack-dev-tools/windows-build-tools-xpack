@@ -73,8 +73,7 @@ With Sourcetree, go to the helper repo and update to the latest master commit.
 
 ### Development run the build scripts
 
-Before the real build, run a test build on the development machine (`wks`)
-or the production machine (`xbbm`):
+Before the real build, run a test build on the development machine (`wks`):
 
 ```sh
 sudo rm -rf ~/Work/windows-build-tools-*
@@ -101,11 +100,11 @@ The automation is provided by GitHub Actions and three self-hosted runners.
 Run the `generate-workflows` to re-generate the
 GitHub workflow files; commit and push if necessary.
 
-- on the macOS machine (`xbbm`) open ssh sessions to the Linux
-machines (`xbbi`):
+- on the macOS machine (`xbbmi`) open ssh sessions to the Linux
+machines (`xbbli`):
 
 ```sh
-caffeinate ssh xbbi
+caffeinate ssh xbbli
 ```
 
 Start the runner:

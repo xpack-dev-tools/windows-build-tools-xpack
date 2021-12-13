@@ -55,7 +55,7 @@ To download them, issue the following commands:
 rm -rf ~/Downloads/windows-build-tools-xpack.git; \
 git clone https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
   ~/Downloads/windows-build-tools-xpack.git; \
-git -C ~/Downloads/windows-build-tools-xpack.git submodule update --init --recursive 
+git -C ~/Downloads/windows-build-tools-xpack.git submodule update --init --recursive
 ```
 
 > Note: the repository uses submodules; for a successful build it is
@@ -132,10 +132,10 @@ The builds currently run on a dedicated machines (Intel GNU/Linux).
 
 The current platform for Windows production builds is a
 Debian 10, running on an Intel NUC8i7BEH mini PC with 32 GB of RAM
-and 512 GB of fast M.2 SSD. The machine name is `xbbi`.
+and 512 GB of fast M.2 SSD. The machine name is `xbbli`.
 
 ```sh
-caffeinate ssh xbbi
+caffeinate ssh xbbli
 ```
 
 Before starting a build, check if Docker is started:
