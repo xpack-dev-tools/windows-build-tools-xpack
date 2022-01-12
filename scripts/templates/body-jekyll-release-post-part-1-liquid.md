@@ -1,5 +1,5 @@
 ---
-title:  xPack Windows Build Tools {{ RELEASE_VERSION }} released
+title:  xPack Windows Build Tools v{{ RELEASE_VERSION }} released
 
 TODO: select one summary
 
@@ -50,7 +50,7 @@ The binary files are available from GitHub [Releases]({% raw %}{{ page.download_
 
 ## Install
 
-The full details of installing the **xPack Windows Build Tools** 
+The full details of installing the **xPack Windows Build Tools**
 are presented in the separate
 [Install]({% raw %}{{ site.baseurl }}{% endraw %}/windows-build-tools/install/) page.
 
