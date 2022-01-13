@@ -44,7 +44,7 @@ The binary files are available from GitHub [Releases]({% raw %}{{ page.download_
 
 ## Prerequisites
 
-- Intel Windows 32/64-bit: Windows 7 with the Universal C Runtime
+- Intel Windows 64-bit: Windows 7 with the Universal C Runtime
   ([UCRT](https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c)),
   Windows 8, Windows 10
 
