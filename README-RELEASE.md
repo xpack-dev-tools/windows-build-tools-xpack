@@ -78,8 +78,8 @@ Before the real build, run a test build on the development machine (`wks`):
 ```sh
 sudo rm -rf ~/Work/windows-build-tools-*
 
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win64
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win32
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win64
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win32
 ```
 
 Work on the scripts until all platforms pass the build.
@@ -122,7 +122,7 @@ To trigger the GitHub Actions build, use the xPack action:
 This is equivalent to:
 
 ```sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/trigger-workflow-build.sh
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/trigger-workflow-build.sh
 ```
 
 This script requires the `GITHUB_API_DISPATCH_TOKEN` to be present
@@ -151,7 +151,7 @@ To trigger the GitHub Actions tests, use the xPack actions:
 This is equivalent to:
 
 ```sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/tests/trigger-workflow-test-prime.sh
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/tests/trigger-workflow-test-prime.sh
 ```
 
 These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present

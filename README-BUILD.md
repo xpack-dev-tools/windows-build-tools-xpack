@@ -52,10 +52,10 @@ Git repo.
 To download them, issue the following commands:
 
 ```sh
-rm -rf ~/Downloads/windows-build-tools-xpack.git; \
+rm -rf ${HOME}/Work/windows-build-tools-xpack.git; \
 git clone https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
-  ~/Downloads/windows-build-tools-xpack.git; \
-git -C ~/Downloads/windows-build-tools-xpack.git submodule update --init --recursive
+  ${HOME}/Work/windows-build-tools-xpack.git; \
+git -C ${HOME}/Work/windows-build-tools-xpack.git submodule update --init --recursive
 ```
 
 > Note: the repository uses submodules; for a successful build it is
@@ -65,12 +65,12 @@ For development purposes, clone the `xpack-develop`
 branch:
 
 ```sh
-rm -rf ~/Downloads/windows-build-tools-xpack.git; \
+rm -rf ${HOME}/Work/windows-build-tools-xpack.git; \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
-  ~/Downloads/windows-build-tools-xpack.git; \
-git -C ~/Downloads/windows-build-tools-xpack.git submodule update --init --recursive
+  ${HOME}/Work/windows-build-tools-xpack.git; \
+git -C ${HOME}/Work/windows-build-tools-xpack.git submodule update --init --recursive
 ```
 
 ## The `Work` folder
@@ -148,7 +148,7 @@ Before running a build for the first time, it is recommended to preload the
 docker images.
 
 ```sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh preload-images
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh preload-images
 ```
 
 The result should look similar to:
@@ -184,14 +184,14 @@ network connection or a computer entering sleep.
 screen -S windows-build-tools
 
 sudo rm -rf ~/Work/windows-build-tools-*
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --all
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --all
 ```
 
 or, for development builds:
 
 ```sh
 sudo rm -rf ~/Work/windows-build-tools-*
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win64 --win32
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win64 --win32
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
@@ -224,19 +224,19 @@ Instead of `--all`, you can use any combination of:
 To remove most build temporary files, use:
 
 ```sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --all clean
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --all clean
 ```
 
 To also remove the library build temporary files, use:
 
 ```sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --all cleanlibs
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --all cleanlibs
 ```
 
 To remove all temporary files, use:
 
 ```sh
-bash ~/Downloads/windows-build-tools-xpack.git/scripts/helper/build.sh --all cleanall
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --all cleanall
 ```
 
 Instead of `--all`, any combination of `--win32 --win64`
