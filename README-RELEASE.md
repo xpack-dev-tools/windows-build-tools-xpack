@@ -5,6 +5,9 @@
 The xPack Windows Build Tools has no strict release schedule, but
 will try to follow the GNU make release schedule, if possible.
 
+However, make stables releases were rare, and after v4.3 git sources
+were used.
+
 ## Prepare the build
 
 Before starting the build, perform some checks and tweaks.
@@ -20,7 +23,17 @@ No need to add a tag here, it'll be added when the release is created.
 
 ### Check the latest upstream release
 
-TODO
+#### make
+
+Currently the latest stable 4.3 is from 2020-01-20
+(<http://mirrors.nav.ro/gnu/make/>) and fails the build.
+Use the latest git commit from
+<https://git.savannah.gnu.org/cgit/make.git/log/>.
+
+#### busybox
+
+To identify the latest commits, check the GitHub page
+<https://github.com/rmyorston/busybox-w32/commits/master>.
 
 ### Increase the version
 
@@ -78,8 +91,7 @@ Before the real build, run a test build on the development machine (`wks`):
 ```sh
 sudo rm -rf ~/Work/windows-build-tools-*
 
-bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win64
-bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win32
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win
 ```
 
 Work on the scripts until all platforms pass the build.

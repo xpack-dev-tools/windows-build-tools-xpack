@@ -3,13 +3,18 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2022-03-05
+
+- v4.3.0-1 released
+- update to use workaround in BusyBox
+
 ## 2021-10-29
 
-- 4.3.0-1 prepared; not yet functional due to UCRT bug affecting BusyBox
+- v4.3.0-1 prepared; not yet functional due to UCRT bug affecting BusyBox
 
 ## 2021-10-18
 
-- v4.2.1-3.1 published on npmjs.com
+- v4.2.1-3.1 published on npmjs.com; not functional (make Error -1073741819)
 - v4.2.1-3 released
 - v4.2.1-3 prepared
 
@@ -28,11 +33,11 @@ Entries in this file are in reverse chronological order.
 ## 2020-09-19
 
 - [#15] Fix arm platform names
-- v2.12.2-2 published on npmjs.com 
+- v2.12.2-2 published on npmjs.com
 
 ## 2020-07-14
 
-- v2.12.2-1 published on npmjs.com 
+- v2.12.2-1 published on npmjs.com
 - v2.12.2 released; same content as v2.12## .1
 
 ## 2020-07-13
