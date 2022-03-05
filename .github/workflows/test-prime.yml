@@ -51,19 +51,5 @@ jobs:
         run: bash scripts/helper/tests/native-test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
 
   
-  windows-ia32:
-    name: 'Windows ia32 Windows Build Tools ${{ github.event.inputs.version }} test'
-    runs-on: windows-latest
-    steps:
-      - name: 'Machine'
-        run: uname -a
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 3
-          submodules: true
-      - name: 'Run ${{ github.event.inputs.version }} native test'
-        run: bash scripts/helper/tests/native-test.sh --32 --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-  
 
 # -----------------------------------------------------------------------------

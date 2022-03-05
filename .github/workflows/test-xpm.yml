@@ -47,17 +47,5 @@ jobs:
         run: bash scripts/helper/tests/xpm-test.sh --version ${{ github.event.inputs.version }}
 
   
-  windows-ia32:
-    name: 'Windows 32-bit Windows Build Tools@${{ github.event.inputs.version }} test'
-    runs-on: windows-latest
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 3
-          submodules: true
-      - name: 'Run ${{ github.event.inputs.version }} xpm test'
-        run: bash scripts/helper/tests/xpm-test.sh --version ${{ github.event.inputs.version }} --32
-  
 
 # -----------------------------------------------------------------------------
