@@ -3,9 +3,7 @@
 
 ### 32-bit support
 
-Support for 32-bit Intel Linux and Intel Windows will most probably
-be dropped in 2022. Support for 32-bit Arm Linux will be preserved
-for a while, due to the large user base of 32-bit Raspberry Pi systems.
+Support for 32-bit Intel Windows was dropped in 2022.
 
 ## Download analytics
 

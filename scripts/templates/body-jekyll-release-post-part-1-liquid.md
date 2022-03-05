@@ -114,9 +114,9 @@ The xPack Windows Build Tools uses programs from other projects.
 
 The current version is based on:
 
-- [GNU make](http://ftpmirror.gnu.org/make/) version 4.2.1
-- [Busybox](https://github.com/rmyorston/busybox-w32), the f902184fa
-commit from Dec 12, 2020.
+- [GNU make](http://ftpmirror.gnu.org/make/) version 4.3
+- [Busybox](https://github.com/rmyorston/busybox-w32), the f3c5e8bc3
+commit from Feb 27, 2022.
 
 ## Changes
 
@@ -124,7 +124,8 @@ There are no functional changes from original projects.
 
 ## Bug fixes
 
-- none
+- the BusyBox code includes a patch around the UCRT bug that affects spawning
+  sub-processes.
 
 ## Enhancements
 
