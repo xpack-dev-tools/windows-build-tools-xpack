@@ -5,8 +5,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2022-03-05
 
+- v4.3.0-1.1 published on npmjs.com
 - v4.3.0-1 released
-- update to use workaround in BusyBox
+- [#19] update to use workaround in BusyBox
 
 ## 2021-10-29
 
