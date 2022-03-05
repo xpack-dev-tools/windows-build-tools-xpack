@@ -36,8 +36,9 @@ DO_BUILD_LINUX64="n"
 DO_BUILD_OSX="n"
 
 # Used during publishing.
-SKIP_XBBA="y"
-SKIP_XBBM="y"
+SKIP_XBBLA="y"
+SKIP_XBBMI="y"
+SKIP_XBBMA="y"
 
 # -----------------------------------------------------------------------------
 
