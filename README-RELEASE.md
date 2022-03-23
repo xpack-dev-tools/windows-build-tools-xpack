@@ -80,7 +80,7 @@ recreate the archives with the correct file.
 
 ### Update helper
 
-With Sourcetree, go to the helper repo and update to the latest master commit.
+With a git client, go to the helper repo and update to the latest master commit.
 
 ## Build
 
