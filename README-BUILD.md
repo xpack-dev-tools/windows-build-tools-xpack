@@ -183,14 +183,14 @@ network connection or a computer entering sleep.
 ```sh
 screen -S windows-build-tools
 
-sudo rm -rf ~/Work/windows-build-tools-*
+sudo rm -rf ~/Work/windows-build-tools-*-*
 bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --all
 ```
 
 or, for development builds:
 
 ```sh
-sudo rm -rf ~/Work/windows-build-tools-*
+sudo rm -rf ~/Work/windows-build-tools-*-*
 bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win64 --win32
 ```
 
@@ -245,7 +245,7 @@ will remove the more specific folders.
 For production builds it is recommended to **completely remove the build folder**:
 
 ```sh
-rm -rf ~/Work/windows-build-tools-*
+rm -rf ~/Work/windows-build-tools-*-*
 ```
 
 ### `--develop`

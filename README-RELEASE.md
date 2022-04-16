@@ -89,7 +89,7 @@ With a git client, go to the helper repo and update to the latest master commit.
 Before the real build, run a test build on the development machine (`wks`):
 
 ```sh
-sudo rm -rf ~/Work/windows-build-tools-*
+sudo rm -rf ~/Work/windows-build-tools-*-*
 
 bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --win
 ```
