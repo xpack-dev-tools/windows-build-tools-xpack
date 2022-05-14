@@ -86,7 +86,7 @@ With a git client, go to the helper repo and update to the latest master commit.
 
 ### Development run the build scripts
 
-Before the real build, run a test build on the development machine (`wks`):
+Before the real build, run a test build on the development machine (`wksi`):
 
 ```sh
 sudo rm -rf ~/Work/windows-build-tools-*-*
@@ -112,7 +112,7 @@ The automation is provided by GitHub Actions and three self-hosted runners.
 Run the `generate-workflows` to re-generate the
 GitHub workflow files; commit and push if necessary.
 
-- on the macOS machine (`xbbmi`) open ssh sessions to the Linux
+- on the macOS machine (`xbbmi`) open ssh sessions to the build
 machines (`xbbli`):
 
 ```sh
@@ -122,7 +122,7 @@ caffeinate ssh xbbli
 Start the runner:
 
 ```sh
-~/actions-runner/run.sh
+~/actions-runners/xpack-dev-tools/run.sh &
 ```
 
 Check that both the project Git and the submodule are pushed to GitHub.
@@ -137,8 +137,11 @@ This is equivalent to:
 bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/trigger-workflow-build.sh
 ```
 
-This script requires the `GITHUB_API_DISPATCH_TOKEN` to be present
-in the environment.
+These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
+in the environment, and the organization `PUBLISH_TOKEN` to be visible in the
+Settings → Action →
+[Secrets](https://github.com/xpack-dev-tools/windows-build-tools-xpack/settings/secrets/actions)
+page.
 
 This command uses the `xpack-develop` branch of this repo.
 
@@ -187,6 +190,9 @@ functional, possibly by running Eclipse builds.
 - commit and push the `xpack-develop` branch
 - run the xPack action `trigger-workflow-publish-release`
 
+The workflow result and logs are available from the
+[Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/) page.
+
 The result is a
 [draft pre-release](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/)
 tagged like **v4.3.0-1** (mind the dash in the middle!) and
@@ -231,6 +237,19 @@ If any, refer to closed
 Note: at this moment the system should send a notification to all clients
 watching this project.
 
+## Update the README-BUILD listings and examples
+
+- check and possibly update the `ls -l` output
+- check and possibly update the output of the `--version` runs
+- check and possibly update the output of `tree -L 2`
+- commit changes
+
+## Check the list of links
+
+- open the `package.json` file
+- check if the links in the `bin` property cover the actual binaries
+- if necessary, also check on Windows
+
 ## Update package.json binaries
 
 - select the `xpack-develop` branch
@@ -255,7 +274,7 @@ watching this project.
   possibly adjust `.npmignore`
 - `npm version 4.3.0-1.1`; the first 5 numbers are the same as the
   GitHub release; the sixth number is the npm specific version
-- the commits and the tag should have beed pushed by the `postversion` script;
+- the commits and the tag should have been pushed by the `postversion` script;
   if not, push them with `git push origin --tags`
 - `npm publish --tag next` (use `--access public` when publishing for
   the first time)

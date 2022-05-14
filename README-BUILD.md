@@ -191,7 +191,7 @@ or, for development builds:
 
 ```sh
 sudo rm -rf ~/Work/windows-build-tools-*-*
-bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-pdf --without-html --disable-tests --win64 --win32
+bash ${HOME}/Work/windows-build-tools-xpack.git/scripts/helper/build.sh --develop --without-html --disable-tests --win64 --win32
 ```
 
 To detach from the session, use `Ctrl-a` `Ctrl-d`; to reattach use
