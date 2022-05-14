@@ -57,7 +57,7 @@ function build_make()
   then
     make_src_folder_name="make-${git_commit}"
   fi
-  
+
   # The folder name  for build, licenses, etc.
   local make_folder_name="${make_src_folder_name}"
 
@@ -88,7 +88,7 @@ function build_make()
         )
       else
         download_and_extract "${make_url}" "${make_archive_file_name}" \
-          "${make_src_folder_name}" 
+          "${make_src_folder_name}"
       fi
 
       if [ ! -x "${SOURCES_FOLDER_PATH}/${make_src_folder_name}/configure" ]
@@ -101,7 +101,7 @@ function build_make()
           if [ -f "bootstrap" ]
           then
             echo "Running make bootstrap..."
-            run_verbose bash ${DEBUG} bootstrap      
+            run_verbose bash ${DEBUG} bootstrap
           fi
         )
       fi
@@ -157,7 +157,7 @@ function build_make()
 
           run_verbose bash "${SOURCES_FOLDER_PATH}/${make_folder_name}/configure" \
             ${config_options[@]}
-            
+
           cp "config.log" "${LOGS_FOLDER_PATH}/config-make-log.txt"
         ) 2>&1 | tee "${LOGS_FOLDER_PATH}/configure-make-output.txt"
 
@@ -376,7 +376,7 @@ function build_busybox()
 
               # Requested for ChibiOS build.
               cp -v "busybox.exe" "cp.exe"
-            )            
+            )
 
           else
             run_verbose make -j ${JOBS}
@@ -428,7 +428,7 @@ function test_busybox()
 # -----------------------------------------------------------------------------
 
 
-function build_bash() 
+function build_bash()
 {
   # https://www.gnu.org/software/bash/
   # https://savannah.gnu.org/projects/bash/
@@ -461,7 +461,7 @@ function build_bash()
     echo "bash in-source building"
 
     if [ ! -d "${BUILD_FOLDER_PATH}/${bash_folder_name}" ]
-    then 
+    then
 
       cd "${BUILD_FOLDER_PATH}"
 
@@ -485,12 +485,12 @@ function build_bash()
       CXXFLAGS="${XBB_CXXFLAGS_NO_W}"
       LDFLAGS="${XBB_LDFLAGS_APP}"
 
-      CC_FOR_BUILD="${HOSTCC}" 
+      CC_FOR_BUILD="${HOSTCC}"
 
       if [ "${TARGET_PLATFORM}" == "linux" ] # Not really.
       then
         LDFLAGS+=" -Wl,-rpath,${LD_LIBRARY_PATH}"
-      fi      
+      fi
 
       export CPPFLAGS
       export CFLAGS
@@ -510,7 +510,7 @@ function build_bash()
           fi
 
           run_verbose autoconf
-          
+
           echo
           echo "Running bash configure..."
 
@@ -590,7 +590,7 @@ function test_bash()
     echo "Testing if bash binaries display help..."
 
     run_app "${APP_PREFIX}/bin/bash" --help
-  ) 
+  )
 }
 
 # -----------------------------------------------------------------------------

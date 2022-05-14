@@ -66,7 +66,7 @@ function do_gmp()
         export CPPFLAGS="-I${INSTALL_FOLDER_PATH}-native/include"
         export LDFLAGS="-L${INSTALL_FOLDER_PATH}-native/lib"
         export ABI="${TARGET_BITS}"
-     
+
         bash "${WORK_FOLDER_PATH}/${GMP_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}-native" \
           \
@@ -114,7 +114,7 @@ function do_gmp()
         export CPPFLAGS="${EXTRA_CPPFLAGS}"
         export LDFLAGS="${EXTRA_LDFLAGS}"
         export ABI="${TARGET_BITS}"
-     
+
         bash "${WORK_FOLDER_PATH}/${GMP_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \
