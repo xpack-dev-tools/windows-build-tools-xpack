@@ -40,9 +40,6 @@
       "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v4.3.0-1",
       "skip": 1,
       "platforms": {
-        "linux-ia32": {
-          "skip": true
-        },
         "linux-arm64": {
           "skip": true
         },
@@ -50,6 +47,9 @@
           "skip": true
         },
         "linux-x64": {
+          "skip": true
+        },
+        "darwin-arm64": {
           "skip": true
         },
         "darwin-x64": {
@@ -83,14 +83,16 @@
         "cat scripts/helper/templates/build-liquid.yml | {{ properties.LIQUIDJS }} > .github/workflows/build-all.yml",
         "cat scripts/helper/templates/test-prime-liquid.yml | {{ properties.LIQUIDJS }} > .github/workflows/test-prime.yml",
         "cat scripts/helper/templates/publish-release-liquid.yml | {{ properties.LIQUIDJS }} > .github/workflows/publish-release.yml",
-        "cat scripts/helper/templates/test-xpm-liquid.yml | {{ properties.LIQUIDJS }} > .github/workflows/test-xpm.yml"
+        "cat scripts/helper/templates/test-xpm-liquid.yml | {{ properties.LIQUIDJS }} > .github/workflows/test-xpm.yml",
+        "cat scripts/helper/templates/deep-clean-liquid.yml | {{ properties.LIQUIDJS }} > .github/workflows/deep-clean.yml"
       ],
       "trigger-workflow-build-all": "bash scripts/helper/trigger-workflow-build.sh",
       "trigger-workflow-test-prime": "bash scripts/helper/tests/trigger-workflow-test-prime.sh",
       "trigger-workflow-publish-release": "bash scripts/helper/trigger-workflow-publish-release.sh",
       "generate-jekyll-post": "bash scripts/helper/generate-jekyll-post.sh",
       "update-package-binaries": "bash scripts/helper/update-package-binaries.sh",
-      "trigger-workflow-test-xpm": "bash scripts/helper/tests/trigger-workflow-test-xpm.sh"
+      "trigger-workflow-test-xpm": "bash scripts/helper/tests/trigger-workflow-test-xpm.sh",
+      "trigger-workflow-deep-clean": "bash scripts/helper/trigger-workflow-deep-clean.sh"
     }
   },
   "bundleDependencies": [],
