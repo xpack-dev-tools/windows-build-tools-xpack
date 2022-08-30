@@ -187,7 +187,9 @@ functional, possibly by running Eclipse builds.
 ## Create a new GitHub pre-release draft
 
 - in `CHANGELOG.md`, add the release date and a message like _- v4.3.0-1 released_
-- commit and push the `xpack-develop` branch
+- commit with _CHANGELOG update_
+- check and possibly update the `templates/body-github-release-liquid.md`
+- push the `xpack-develop` branch
 - run the xPack action `trigger-workflow-publish-release`
 
 The workflow result and logs are available from the
@@ -204,7 +206,8 @@ with all binaries attached.
 
 ## Prepare a new blog post
 
-Run the xPack action `generate-jekyll-post`; this will leave a file
+- check and possibly update the `templates/body-jekyll-release-*-liquid.md`
+- run the xPack action `generate-jekyll-post`; this will leave a file
 on the Desktop.
 
 In the `xpack/web-jekyll` GitHub repo:
@@ -219,7 +222,7 @@ If any, refer to closed
 ## Update the preview Web
 
 - commit the `develop` branch of `xpack/web-jekyll` GitHub repo;
-  use a message like **xPack Windows Build Tools v4.3.0-1 released**
+  use a message like _xPack Windows Build Tools v4.3.0-1 released_
 - push to GitHub
 - wait for the GitHub Pages build to complete
 - the preview web is <https://xpack.github.io/web-preview/news/>
@@ -261,7 +264,7 @@ watching this project.
 - compare the SHA sums with those shown by `cat *.sha`
 - check the executable names
 - commit all changes, use a message like
-  `package.json: update urls for 4.3.0-1.1 release` (without `v`)
+  _package.json: update urls for 4.3.0-1.1 release_ (without _v_)
 
 ## Publish on the npmjs.com server
 
