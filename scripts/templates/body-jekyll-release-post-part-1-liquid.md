@@ -9,7 +9,7 @@ Or (TODO: edit!):
 
 summary: "Version **{{ RELEASE_VERSION }}** is a new release of the **xPack Windows Build Tools** package, following the make release."
 
-version: {{ RELEASE_VERSION }}
+version: "{{ RELEASE_VERSION }}"
 npm_subversion: 1
 download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v{{ RELEASE_VERSION }}/
 
