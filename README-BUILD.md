@@ -130,7 +130,7 @@ The builds currently run on a dedicated machines (Intel GNU/Linux).
 ### Build the Windows binaries
 
 The current platform for Windows production builds is a
-Debian 10, running on an Intel NUC8i7BEH mini PC with 32 GB of RAM
+Debian 11, running on an AMD 5600G PC with 16 GB of RAM
 and 512 GB of fast M.2 SSD. The machine name is `xbbli`.
 
 ```sh
