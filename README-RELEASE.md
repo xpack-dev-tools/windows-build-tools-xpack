@@ -90,7 +90,7 @@ but in the version specific release page.
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
-- add a new entry like _- v4.3.0-1 prepared_
+- add a new entry like _* v4.3.0-1 prepared_
 - commit with a message like _prepare v4.3.0-1_
 
 Note: if you missed to update the `CHANGELOG.md` before starting the build,
@@ -210,7 +210,7 @@ functional, possibly by running Eclipse builds.
 
 ## Create a new GitHub pre-release draft
 
-- in `CHANGELOG.md`, add the release date and a message like _- v4.3.0-1 released_
+- in `CHANGELOG.md`, add the release date and a message like _* v4.3.0-1 released_
 - commit with _CHANGELOG update_
 - check and possibly update the `templates/body-github-release-liquid.md`
 - push the `xpack-develop` branch
@@ -294,17 +294,17 @@ watching this project.
 
 - select the `xpack-develop` branch
 - check the latest commits `npm run git-log`
-- update `CHANGELOG.md`, add a line like _- v4.3.0-1.1 published on npmjs.com_
+- update `CHANGELOG.md`, add a line like _* v4.3.0-1.1 published on npmjs.com_
 - commit with a message like _CHANGELOG: publish npm v4.3.0-1.1_
 - `npm pack` and check the content of the archive, which should list
   only the `package.json`, the `README.md`, `LICENSE` and `CHANGELOG.md`;
   possibly adjust `.npmignore`
-- `npm version 4.3.0-1.1`; the first 5 numbers are the same as the
-  GitHub release; the sixth number is the npm specific version
+- `npm version 4.3.0-1.1`; the first 4 numbers are the same as the
+  GitHub release; the fifth number is the npm specific version
 - the commits and the tag should have been pushed by the `postversion` script;
   if not, push them with `git push origin --tags`
-- `npm publish --tag next` (use `--access public` when publishing for
-  the first time)
+- `npm publish --tag next` (use `npm publish --access public`
+  when publishing for the first time; add the `next` tag)
 
 After a few moments the version will be visible at:
 
