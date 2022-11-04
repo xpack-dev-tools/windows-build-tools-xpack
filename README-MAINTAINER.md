@@ -193,7 +193,7 @@ About 10 minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
-$ ls -l ~/Work/windows-build-tools-xpack.git/build/win32-x64/deploy]
+$ ls -l ~/Work/windows-build-tools-xpack.git/build/win32-x64/deploy
 total 3624
 -rw-r--r-- 1 ilg ilg 2668460 Nov  4 09:46 xpack-windows-build-tools-4.4.0-1-win32-x64.zip
 -rw-r--r-- 1 ilg ilg     114 Nov  4 09:46 xpack-windows-build-tools-4.4.0-1-win32-x64.zip.sha
@@ -228,8 +228,8 @@ The automation is provided by GitHub Actions and three self-hosted runners.
 Run the `generate-workflows` to re-generate the
 GitHub workflow files; commit and push if necessary.
 
-- on the macOS machine (`xbbmi`) open ssh sessions to the build
-machines (`xbbli`):
+- on a permanently running machine (`berry`) open ssh sessions to the build
+machine (`xbbli`):
 
 ```sh
 caffeinate ssh xbbli
