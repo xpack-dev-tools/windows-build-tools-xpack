@@ -1,3 +1,0 @@
-[submodule "scripts/helper"]
-	path = scripts/helper
-	url = https://github.com/gnu-mcu-eclipse/build-helper.git
