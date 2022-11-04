@@ -12,5 +12,6 @@ scripts/
 tests/
 
 README-*
-*.tgz
 LICENSE-*
+
+*.tgz

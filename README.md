@@ -1,5 +1,7 @@
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/windows-build-tools-xpack)](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases)
-[![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/windows-build-tools.svg)](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/xpack-dev-tools/windows-build-tools-xpack)](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/package.json)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xpack-dev-tools/windows-build-tools-xpack)](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/)
+[![npm (scoped)](https://img.shields.io/npm/v/@xpack-dev-tools/windows-build-tools.svg?color=blue)](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools/)
+[![license](https://img.shields.io/github/license/xpack-dev-tools/windows-build-tools-xpack)](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/LICENSE)
 
 # The xPack Windows Build Tools
 
@@ -40,11 +42,17 @@ from the [`npmjs.com`](https://www.npmjs.com) registry.
 
 #### Prerequisites
 
-The only requirement is a recent
-`xpm`, which is a portable
-[Node.js](https://nodejs.org) command line application. To install it,
-follow the instructions from the
-[xpm](https://xpack.github.io/xpm/install/) page.
+A recent [xpm](https://xpack.github.io/xpm/),
+which is a portable [Node.js](https://nodejs.org/) command line application.
+
+It is recommended to update to the latest version with:
+
+```sh
+npm install --location=global xpm@latest
+```
+
+For details please follow the instructions in the
+[xPack install](https://xpack.github.io/install/) page.
 
 #### Install
 
@@ -87,9 +95,40 @@ Eclipse will automatically
 identify binaries installed with
 `xpm` and provide a convenient method to manage paths.
 
+After install, the package should create a structure like this (macOS files;
+only the first two depth levels are shown):
+
+```console
+$ tree -L 2 xpacks/xpack-dev-tools-windows-build-tools/.content/
+xpacks/xpack-dev-tools-windows-build-tools/.content/
+├── README.md
+├── bin
+│   ├── busybox.exe
+│   ├── cp.exe
+│   ├── echo.exe
+│   ├── make.exe
+│   ├── mkdir.exe
+│   ├── rm.exe
+│   └── sh.exe
+├── distro-info
+│   ├── CHANGELOG.md
+│   ├── licenses
+│   ├── patches
+│   └── scripts
+├── include
+│   └── gnumake.h
+└── share
+    ├── info
+    └── man
+
+9 directories, 10 files
+```
+
+No other files are installed in any system folders or other locations.
+
 #### Uninstall
 
-To remove the links from the current project:
+To remove the links created by xpm in the current project:
 
 ```sh
 cd my-project
@@ -119,20 +158,20 @@ For more details please read the
 ### Versioning
 
 The version strings used by the GNU make project are three number strings
-like `4.3.0`; to this string the xPack distribution adds a four number,
+like `4.4.0`; to this string the xPack distribution adds a four number,
 but since semver allows only three numbers, all additional ones can
 be added only as pre-release strings, separated by a dash,
-like `4.3.0-1`. When published as a npm package, the version gets
-a fifth number, like `4.3.0-1.1`.
+like `4.4.0-1`. When published as a npm package, the version gets
+a fifth number, like `4.4.0-1.1`.
 
 Since adherence of third party packages to semver is not guaranteed,
-it is recommended to use semver expressions like `^4.3.0` and `~4.3.0`
-with caution, and prefer exact matches, like `4.3.0-1.1`.
+it is recommended to use semver expressions like `^4.4.0` and `~4.4.0`
+with caution, and prefer exact matches, like `4.4.0-1.1`.
 
 ## Maintainer info
 
-- [How to build](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-BUILD.md)
-- [How to make new releases](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-RELEASE.md)
+For maintainer info, please see the
+[README-MAINTAINER](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-MAINTAINER.md)
 
 ## Support
 

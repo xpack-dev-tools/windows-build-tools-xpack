@@ -7,10 +7,6 @@
 # for any purpose is hereby granted, under the terms of the MIT license.
 # -----------------------------------------------------------------------------
 
-# Helper script used in the xPack build scripts. As the name implies,
-# it should contain only functions and should be included with 'source'
-# by the build scripts (both native and container).
-
 # -----------------------------------------------------------------------------
 
 # The surprise of this build was that building the cross guile requires
@@ -36,7 +32,7 @@ function do_gmp()
   # local gmp_url="https://gmplib.org/download/gmp/${gmp_archive}"
   local gmp_url="https://github.com/gnu-mcu-eclipse/files/raw/master/libs/${gmp_archive}"
 
-  local gmp_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-gmp-installed"
+  local gmp_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-gmp-installed"
   if [ ! -f "${gmp_stamp_file_path}" ]
   then
 
@@ -46,10 +42,8 @@ function do_gmp()
 
     # Native build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}-native/${GMP_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}-native/${GMP_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}-native/${GMP_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}-native/${GMP_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -70,9 +64,9 @@ function do_gmp()
         bash "${WORK_FOLDER_PATH}/${GMP_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}-native" \
           \
-          --build=${BUILD} \
-          --host=${BUILD} \
-          --target=${BUILD} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_BUILD} \
+          --target=${XBB_BUILD} \
           \
           --disable-shared \
           --enable-static \
@@ -87,17 +81,15 @@ function do_gmp()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-gmp-output.txt"
     )
 
     # Cross build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${GMP_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}/${GMP_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GMP_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${GMP_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -118,9 +110,9 @@ function do_gmp()
         bash "${WORK_FOLDER_PATH}/${GMP_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \
-          --build=${BUILD} \
-          --host=${HOST} \
-          --target=${TARGET} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_HOST} \
+          --target=${XBB_TARGET} \
           \
           --disable-shared \
           --enable-static \
@@ -135,11 +127,12 @@ function do_gmp()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-gmp-output.txt"
     )
 
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${gmp_stamp_file_path}"
 
   else
@@ -161,7 +154,7 @@ function do_libtool()
   # local libtool_url="http://www.mr511.de/software/${libtool_archive}"
   local libtool_url="http://mirrors.nav.ro/gnu/libtool/${libtool_archive}"
 
-  local libtool_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-libtool-installed"
+  local libtool_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-libtool-installed"
   if [ ! -f "${libtool_stamp_file_path}" ]
   then
 
@@ -171,10 +164,8 @@ function do_libtool()
 
     # Native build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}-native/${LIBTOOL_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}-native/${LIBTOOL_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}-native/${LIBTOOL_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}-native/${LIBTOOL_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -191,9 +182,9 @@ function do_libtool()
         bash "${WORK_FOLDER_PATH}/${LIBTOOL_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}-native" \
           \
-          --build=${BUILD} \
-          --host=${BUILD} \
-          --target=${BUILD} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_BUILD} \
+          --target=${XBB_BUILD} \
           \
           --disable-shared \
           --enable-static \
@@ -209,17 +200,15 @@ function do_libtool()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-libtool-output.txt"
     )
 
     # Cross build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${LIBTOOL_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}/${LIBTOOL_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${LIBTOOL_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${LIBTOOL_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -236,9 +225,9 @@ function do_libtool()
         bash "${WORK_FOLDER_PATH}/${LIBTOOL_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \
-          --build=${BUILD} \
-          --host=${HOST} \
-          --target=${TARGET} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_HOST} \
+          --target=${XBB_TARGET} \
           \
           --disable-shared \
           --enable-static \
@@ -254,11 +243,12 @@ function do_libtool()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-libtool-output.txt"
     )
 
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libtool_stamp_file_path}"
 
   else
@@ -278,7 +268,7 @@ function do_libunistring()
   local libunistring_archive="${LIBUNISTRING_FOLDER_NAME}.tar.xz"
   local libunistring_url="http://ftp.gnu.org/gnu/libunistring/${libunistring_archive}"
 
-  local libunistring_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-libunistring-installed"
+  local libunistring_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-libunistring-installed"
   if [ ! -f "${libunistring_stamp_file_path}" ]
   then
 
@@ -288,10 +278,8 @@ function do_libunistring()
 
     # Native build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}-native/${LIBUNISTRING_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}-native/${LIBUNISTRING_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}-native/${LIBUNISTRING_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}-native/${LIBUNISTRING_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -308,9 +296,9 @@ function do_libunistring()
         bash "${WORK_FOLDER_PATH}/${LIBUNISTRING_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}-native" \
           \
-          --build=${BUILD} \
-          --host=${BUILD} \
-          --target=${BUILD} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_BUILD} \
+          --target=${XBB_BUILD} \
           \
           --disable-shared \
           --enable-static \
@@ -324,17 +312,15 @@ function do_libunistring()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-libunistring-output.txt"
     )
 
     # Cross build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${LIBUNISTRING_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}/${LIBUNISTRING_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${LIBUNISTRING_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${LIBUNISTRING_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -351,9 +337,9 @@ function do_libunistring()
         bash "${WORK_FOLDER_PATH}/${LIBUNISTRING_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \
-          --build=${BUILD} \
-          --host=${HOST} \
-          --target=${TARGET} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_HOST} \
+          --target=${XBB_TARGET} \
           \
           --disable-shared \
           --enable-static \
@@ -367,11 +353,12 @@ function do_libunistring()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-libunistring-output.txt"
     )
 
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libunistring_stamp_file_path}"
 
   else
@@ -393,7 +380,7 @@ function do_libffi()
   # local libffi_url="http://isl.gforge.inria.fr/${libffi_archive}"
   local libffi_url="https://sourceware.org/pub/libffi/${libffi_archive}"
 
-  local libffi_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-libffi-installed"
+  local libffi_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-libffi-installed"
   if [ ! -f "${libffi_stamp_file_path}" ]
   then
 
@@ -403,10 +390,8 @@ function do_libffi()
 
     # Native build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}-native/${LIBFFI_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}-native/${LIBFFI_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}-native/${LIBFFI_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}-native/${LIBFFI_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -423,9 +408,9 @@ function do_libffi()
         bash "${WORK_FOLDER_PATH}/${LIBFFI_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}-native" \
           \
-          --build=${BUILD} \
-          --host=${BUILD} \
-          --target=${BUILD} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_BUILD} \
+          --target=${XBB_BUILD} \
           \
           --disable-shared \
           --enable-static \
@@ -440,17 +425,15 @@ function do_libffi()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-libffi-output.txt"
     )
 
     # Cross build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${LIBFFI_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}/${LIBFFI_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${LIBFFI_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${LIBFFI_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -467,9 +450,9 @@ function do_libffi()
         bash "${WORK_FOLDER_PATH}/${LIBFFI_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \
-          --build=${BUILD} \
-          --host=${HOST} \
-          --target=${TARGET} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_HOST} \
+          --target=${XBB_TARGET} \
           \
           --disable-shared \
           --enable-static \
@@ -483,11 +466,12 @@ function do_libffi()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-libffi-output.txt"
     )
 
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libffi_stamp_file_path}"
 
   else
@@ -513,7 +497,7 @@ function do_bdwgc()
 
   local libatomic_url="http://www.hboehm.info/gc/gc_source/${libatomic_archive}"
 
-  local bdwgc_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-bdwgc-installed"
+  local bdwgc_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-bdwgc-installed"
   if [ ! -f "${bdwgc_stamp_file_path}" ]
   then
 
@@ -529,17 +513,14 @@ function do_bdwgc()
     fi
 
     (
-      xbb_activate
       autoreconf -vif
       automake --add-missing
     )
 
     # Native build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}-native/${BDWGC_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}-native/${BDWGC_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}-native/${BDWGC_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}-native/${BDWGC_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -556,9 +537,9 @@ function do_bdwgc()
         bash "${WORK_FOLDER_PATH}/${BDWGC_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}-native" \
           \
-          --build=${BUILD} \
-          --host=${BUILD} \
-          --target=${BUILD} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_BUILD} \
+          --target=${XBB_BUILD} \
           \
           --disable-shared \
           --enable-static \
@@ -573,17 +554,15 @@ function do_bdwgc()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-bdwgc-output.txt"
     )
 
     # Cross build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${BDWGC_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}/${BDWGC_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${BDWGC_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${BDWGC_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -600,9 +579,9 @@ function do_bdwgc()
         bash "${WORK_FOLDER_PATH}/${BDWGC_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \
-          --build=${BUILD} \
-          --host=${HOST} \
-          --target=${TARGET} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_HOST} \
+          --target=${XBB_TARGET} \
           \
           --disable-shared \
           --enable-static \
@@ -617,11 +596,12 @@ function do_bdwgc()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-bdwgc-output.txt"
     )
 
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${bdwgc_stamp_file_path}"
 
   else
@@ -645,7 +625,7 @@ function do_libiconv()
   local libiconv_archive="${LIBICONV_FOLDER_NAME}.tar.gz"
   local libiconv_url="https://ftp.gnu.org/pub/gnu/libiconv/${libiconv_archive}"
 
-  local libiconv_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-libiconv-installed"
+  local libiconv_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-libiconv-installed"
   if [ ! -f "${libiconv_stamp_file_path}" ]
   then
 
@@ -655,10 +635,8 @@ function do_libiconv()
 
     # Native build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}-native/${LIBICONV_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}-native/${LIBICONV_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}-native/${LIBICONV_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}-native/${LIBICONV_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -677,9 +655,9 @@ function do_libiconv()
         bash "${WORK_FOLDER_PATH}/${LIBICONV_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}-native" \
           \
-          --build=${BUILD} \
-          --host=${BUILD} \
-          --target=${BUILD} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_BUILD} \
+          --target=${XBB_BUILD} \
           \
           --disable-shared \
           --enable-static \
@@ -694,17 +672,15 @@ function do_libiconv()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-native-libiconv-output.txt"
     )
 
     # Cross build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${LIBICONV_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}/${LIBICONV_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${LIBICONV_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${LIBICONV_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -723,9 +699,9 @@ function do_libiconv()
         bash "${WORK_FOLDER_PATH}/${LIBICONV_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \
-          --build=${BUILD} \
-          --host=${HOST} \
-          --target=${TARGET} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_HOST} \
+          --target=${XBB_TARGET} \
           \
           --disable-shared \
           --enable-static \
@@ -740,11 +716,12 @@ function do_libiconv()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-libiconv-output.txt"
     )
 
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${libiconv_stamp_file_path}"
 
   else
@@ -780,7 +757,7 @@ function do_guile()
   local msys2_guile_url="${MSYS2_GUILE_PACK_URL_BASE}/REPOS/MSYS2/Sources/${msys2_guile_archive}"
   local guile_archive="${GUILE_FOLDER_NAME}.tar.gz"
 
-  local guile_stamp_file_path="${INSTALL_FOLDER_PATH}/stamp-guile-installed"
+  local guile_stamp_file_path="${XBB_STAMPS_FOLDER_PATH}/stamp-guile-installed"
   if [ ! -f "${guile_stamp_file_path}" ]
   then
 
@@ -811,9 +788,7 @@ function do_guile()
 
         patch -p1 -i "${WORK_FOLDER_PATH}"/msys2/guile/guile-2.2.2-msys2.patch
 
-        xbb_activate
-
-        cp -rf build-aux/snippet "${WORK_FOLDER_PATH}"/msys2/guile/snippet
+          cp -rf build-aux/snippet "${WORK_FOLDER_PATH}"/msys2/guile/snippet
         autoreconf -fi
         cp -f "${WORK_FOLDER_PATH}"/msys2/guile/snippet/*.* build-aux/snippet/
       )
@@ -821,10 +796,8 @@ function do_guile()
 
     # Native build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}-native/${GUILE_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}-native/${GUILE_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}-native/${GUILE_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}-native/${GUILE_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -844,9 +817,9 @@ function do_guile()
         bash "${WORK_FOLDER_PATH}/${GUILE_FOLDER_NAME}"/configure \
           --prefix="${INSTALL_FOLDER_PATH}-native" \
           \
-          --build=${BUILD} \
-          --host=${BUILD} \
-          --target=${BUILD} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_BUILD} \
+          --target=${XBB_BUILD} \
           \
           --disable-shared \
           --enable-static \
@@ -867,17 +840,15 @@ function do_guile()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}"/make-native-guile-output.txt
     )
 
     # Cross build.
     (
-      mkdir -p "${BUILD_FOLDER_PATH}/${GUILE_FOLDER_NAME}"
-      cd "${BUILD_FOLDER_PATH}/${GUILE_FOLDER_NAME}"
-
-      xbb_activate
+      mkdir -p "${XBB_BUILD_FOLDER_PATH}/${GUILE_FOLDER_NAME}"
+      cd "${XBB_BUILD_FOLDER_PATH}/${GUILE_FOLDER_NAME}"
 
       if [ ! -f "config.status" ]
       then
@@ -897,9 +868,9 @@ function do_guile()
         bash "${WORK_FOLDER_PATH}/${GUILE_FOLDER_NAME}/configure" \
           --prefix="${INSTALL_FOLDER_PATH}" \
           \
-          --build=${BUILD} \
-          --host=${HOST} \
-          --target=${TARGET} \
+          --build=${XBB_BUILD} \
+          --host=${XBB_HOST} \
+          --target=${XBB_TARGET} \
           \
           --disable-shared \
           --enable-static \
@@ -927,11 +898,12 @@ function do_guile()
 
       (
         # Build.
-        make -j ${JOBS}
+        make -j ${XBB_JOBS}
         make install-strip
       ) | tee "${INSTALL_FOLDER_PATH}/make-guile-output.txt"
     )
 
+    mkdir -pv "${XBB_STAMPS_FOLDER_PATH}"
     touch "${guile_stamp_file_path}"
 
   else

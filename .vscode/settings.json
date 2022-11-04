@@ -8,5 +8,25 @@
   "spellright.language": [
     "en_GB"
   ],
-  "spellright.notificationClass": "warning"
+  "spellright.notificationClass": "warning",
+  "cSpell.ignoreWords": [
+    "Ionescu",
+    "Liviu",
+    "NSIS",
+    "UCRT",
+    "caffeinate",
+    "gettext",
+    "ilegeul",
+    "liquidjs",
+    "msys",
+    "npmignore",
+    "npmjs",
+    "postversion",
+    "rmyorston",
+    "userdel",
+    "workdir",
+    "xbbli",
+    "xpack",
+    "xpacks"
+  ]
 }

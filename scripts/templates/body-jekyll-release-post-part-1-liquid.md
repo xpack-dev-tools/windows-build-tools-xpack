@@ -1,17 +1,17 @@
 ---
-title:  xPack Windows Build Tools v{{ RELEASE_VERSION }} released
+title:  xPack Windows Build Tools v{{ XBB_RELEASE_VERSION }} released
 
 TODO: select one summary
 
-summary: "Version **{{ RELEASE_VERSION }}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox."
+summary: "Version **{{ XBB_RELEASE_VERSION }}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox."
 
 Or (TODO: edit!):
 
-summary: "Version **{{ RELEASE_VERSION }}** is a new release of the **xPack Windows Build Tools** package, following the make release."
+summary: "Version **{{ XBB_RELEASE_VERSION }}** is a new release of the **xPack Windows Build Tools** package, following the make release."
 
-version: "{{ RELEASE_VERSION }}"
+version: "{{ XBB_RELEASE_VERSION }}"
 npm_subversion: 1
-download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v{{ RELEASE_VERSION }}/
+download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v{{ XBB_RELEASE_VERSION }}/
 
 date:   {{ RELEASE_DATE }}
 
@@ -94,7 +94,7 @@ identify binaries installed with
 
 ### Uninstall
 
-To remove the links from the current project:
+To remove the links created by xpm in the current project:
 
 ```sh
 cd my-project
@@ -174,7 +174,7 @@ Install the package with xpm.
 The simple test, consists in starting the binary.
 
 ```sh
-.../xpack-windows-build-tools-{{ RELEASE_VERSION }}/bin/make --version
+.../xpack-windows-build-tools-{{ XBB_RELEASE_VERSION }}/bin/make --version
 ```
 
 A more elaborate test would be to run an Eclipse build.
