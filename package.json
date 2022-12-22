@@ -211,6 +211,6 @@
   },
   "bundleDependencies": [],
   "devDependencies": {
-    "liquidjs": "^9.42.0"
+    "liquidjs": "^10.0.0"
   }
 }
