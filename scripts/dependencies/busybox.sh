@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_busybox()
+function busybox_build()
 {
   # https://busybox.net
   # https://frippery.org/busybox/
@@ -167,10 +167,10 @@ function build_busybox()
     echo "BusyBox already installed."
   fi
 
-  tests_add "test_busybox" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "busybox_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_busybox()
+function busybox_test()
 {
   local test_bin_path="$1"
 

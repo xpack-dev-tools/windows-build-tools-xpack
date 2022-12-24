@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_make()
+function make_build()
 {
   # https://www.gnu.org/software/make/
   # https://savannah.gnu.org/projects/make/
@@ -196,7 +196,7 @@ function build_make()
     echo "make already installed."
   fi
 
-  tests_add "test_make" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "make_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
   run_app "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-env" one two
   run_app "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh" -c "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-env.exe" one two
@@ -220,7 +220,7 @@ function build_make()
   fi
 }
 
-function test_make()
+function make_test()
 {
   local test_bin_path="$1"
 

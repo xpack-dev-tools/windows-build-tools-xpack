@@ -13,9 +13,9 @@ function tests_run_all()
 {
   local test_bin_path="$1"
 
-  test_make "${test_bin_path}"
+  make_test "${test_bin_path}"
 
-  test_busybox "${test_bin_path}"
+  busybox_test "${test_bin_path}"
 }
 
 # -----------------------------------------------------------------------------
