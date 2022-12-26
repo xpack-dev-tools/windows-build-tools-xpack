@@ -4,7 +4,7 @@
 
 # Maintainer info
 
-## Project repository
+## Get project sources
 
 The project is hosted on GitHub:
 
@@ -30,7 +30,16 @@ git clone \
   ~/Work/windows-build-tools-xpack.git
 ```
 
-Same for the helper and link it to the central xPacks store:
+Or, if the repo was already cloned:
+
+```sh
+git -C ~/Work/windows-build-tools-xpack.git pull
+```
+
+## Get helper sources
+
+The project has a dependency to a common **helper**; clone the
+`xpack-develop` branch and link it to the central xPacks store:
 
 ```sh
 rm -rf ~/Work/xbb-helper-xpack.git; \
@@ -45,8 +54,6 @@ xpm link -C ~/Work/xbb-helper-xpack.git
 Or, if the repos were already cloned:
 
 ```sh
-git -C ~/Work/windows-build-tools-xpack.git pull
-
 git -C ~/Work/xbb-helper-xpack.git pull
 xpm link -C ~/Work/xbb-helper-xpack.git
 ```
@@ -149,6 +156,12 @@ The builds currently run on a dedicated machine (Intel GNU/Linux).
 
 Before the real build, run a test builds.
 
+#### Visual Studio Code
+
+All actions are defined as **xPack actions** and can be conveniently
+triggered via the VS Code graphical interface, using the
+[xPack extension](https://marketplace.visualstudio.com/items?itemName=ilg-vscode.xpack).
+
 #### Intel GNU/Linux
 
 Run the docker build on the production machine (`xbbli`);
@@ -163,40 +176,23 @@ caffeinate ssh xbbli
 Update the build scripts (or clone them at the first use):
 
 ```sh
-git -C ~/Work/windows-build-tools-xpack.git pull
-
-xpm run deep-clean -C ~/Work/windows-build-tools-xpack.git
+git -C ~/Work/windows-build-tools-xpack.git pull && \
+xpm run deep-clean -C ~/Work/windows-build-tools-xpack.git && \
+xpm run deep-clean --config linux-x64 -C ~/Work/windows-build-tools-xpack.git && \
+xpm run docker-prepare --config linux-x64 -C ~/Work/windows-build-tools-xpack.git && \
+git -C ~/Work/xbb-helper-xpack.git pull && \
+xpm run docker-link-deps --config linux-x64 -C ~/Work/windows-build-tools-xpack.git
+xpm run docker-build-develop --config linux-x64 -C ~/Work/windows-build-tools-xpack.git
 ```
 
-Clean the build folder and prepare the docker container:
-
-```sh
-xpm run deep-clean --config win32-x64 -C ~/Work/windows-build-tools-xpack.git
-
-xpm run docker-prepare --config win32-x64 -C ~/Work/windows-build-tools-xpack.git
-```
-
-If the helper is also under development and needs changes,
-link it in the place of the read-only package:
-
-```sh
-xpm run docker-link-deps --config win32-x64 -C ~/Work/windows-build-tools-xpack.git
-```
-
-Run the docker build:
-
-```sh
-xpm run docker-build-develop --config win32-x64 -C ~/Work/windows-build-tools-xpack.git
-```
-
-About 10 minutes later, the output of the build script is a compressed
+Several minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/windows-build-tools-xpack.git/build/win32-x64/deploy
-total 3624
--rw-r--r-- 1 ilg ilg 2668460 Nov  4 09:46 xpack-windows-build-tools-4.4.0-1-win32-x64.zip
--rw-r--r-- 1 ilg ilg     114 Nov  4 09:46 xpack-windows-build-tools-4.4.0-1-win32-x64.zip.sha
+total 2676
+-rw-r--r-- 1 ilg ilg 2732409 Dec 26 08:42 xpack-windows-build-tools-4.4.0-1-win32-x64.zip
+-rw-r--r-- 1 ilg ilg     114 Dec 26 08:42 xpack-windows-build-tools-4.4.0-1-win32-x64.zip.sha
 ```
 
 ### Files cache
@@ -235,12 +231,13 @@ machine (`xbbli`):
 caffeinate ssh xbbli
 ```
 
-Start the runner:
+Start the runners:
 
 ```sh
 screen -S ga
 
-~/actions-runners/xpack-dev-tools/run.sh &
+~/actions-runners/xpack-dev-tools/1/run.sh &
+~/actions-runners/xpack-dev-tools/2/run.sh &
 
 # Ctrl-a Ctrl-d
 ```
@@ -249,12 +246,12 @@ Check that the project is pushed to GitHub.
 
 To trigger the GitHub Actions build, use the xPack action:
 
-- `trigger-workflow-build-all`
+- `trigger-workflow-build-xbbli`
 
 This is equivalent to:
 
 ```sh
-bash ~/Work/windows-build-tools-xpack.git/xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-build.sh
+bash ~/Work/gcc-xpack.git/xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbli
 ```
 
 These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
@@ -265,7 +262,7 @@ page.
 
 This command uses the `xpack-develop` branch of this repo.
 
-The builds take about 14 minutes to complete.
+The builds take a few minutes to complete.
 
 The workflow result and logs are available from the
 [Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/) page.
