@@ -9,33 +9,36 @@
 
 # -----------------------------------------------------------------------------
 
-function build_busybox()
+# https://busybox.net
+# https://frippery.org/busybox/
+# https://github.com/rmyorston/busybox-w32
+
+# busybox_commit=master
+# busybox_commit="9fe16f6102d8ab907c056c484988057904092c06"
+# busybox_commit="977d65c1bbc57f5cdd0c8bfd67c8b5bb1cd390dd"
+# busybox_commit="9fa1e4990e655a85025c9d270a1606983e375e47"
+# busybox_commit="c2002eae394c230d6b89073c9ff71bc86a7875e8"
+
+# Dec 9, 2017
+# busybox_commit="096aee2bb468d1ab044de36e176ed1f6c7e3674d"
+
+# Apr 13, 2018
+# busybox_commit="6f7d1af269eed4b42daeb9c6dfd2ba62f9cd47e4"
+
+# Apr 06, 2019
+# busybox_commit="65ae5b24cc08f898e81b36421b616fc7fc25d2b1"
+
+# Dec 12, 2020
+# busybox_commit="f902184fa8aa37b0ce8b725da5657ef2ed2005dd
+
+# 9 June, 2022
+# FRP-4716-g31467ddfc
+
+# 9 Nov 9
+# FRP-4784-g5507c8744
+
+function busybox_build()
 {
-  # https://busybox.net
-  # https://frippery.org/busybox/
-  # https://github.com/rmyorston/busybox-w32
-
-  # busybox_commit=master
-  # busybox_commit="9fe16f6102d8ab907c056c484988057904092c06"
-  # busybox_commit="977d65c1bbc57f5cdd0c8bfd67c8b5bb1cd390dd"
-  # busybox_commit="9fa1e4990e655a85025c9d270a1606983e375e47"
-  # busybox_commit="c2002eae394c230d6b89073c9ff71bc86a7875e8"
-
-  # Dec 9, 2017
-  # busybox_commit="096aee2bb468d1ab044de36e176ed1f6c7e3674d"
-
-  # Apr 13, 2018
-  # busybox_commit="6f7d1af269eed4b42daeb9c6dfd2ba62f9cd47e4"
-
-  # Apr 06, 2019
-  # busybox_commit="65ae5b24cc08f898e81b36421b616fc7fc25d2b1"
-
-  # Dec 12, 2020
-  # busybox_commit="f902184fa8aa37b0ce8b725da5657ef2ed2005dd
-
-  # 9 June, 2022
-  # FRP-4716-g31467ddfc
-
   local busybox_commit="$1"
   local busybox_src_folder_name="busybox-w32-${busybox_commit}"
 
@@ -124,15 +127,15 @@ function build_busybox()
               HOSTCC="${XBB_NATIVE_CC}" \
               HOSTCXX="${XBB_NATIVE_CXX}"
 
-            mkdir -pv "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+            mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
             cp -v "busybox.exe" \
-              "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
-            ${XBB_CROSS_COMPILE_PREFIX}-strip \
-              "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/busybox.exe"
+            ${STRIP} \
+              "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/busybox.exe"
 
             (
-              cd "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+              cd "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
               cp -v "busybox.exe" "sh.exe"
               cp -v "busybox.exe" "rm.exe"
@@ -167,21 +170,21 @@ function build_busybox()
     echo "BusyBox already installed."
   fi
 
-  tests_add "test_busybox" "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin"
+  tests_add "busybox_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 }
 
-function test_busybox()
+function busybox_test()
 {
   local test_bin_path="$1"
 
   echo
   echo "Checking the busybox shared libraries..."
-  show_libs "${test_bin_path}/busybox"
+  show_host_libs "${test_bin_path}/busybox"
 
   echo
   echo "Checking if busybox starts..."
 
-  run_app "${test_bin_path}/busybox" --help
+  run_host_app_verbose "${test_bin_path}/busybox" --help
 }
 
 # -----------------------------------------------------------------------------

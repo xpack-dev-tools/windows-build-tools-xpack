@@ -9,7 +9,7 @@
 
 # -----------------------------------------------------------------------------
 
-function build_application_versioned_components()
+function application_build_versioned_components()
 {
   if [ "${XBB_REQUESTED_TARGET_PLATFORM}" != "win32" ]
   then
@@ -29,6 +29,7 @@ function build_application_versioned_components()
     # -------------------------------------------------------------------------
     # Build the target dependencies.
 
+    xbb_reset_env
     xbb_set_target "requested"
 
     # None.
@@ -36,13 +37,13 @@ function build_application_versioned_components()
     # -------------------------------------------------------------------------
     # Build the application binaries.
 
-    xbb_set_binaries_install "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-    xbb_set_binaries_install "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+    xbb_set_executables_install_path "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+    xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
     # http://ftpmirror.gnu.org/make/
-    build_make "4.4"
+    make_build "4.4"
 
-    build_busybox "FRP-4716-g31467ddfc" # 9 Jun, 2022
+    busybox_build "FRP-4784-g5507c8744" # 9 Nov, 2022
 
     # -------------------------------------------------------------------------
   else
