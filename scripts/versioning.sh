@@ -25,6 +25,7 @@ function application_build_versioned_components()
     # Build the native dependencies.
 
     # None.
+    # (when bootstraping, autotools are required)
 
     # -------------------------------------------------------------------------
     # Build the target dependencies.

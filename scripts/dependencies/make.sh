@@ -92,8 +92,6 @@ function make_build()
       (
         cd "${XBB_SOURCES_FOLDER_PATH}/${make_src_folder_name}"
 
-        xbb_activate_installed_bin
-
         if [ -f "bootstrap" ]
         then
           echo "Running make bootstrap..."
@@ -111,8 +109,6 @@ function make_build()
     (
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
-
-      xbb_activate_installed_bin
 
       if [ ! -f "config.status" ]
       then
