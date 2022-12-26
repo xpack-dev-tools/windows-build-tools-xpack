@@ -71,7 +71,7 @@
       "cp": "./.content/bin/cp.exe"
     },
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^0.10.1"
+      "@xpack-dev-tools/xbb-helper": "^0.11.39"
     },
     "properties": {
       "appName": "Windows Build Tools",
@@ -211,6 +211,6 @@
   },
   "bundleDependencies": [],
   "devDependencies": {
-    "liquidjs": "^9.42.0"
+    "liquidjs": "^10.3.3"
   }
 }
