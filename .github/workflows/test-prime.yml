@@ -42,7 +42,7 @@ jobs:
 
   windows-x64:
     name: 'Windows x64 Windows Build Tools ${{ github.event.inputs.version }} test'
-    runs-on: windows-latest
+    runs-on: windows-2022
     defaults:
       run:
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell

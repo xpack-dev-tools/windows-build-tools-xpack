@@ -31,8 +31,8 @@ on:
 
 jobs:
 
-  linux-x64:
-    name: 'Linux Intel - Windows Build Tools ${{ github.event.inputs.version }} build'
+  linux-x64-w:
+    name: 'Linux Intel W - Windows Build Tools ${{ github.event.inputs.version }} build'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     container:
@@ -80,7 +80,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          artifacts: 'build/linux-x64/deploy/*,build/win32-x64/deploy/*'
+          artifacts: 'build/win32-x64/deploy/*'
           bodyFile: '.github/workflows/body-github-pre-releases-test.md'
           commit: 'master'
           draft: false
