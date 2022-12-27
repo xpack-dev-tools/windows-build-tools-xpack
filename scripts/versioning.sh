@@ -24,13 +24,14 @@ function application_build_versioned_components()
     # -------------------------------------------------------------------------
     # Build the native dependencies.
 
-    # None.
-    # (when bootstraping, autotools are required)
+    # When bootstraping, autotools are required
+    # autotools_build
 
     # -------------------------------------------------------------------------
     # Build the target dependencies.
 
     xbb_reset_env
+    # xbb_activate_installed_bin
     xbb_set_target "requested"
 
     # None.
