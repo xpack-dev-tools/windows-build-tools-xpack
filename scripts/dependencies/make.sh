@@ -9,16 +9,19 @@
 
 # -----------------------------------------------------------------------------
 
+# https://www.gnu.org/software/make/
+# https://savannah.gnu.org/projects/make/
+# ftp://ftp.gnu.org/gnu/make/
+# http://ftpmirror.gnu.org/make/
+
+# 2016-06-11, "4.2.1"
+# 2020-01-20, "4.3" (fails with duplicate fcntl; fixed in git)
+# 2022-10-31, "4.4"
+
 function make_build()
 {
-  # https://www.gnu.org/software/make/
-  # https://savannah.gnu.org/projects/make/
-  # ftp://ftp.gnu.org/gnu/make/
-  # http://ftpmirror.gnu.org/make/
-
-  # 2016-06-11, "4.2.1"
-  # 2020-01-20, "4.3" (fails with duplicate fcntl; fixed in git)
-  # 2022-10-31, "4.4"
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
 
   local make_version="$1"
   shift
@@ -29,13 +32,13 @@ function make_build()
   do
 
     case "$1" in
-      --git-commit)
+      --git-commit )
         git_commit="$2"
         shift 2
         ;;
 
-      *)
-        echo "Unknown option $1, exit."
+      * )
+        echo "Unsupported option $1 in ${FUNCNAME[0]}()"
         exit 1
 
     esac
@@ -92,8 +95,6 @@ function make_build()
       (
         cd "${XBB_SOURCES_FOLDER_PATH}/${make_src_folder_name}"
 
-        xbb_activate_installed_bin
-
         if [ -f "bootstrap" ]
         then
           echo "Running make bootstrap..."
@@ -111,8 +112,6 @@ function make_build()
     (
       mkdir -p "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
       cd "${XBB_BUILD_FOLDER_PATH}/${make_folder_name}"
-
-      xbb_activate_installed_bin
 
       if [ ! -f "config.status" ]
       then
@@ -140,11 +139,11 @@ function make_build()
 
           config_options=()
 
-          config_options+=("--prefix=${XBB_BINARIES_INSTALL_FOLDER_PATH}")
+          config_options+=("--prefix=${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}")
 
-          config_options+=("--build=${XBB_BUILD}")
-          config_options+=("--host=${XBB_HOST}")
-          config_options+=("--target=${XBB_TARGET}")
+          config_options+=("--build=${XBB_BUILD_TRIPLET}")
+          config_options+=("--host=${XBB_HOST_TRIPLET}")
+          config_options+=("--target=${XBB_TARGET_TRIPLET}")
 
           config_options+=("--without-guile")
           config_options+=("--without-libintl-prefix")
@@ -193,13 +192,13 @@ function make_build()
     touch "${make_stamp_file_path}"
 
   else
-    echo "make already installed."
+    echo "make already installed"
   fi
 
   tests_add "make_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
 
-  run_app "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-env" one two
-  run_app "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh" -c "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-env.exe" one two
+  run_host_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-env" one two
+  run_host_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh" -c "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-env.exe" one two
 
   if true
   then
@@ -210,11 +209,11 @@ function make_build()
     cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-env.exe" "test-env.exe"
     cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh.exe" "sh.exe"
     cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh-null.exe" "sh-null.exe"
-    cp -v "${XBB_BINARIES_INSTALL_FOLDER_PATH}/bin/make.exe" "make.exe"
+    cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/make.exe" "make.exe"
     cp -v "${XBB_BUILD_GIT_PATH}/tests/src/makefile" "makefile"
     (
       export WINEPATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/test"
-      run_app "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/test/make"
+      run_host_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/test/make"
     )
   )
   fi
@@ -226,12 +225,12 @@ function make_test()
 
   echo
   echo "Checking the make shared libraries..."
-  show_libs "${test_bin_path}/make"
+  show_host_libs "${test_bin_path}/make"
 
   echo
   echo "Checking if make starts..."
 
-  run_app "${test_bin_path}/make" --version
+  run_host_app_verbose "${test_bin_path}/make" --version
 }
 
 # -----------------------------------------------------------------------------

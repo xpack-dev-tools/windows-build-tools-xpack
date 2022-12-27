@@ -24,11 +24,14 @@ function application_build_versioned_components()
     # -------------------------------------------------------------------------
     # Build the native dependencies.
 
-    # None.
+    # When bootstraping, autotools are required
+    # autotools_build
 
     # -------------------------------------------------------------------------
     # Build the target dependencies.
 
+    xbb_reset_env
+    # xbb_activate_installed_bin
     xbb_set_target "requested"
 
     # None.
@@ -36,17 +39,17 @@ function application_build_versioned_components()
     # -------------------------------------------------------------------------
     # Build the application binaries.
 
-    xbb_set_binaries_install "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
-    xbb_set_binaries_install "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+    xbb_set_executables_install_path "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+    xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
     # http://ftpmirror.gnu.org/make/
     make_build "4.4"
 
-    busybox_build "FRP-4716-g31467ddfc" # 9 Jun, 2022
+    busybox_build "FRP-4784-g5507c8744" # 9 Nov, 2022
 
     # -------------------------------------------------------------------------
   else
-    echo "Unsupported version ${XBB_RELEASE_VERSION}."
+    echo "Unsupported ${XBB_APPLICATION_LOWER_CASE_NAME} version ${XBB_RELEASE_VERSION}"
     exit 1
   fi
 }

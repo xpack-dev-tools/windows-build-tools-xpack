@@ -71,7 +71,7 @@
       "cp": "./.content/bin/cp.exe"
     },
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^0.10.1"
+      "@xpack-dev-tools/xbb-helper": "^0.11.39"
     },
     "properties": {
       "appName": "Windows Build Tools",
@@ -94,6 +94,9 @@
       ],
       "link-deps": [
         "xpm link @xpack-dev-tools/xbb-helper"
+      ],
+      "git-pull-helper": [
+        "git -C ${HOME}/Work/xbb-helper-xpack.git pull"
       ],
       "generate-workflows": [
         "mkdir -p .github/workflows/",
@@ -118,7 +121,7 @@
       "trigger-workflow-test-xpm": "bash xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-test-xpm.sh",
       "trigger-workflow-deep-clean": "bash xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-deep-clean.sh",
       "test-native": "bash {{ properties.dbg }} scripts/test.sh",
-      "test-pre-release": "bash {{ properties.dbg }} scripts/test.sh --base-url pre-release",
+      "test-pre-release": "bash {{ properties.dbg }} scripts/test.sh --base-url pre-release --develop --cache",
       "test-xpm": "bash {{ properties.dbg }} scripts/test.sh --xpm",
       "build-native-win": "bash {{ properties.dbg }} scripts/build.sh --windows",
       "build-native-win-develop": "bash {{ properties.dbg }} scripts/build.sh --develop --windows"
@@ -210,7 +213,10 @@
     }
   },
   "bundleDependencies": [],
+  "$devDependenciesUrls": [
+    "https://www.npmjs.com/package/liquidjs"
+  ],
   "devDependencies": {
-    "liquidjs": "^9.42.0"
+    "liquidjs": "^10.3.3"
   }
 }

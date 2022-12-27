@@ -99,8 +99,8 @@ After install, the package should create a structure like this (macOS files;
 only the first two depth levels are shown):
 
 ```console
-$ tree -L 2 xpacks/xpack-dev-tools-windows-build-tools/.content/
-xpacks/xpack-dev-tools-windows-build-tools/.content/
+$ tree -L 2 /Users/ilg/.local/xPacks/@xpack-dev-tools/windows-build-tools/4.4.0-1/.content/
+/Users/ilg/.local/xPacks/@xpack-dev-tools/windows-build-tools/4.4.0-1/.content/
 ├── README.md
 ├── bin
 │   ├── busybox.exe
@@ -175,7 +175,7 @@ For maintainer info, please see the
 
 ## Support
 
-The quick answer is to use the GitHub
+The quick advice for getting support is to use the GitHub
 [Discussions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/discussions/).
 
 For more details please read the
