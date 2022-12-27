@@ -38,7 +38,7 @@ function make_build()
         ;;
 
       * )
-        echo "Unknown option $1, exit."
+        echo "Unsupported option $1 in ${FUNCNAME[0]}()"
         exit 1
 
     esac
@@ -192,7 +192,7 @@ function make_build()
     touch "${make_stamp_file_path}"
 
   else
-    echo "make already installed."
+    echo "make already installed"
   fi
 
   tests_add "make_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"

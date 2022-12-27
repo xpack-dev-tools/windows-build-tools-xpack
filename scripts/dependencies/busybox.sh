@@ -170,7 +170,7 @@ function busybox_build()
     touch "${busybox_stamp_file_path}"
 
   else
-    echo "BusyBox already installed."
+    echo "BusyBox already installed"
   fi
 
   tests_add "busybox_test" "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
