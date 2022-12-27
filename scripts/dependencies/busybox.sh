@@ -39,6 +39,9 @@
 
 function busybox_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local busybox_commit="$1"
   local busybox_src_folder_name="busybox-w32-${busybox_commit}"
 

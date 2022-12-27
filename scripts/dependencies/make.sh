@@ -20,6 +20,9 @@
 
 function make_build()
 {
+  echo_develop
+  echo_develop "[${FUNCNAME[0]} $@]"
+
   local make_version="$1"
   shift
 
