@@ -14,7 +14,7 @@ To clone the stable branch (`xpack`), run the following commands in a
 terminal (on Windows use the _Git Bash_ console):
 
 ```sh
-rm -rf ~/Work/windows-build-tools-xpack.git; \
+rm -rf ~/Work/windows-build-tools-xpack.git && \
 git clone https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
   ~/Work/windows-build-tools-xpack.git
 ```
@@ -22,8 +22,8 @@ git clone https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
 For development purposes, clone the `xpack-develop` branch:
 
 ```sh
-rm -rf ~/Work/windows-build-tools-xpack.git; \
-mkdir -p ~/Work; \
+rm -rf ~/Work/windows-build-tools-xpack.git && \
+mkdir -p ~/Work && \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
@@ -42,12 +42,12 @@ The project has a dependency to a common **helper**; clone the
 `xpack-develop` branch and link it to the central xPacks store:
 
 ```sh
-rm -rf ~/Work/xbb-helper-xpack.git; \
-mkdir -p ~/Work; \
+rm -rf ~/Work/xbb-helper-xpack.git && \
+mkdir -p ~/Work && \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
-  ~/Work/xbb-helper-xpack.git; \
+  ~/Work/xbb-helper-xpack.git && \
 xpm link -C ~/Work/xbb-helper-xpack.git
 ```
 
@@ -239,8 +239,6 @@ screen -S ga
 
 ~/actions-runners/xpack-dev-tools/1/run.sh &
 ~/actions-runners/xpack-dev-tools/2/run.sh &
-
-# Ctrl-a Ctrl-d
 ```
 
 Check that the project is pushed to GitHub.
@@ -299,7 +297,7 @@ The tests results are available from the
 
 ### Manual tests
 
-Install the binaries on all supported platforms and check if they are
+Install the binaries and check if they are
 functional, possibly by running Eclipse builds.
 
 ## Create a new GitHub pre-release draft
