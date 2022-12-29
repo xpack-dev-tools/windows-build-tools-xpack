@@ -18,7 +18,7 @@ function application_build_versioned_components()
     exit 1
   fi
 
-  if [[ "${XBB_RELEASE_VERSION}" =~ 4\.4\.0-* ]]
+  if [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]0-.* ]]
   then
 
     # -------------------------------------------------------------------------
