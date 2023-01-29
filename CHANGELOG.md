@@ -5,6 +5,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-01-29
 
+* v4.4.0-1 released
 * 33b9e1d re-build workflows
 
 ## 2022-12-26
