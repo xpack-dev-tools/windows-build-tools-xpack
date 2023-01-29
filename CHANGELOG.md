@@ -3,10 +3,74 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-01-29
+
+* 33b9e1d re-build workflows
+
+## 2022-12-26
+
+* 8aac9af re-generate from templates
+
+## 2022-12-24
+
+* 7a17b8a rename functions
+
+## 2022-11-18
+
+* b2a7b9b .vscode/settings.json: watcherExclude
+
 ## 2022-11-04
 
-* v4.4.0-1 prepared
-* update for XBB v5.0.0
+* bbf16fc README updates
+* 3f817e8 update for XBB v5.0.0; prepare v4.4.0-1
+* f4d0b5f remove submodule
+
+## 2022-10-04
+
+* 8186282 README update
+* 89571b3 README-RELEASE update for bullet lists in CHANGELOG
+
+## 2022-09-25
+
+* c68d78a README-RELEASE update
+
+## 2022-09-17
+
+* 3cf67d4 README-BUILD update
+
+## 2022-09-03
+
+* 94ab2c7 READMEs updates
+
+## 2022-09-01
+
+* d9cc2bf README-RELEASE update
+* ca5d7f3 zypper -q --no-gpg-checks in
+
+## 2022-08-31
+
+* 542ace8 body-jekyll update
+* ecff362 README-RELEASE update
+
+## 2022-05-14
+
+* 2c95214 submodule
+* 343a9cf READMEs updates
+* 63b6464 common-* cleaups
+* 270f2ee common-* update preamble
+* e6ea779 package.json: add deep clean
+
+## 2022-04-16
+
+* 38eadff rm -rf -*.*
+
+## 2022-04-08
+
+* f46cac1 submodule
+
+## 2022-03-23
+
+* dcdf8d6 Remove Sourcetree recommandation
 
 ## 2022-03-05
 
