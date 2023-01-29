@@ -107,7 +107,8 @@ When using Git, check the latest commit from
 
 #### busybox
 
-To identify the latest commits, check the GitHub page
+To identify the latest commits, check the GitHub tags
+<https://github.com/rmyorston/busybox-w32/tags> and possibly the latest commits
 <https://github.com/rmyorston/busybox-w32/commits/master>.
 
 ### Increase the version
@@ -193,8 +194,8 @@ archive and its SHA signature, created in the `deploy` folder:
 ```console
 $ ls -l ~/Work/windows-build-tools-xpack.git/build/win32-x64/deploy
 total 2676
--rw-r--r-- 1 ilg ilg 2732409 Dec 26 08:42 xpack-windows-build-tools-4.4.0-1-win32-x64.zip
--rw-r--r-- 1 ilg ilg     114 Dec 26 08:42 xpack-windows-build-tools-4.4.0-1-win32-x64.zip.sha
+-rw-r--r-- 1 ilg ilg 2734882 Jan 29 16:32 xpack-windows-build-tools-4.4.0-1-win32-x64.zip
+-rw-r--r-- 1 ilg ilg     114 Jan 29 16:32 xpack-windows-build-tools-4.4.0-1-win32-x64.zip.sha
 ```
 
 ### Files cache
