@@ -5,6 +5,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-01-29
 
+* v4.4.0-1.1 published on npmjs.com
 * v4.4.0-1 released
 * 33b9e1d re-build workflows
 
