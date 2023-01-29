@@ -32,7 +32,7 @@ on:
 jobs:
 
   linux-x64:
-    name: 'Linux Intel - Windows Build Tools ${{ github.event.inputs.version }} clean'
+    name: 'Linux Intel - windows-build-tools ${{ github.event.inputs.version }} clean'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     steps:
