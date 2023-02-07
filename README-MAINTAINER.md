@@ -100,7 +100,7 @@ No need to add a tag here, it'll be added when the release is created.
 #### make
 
 Check the latest release from
-(<http://mirrors.nav.ro/gnu/make/>) and and compare with
+(<https://mirrors.nav.ro/gnu/make/>) and and compare with
 the xPack [release](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases).
 When using Git, check the latest commit from
 [savannah](https://git.savannah.gnu.org/cgit/make.git/log/).
@@ -211,23 +211,18 @@ location (like
 <https://github.com/xpack-dev-tools/files-cache/tree/master/libs>),
 place them in the XBB cache (`Work/cache`) and restart the build.
 
-## Push the build scripts
-
-In this Git repo:
-
-- push the `xpack-develop` branch to GitHub
-- possibly push the helper project too
-
-From here it'll be cloned on the production machines.
-
 ## Run the CI build
 
 The automation is provided by GitHub Actions and three self-hosted runners.
 
+### Generate the GitHub workflows
+
 Run the `generate-workflows` to re-generate the
 GitHub workflow files; commit and push if necessary.
 
-- on a permanently running machine (`berry`) open ssh sessions to the build
+### Start the self-hosted runners
+
+- on the development machine (`wksi`) open ssh sessions to the build
 machine (`xbbli`):
 
 ```sh
@@ -243,7 +238,19 @@ screen -S ga
 ~/actions-runners/xpack-dev-tools/2/run.sh &
 ```
 
-Check that the project is pushed to GitHub.
+### Push the build scripts
+
+- push the `xpack-develop` branch to GitHub
+- possibly push the helper project too
+
+From here it'll be cloned on the production machines.
+
+### Check for disk space
+
+Check if the build machines have enough free space and eventually
+do some cleanups.
+
+### Manually trigger the build GitHub Actions
 
 To trigger the GitHub Actions build, use the xPack action:
 
@@ -262,6 +269,8 @@ Settings → Action →
 page.
 
 This command uses the `xpack-develop` branch of this repo.
+
+## Durations & results
 
 The builds take a few minutes to complete.
 
