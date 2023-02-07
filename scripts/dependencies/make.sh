@@ -12,7 +12,7 @@
 # https://www.gnu.org/software/make/
 # https://savannah.gnu.org/projects/make/
 # ftp://ftp.gnu.org/gnu/make/
-# http://ftpmirror.gnu.org/make/
+# https://ftpmirror.gnu.org/make/
 
 # 2016-06-11, "4.2.1"
 # 2020-01-20, "4.3" (fails with duplicate fcntl; fixed in git)

@@ -44,7 +44,7 @@ function application_build_versioned_components()
     xbb_set_executables_install_path "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
     xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
 
-    # http://ftpmirror.gnu.org/make/
+    # https://ftpmirror.gnu.org/make/
     make_build "4.4"
 
     busybox_build "FRP-4784-g5507c8744" # 9 Nov, 2022
