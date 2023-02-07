@@ -14,26 +14,26 @@ To clone the stable branch (`xpack`), run the following commands in a
 terminal (on Windows use the _Git Bash_ console):
 
 ```sh
-rm -rf ~/Work/windows-build-tools-xpack.git && \
+rm -rf ~/Work/xpacks/windows-build-tools-xpack.git && \
 git clone https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
-  ~/Work/windows-build-tools-xpack.git
+  ~/Work/xpacks/windows-build-tools-xpack.git
 ```
 
 For development purposes, clone the `xpack-develop` branch:
 
 ```sh
-rm -rf ~/Work/windows-build-tools-xpack.git && \
-mkdir -p ~/Work && \
+rm -rf ~/Work/xpacks/windows-build-tools-xpack.git && \
+mkdir -p ~/Work/xpacks && \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/windows-build-tools-xpack.git \
-  ~/Work/windows-build-tools-xpack.git
+  ~/Work/xpacks/windows-build-tools-xpack.git
 ```
 
 Or, if the repo was already cloned:
 
 ```sh
-git -C ~/Work/windows-build-tools-xpack.git pull
+git -C ~/Work/xpacks/windows-build-tools-xpack.git pull
 ```
 
 ## Get helper sources
@@ -42,20 +42,20 @@ The project has a dependency to a common **helper**; clone the
 `xpack-develop` branch and link it to the central xPacks store:
 
 ```sh
-rm -rf ~/Work/xbb-helper-xpack.git && \
-mkdir -p ~/Work && \
+rm -rf ~/Work/xpacks/xbb-helper-xpack.git && \
+mkdir -p ~/Work/xpacks && \
 git clone \
   --branch xpack-develop \
   https://github.com/xpack-dev-tools/xbb-helper-xpack.git \
-  ~/Work/xbb-helper-xpack.git && \
-xpm link -C ~/Work/xbb-helper-xpack.git
+  ~/Work/xpacks/xbb-helper-xpack.git && \
+xpm link -C ~/Work/xpacks/xbb-helper-xpack.git
 ```
 
 Or, if the repos were already cloned:
 
 ```sh
-git -C ~/Work/xbb-helper-xpack.git pull
-xpm link -C ~/Work/xbb-helper-xpack.git
+git -C ~/Work/xpacks/xbb-helper-xpack.git pull
+xpm link -C ~/Work/xpacks/xbb-helper-xpack.git
 ```
 
 ## Prerequisites
@@ -100,7 +100,7 @@ No need to add a tag here, it'll be added when the release is created.
 #### make
 
 Check the latest release from
-(<http://mirrors.nav.ro/gnu/make/>) and and compare with
+(<https://mirrors.nav.ro/gnu/make/>) and and compare with
 the xPack [release](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases).
 When using Git, check the latest commit from
 [savannah](https://git.savannah.gnu.org/cgit/make.git/log/).
@@ -177,22 +177,22 @@ caffeinate ssh xbbli
 Update the build scripts (or clone them at the first use):
 
 ```sh
-git -C ~/Work/windows-build-tools-xpack.git pull && \
-xpm run install -C ~/Work/windows-build-tools-xpack.git && \
-git -C ~/Work/xbb-helper-xpack.git pull && \
-xpm link -C ~/Work/xbb-helper-xpack.git && \
-xpm run link-deps -C ~/Work/windows-build-tools-xpack.git && \
-xpm run deep-clean --config linux-x64 -C ~/Work/windows-build-tools-xpack.git && \
-xpm run docker-prepare --config linux-x64 -C ~/Work/windows-build-tools-xpack.git && \
-xpm run docker-link-deps --config linux-x64 -C ~/Work/windows-build-tools-xpack.git
-xpm run docker-build-develop --config linux-x64 -C ~/Work/windows-build-tools-xpack.git
+git -C ~/Work/xpacks/windows-build-tools-xpack.git pull && \
+xpm run install -C ~/Work/xpacks/windows-build-tools-xpack.git && \
+git -C ~/Work/xpacks/xbb-helper-xpack.git pull && \
+xpm link -C ~/Work/xpacks/xbb-helper-xpack.git && \
+xpm run link-deps -C ~/Work/xpacks/windows-build-tools-xpack.git && \
+xpm run deep-clean --config linux-x64 -C ~/Work/xpacks/windows-build-tools-xpack.git && \
+xpm run docker-prepare --config linux-x64 -C ~/Work/xpacks/windows-build-tools-xpack.git && \
+xpm run docker-link-deps --config linux-x64 -C ~/Work/xpacks/windows-build-tools-xpack.git
+xpm run docker-build-develop --config linux-x64 -C ~/Work/xpacks/windows-build-tools-xpack.git
 ```
 
 Several minutes later, the output of the build script is a compressed
 archive and its SHA signature, created in the `deploy` folder:
 
 ```console
-$ ls -l ~/Work/windows-build-tools-xpack.git/build/win32-x64/deploy
+$ ls -l ~/Work/xpacks/windows-build-tools-xpack.git/build/win32-x64/deploy
 total 2676
 -rw-r--r-- 1 ilg ilg 2734882 Jan 29 16:32 xpack-windows-build-tools-4.4.0-1-win32-x64.zip
 -rw-r--r-- 1 ilg ilg     114 Jan 29 16:32 xpack-windows-build-tools-4.4.0-1-win32-x64.zip.sha
@@ -211,23 +211,18 @@ location (like
 <https://github.com/xpack-dev-tools/files-cache/tree/master/libs>),
 place them in the XBB cache (`Work/cache`) and restart the build.
 
-## Push the build scripts
-
-In this Git repo:
-
-- push the `xpack-develop` branch to GitHub
-- possibly push the helper project too
-
-From here it'll be cloned on the production machines.
-
 ## Run the CI build
 
 The automation is provided by GitHub Actions and three self-hosted runners.
 
+### Generate the GitHub workflows
+
 Run the `generate-workflows` to re-generate the
 GitHub workflow files; commit and push if necessary.
 
-- on a permanently running machine (`berry`) open ssh sessions to the build
+### Start the self-hosted runners
+
+- on the development machine (`wksi`) open ssh sessions to the build
 machine (`xbbli`):
 
 ```sh
@@ -243,7 +238,19 @@ screen -S ga
 ~/actions-runners/xpack-dev-tools/2/run.sh &
 ```
 
-Check that the project is pushed to GitHub.
+### Push the build scripts
+
+- push the `xpack-develop` branch to GitHub
+- possibly push the helper project too
+
+From here it'll be cloned on the production machines.
+
+### Check for disk space
+
+Check if the build machines have enough free space and eventually
+do some cleanups.
+
+### Manually trigger the build GitHub Actions
 
 To trigger the GitHub Actions build, use the xPack action:
 
@@ -252,7 +259,7 @@ To trigger the GitHub Actions build, use the xPack action:
 This is equivalent to:
 
 ```sh
-bash ~/Work/gcc-xpack.git/xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbli
+bash ~/Work/xpacks/gcc-xpack.git/xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbli
 ```
 
 These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
@@ -262,6 +269,8 @@ Settings → Action →
 page.
 
 This command uses the `xpack-develop` branch of this repo.
+
+## Durations & results
 
 The builds take a few minutes to complete.
 
@@ -284,7 +293,7 @@ To trigger the GitHub Actions tests, use the xPack actions:
 This is equivalent to:
 
 ```sh
-bash ~/Work/windows-build-tools-xpack.git/xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-test-prime.sh
+bash ~/Work/xpacks/windows-build-tools-xpack.git/xpacks/xpack-dev-tools-xbb-helper/github-actions/trigger-workflow-test-prime.sh
 ```
 
 These scripts require the `GITHUB_API_DISPATCH_TOKEN` variable to be present
