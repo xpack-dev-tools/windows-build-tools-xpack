@@ -10,7 +10,8 @@ Or (TODO: edit!):
 summary: "Version **{{ XBB_RELEASE_VERSION }}** is a new release of the **xPack Windows Build Tools** package, following the make release."
 
 version: "{{ XBB_RELEASE_VERSION }}"
-npm_subversion: 1
+npm_subversion: "1"
+
 download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v{{ XBB_RELEASE_VERSION }}/
 
 date:   {{ RELEASE_DATE }}
@@ -52,7 +53,7 @@ The binary files are available from GitHub [Releases]({% raw %}{{ page.download_
 
 The full details of installing the **xPack Windows Build Tools**
 are presented in the separate
-[Install]({% raw %}{{ site.baseurl }}{% endraw %}/windows-build-tools/install/) page.
+[Install]({% raw %}{{ site.baseurl }}{% endraw %}/dev-tools/windows-build-tools/install/) page.
 
 ### Easy install
 
@@ -70,7 +71,7 @@ a dependency for a project is quite easy:
 cd my-project
 xpm init # Only at first use.
 
-xpm install @xpack-dev-tools/windows-build-tools@latest
+xpm install @xpack-dev-tools/windows-build-tools@latest --verbose
 
 ls -l xpacks/.bin
 ```
@@ -78,14 +79,14 @@ ls -l xpacks/.bin
 To install this specific version, use:
 
 ```sh
-xpm install @xpack-dev-tools/windows-build-tools@{% raw %}{{ page.version }}.{{ page.npm_subversion }}{% endraw %}
+xpm install @xpack-dev-tools/windows-build-tools@{% raw %}{{ page.version }}.{{ page.npm_subversion }}{% endraw %} --verbose
 ```
 
 For xPacks aware tools, like the **Eclipse Embedded C/C++ plug-ins**,
 it is also possible to install Windows Build Tools globally, in the user home folder.
 
 ```sh
-xpm install --global @xpack-dev-tools/windows-build-tools@latest
+xpm install --global @xpack-dev-tools/windows-build-tools@latest --verbose
 ```
 
 Eclipse will automatically
@@ -114,7 +115,7 @@ The xPack Windows Build Tools uses programs from other projects.
 
 The current version is based on:
 
-- [GNU make](http://ftpmirror.gnu.org/make/) version 4.3
+- [GNU make](https://ftpmirror.gnu.org/make/) version 4.3
 - [Busybox](https://github.com/rmyorston/busybox-w32), the f3c5e8bc3
 commit from Feb 27, 2022.
 
