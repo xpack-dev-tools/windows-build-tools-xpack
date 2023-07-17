@@ -70,7 +70,7 @@
       "cp": "./.content/bin/cp.exe"
     },
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^1.4.7"
+      "@xpack-dev-tools/xbb-helper": "^1.4.9"
     },
     "properties": {
       "appName": "Windows Build Tools",
