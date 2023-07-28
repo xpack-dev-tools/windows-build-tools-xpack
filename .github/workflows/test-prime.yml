@@ -1,6 +1,6 @@
 
 # -----------------------------------------------------------------------------
-# DO NOT EDIT! Generated from xpacks/xpack-dev-tools-xbb-helper/templates/*.
+# DO NOT EDIT! Generated from xpacks/@xpack-dev-tools/xbb-helper/templates/*.
 #
 # This file is part of the xPack distribution.
 #   (https://xpack.github.io)
@@ -62,15 +62,15 @@ jobs:
       - name: 'Checkout project'
         uses: actions/checkout@v3
         with:
-          fetch-depth: 1
+          fetch-depth: 3
 
       - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
         uses: actions/checkout@v3
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: xpacks/xpack-dev-tools-xbb-helper
+          path: xpacks/@xpack-dev-tools/xbb-helper
           ref: ${{ github.event.inputs.helper-git-ref }}
-          fetch-depth: 1
+          fetch-depth: 3
 
       - name: 'Run ${{ github.event.inputs.version }} native test'
         run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
