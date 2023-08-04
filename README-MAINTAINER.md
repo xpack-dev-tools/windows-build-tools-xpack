@@ -228,6 +228,16 @@ total 2676
 -rw-r--r-- 1 ilg ilg     114 Jan 29 16:32 xpack-windows-build-tools-4.4.0-1-win32-x64.zip.sha
 ```
 
+### Build a debug version
+
+In some cases it is necessary to run a debug session in the binaries,
+or even in the libraries functions.
+
+For these cases, the build script accepts the `--debug` options.
+
+There are also xPack actions that use this option (`build-develop-debug`
+and `docker-build-develop-debug`).
+
 ### Files cache
 
 The XBB build scripts use a local cache such that files are downloaded only
