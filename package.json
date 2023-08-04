@@ -151,6 +151,7 @@
         "actions": {
           "build": "{{ properties.commandBashBuild }}",
           "build-develop": "{{ properties.commandBashBuild }} --develop",
+          "build-develop-debug": "{{ properties.commandBashBuild }} --develop --debug",
           "build-develop-tests-only": "{{ properties.commandBashBuild }} --develop --tests-only"
         }
       },
@@ -185,6 +186,9 @@
           "docker-build-develop": [
             "docker exec --user $(id -un) {{ properties.containerName }} xpm run build-develop --config {{ configuration.name }}"
           ],
+          "docker-build-develop-debug": [
+            "docker exec --user $(id -un) {{ properties.containerName }} xpm run build-develop-debug --config {{ configuration.name }}"
+          ],
           "docker-build-develop-tests-only": [
             "docker exec --user $(id -un) {{ properties.containerName }} xpm run build-develop-tests-only --config {{ configuration.name }}"
           ],
@@ -211,6 +215,7 @@
         "actions": {
           "build": "{{ properties.commandBashBuild }} --windows",
           "build-develop": "{{ properties.commandBashBuild }} --windows --develop",
+          "build-develop-debug": "{{ properties.commandBashBuild }} --windows --develop --debug",
           "build-develop-tests-only": "{{ properties.commandBashBuild }} --windows --develop --tests-only"
         }
       }
