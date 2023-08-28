@@ -216,9 +216,10 @@ xpm run install -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git && \
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \
 xpm run link-deps -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git && \
+\
 xpm run deep-clean --config linux-x64 -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git && \
 xpm run docker-prepare --config linux-x64 -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git && \
-xpm run docker-link-deps --config linux-x64 -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git
+xpm run docker-link-deps --config linux-x64 -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git && \
 xpm run docker-build-develop --config linux-x64 -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git
 ```
 
