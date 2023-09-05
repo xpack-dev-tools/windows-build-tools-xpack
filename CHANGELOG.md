@@ -6,6 +6,10 @@ Entries in this file are in reverse chronological order.
 ## 2023-09-05
 
 * v4.4.1-1 released
+* a8c9f3d README update
+* c3dd8b4 templates/jekyll: add make_version & co
+* 2bce5a2 versioning.sh: fix 4.4.1 version
+* 4f9d1c9 CHANGELOG update
 * 7fbc95b .vscode/settings.json: ignoreWords
 * c10906a prepare v4.4.1-1
 * d64b33a make.sh: run_verbose diff
