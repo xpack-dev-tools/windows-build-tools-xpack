@@ -104,6 +104,8 @@ function make_build()
             -e 's|^AM_GNU_GETTEXT|# AM_GNU_GETTEXT|' \
             configure.ac
 
+          run_verbose diff configure.ac.bak configure.ac || true
+
           run_verbose bash ${DEBUG} bootstrap
         fi
       )
