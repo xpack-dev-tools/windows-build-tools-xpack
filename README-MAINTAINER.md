@@ -9,30 +9,8 @@
 The build scripts run on GNU/Linux and macOS. The Windows binaries are
 generated on Intel GNU/Linux, using [mingw-w64](https://mingw-w64.org).
 
-For GNU/Linux, the prerequisites are:
-
-- `curl` (installed via the system package manager)
-- `git` (installed via the system package manager)
-- `docker` (preferably a recent one, installed from **docker.com**)
-- `npm` (shipped with Node.js; installed via **nvm**, **not**
-  the system package manager)
-- `xpm` (installed via `npm`)
-
-For macOS, the prerequisites are:
-
-- `npm` (shipped with Node.js; installed via **nvm**)
-- `xpm` (installed via `npm`)
-- the **Command Line Tools** from Apple
-
-For details on installing them, please read the
-[XBB prerequisites](https://xpack.github.io/xbb/prerequisites/) page.
-
-If you already have a functional configuration from a previous run,
-it is recommended to update **xpm**:
-
-```sh
-npm install --location=global xpm@latest
-```
+For details on installing the prerequisites, please read the
+[XBB prerequisites page](https://xpack.github.io/xbb/prerequisites/).
 
 ## Get project sources
 
@@ -206,7 +184,7 @@ start a VS Code remote session, or connect with a terminal:
 caffeinate ssh xbbli
 ```
 
-##### Build the Windows binaries
+##### Build the Intel Windows binaries
 
 Update the build scripts (or clone them at the first use):
 
