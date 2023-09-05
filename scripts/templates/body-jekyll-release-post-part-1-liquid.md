@@ -12,6 +12,11 @@ summary: "Version **{{ XBB_RELEASE_VERSION }}** is a new release of the **xPack 
 version: "{{ XBB_RELEASE_VERSION }}"
 npm_subversion: "1"
 
+make_version: "4.4.1"
+
+busybox_commit: "5c1a3b0"
+busybox_date: "18 aug 2023"
+
 download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v{{ XBB_RELEASE_VERSION }}/
 
 comments: true
@@ -117,9 +122,9 @@ The xPack Windows Build Tools uses programs from other projects.
 
 The current version is based on:
 
-- [GNU make](https://ftpmirror.gnu.org/make/) version 4.3
-- [Busybox](https://github.com/rmyorston/busybox-w32), the f3c5e8bc3
-commit from Feb 27, 2022.
+- [GNU make](https://ftpmirror.gnu.org/make/) version {% raw %}{{ page.make_version }}{% endraw %}
+- [Busybox](https://github.com/rmyorston/busybox-w32), the {% raw %}{{ page.busybox_commit }}{% endraw %}
+commit from {% raw %}{{ page.busybox_date }}{% endraw %}.
 
 ## Changes
 
