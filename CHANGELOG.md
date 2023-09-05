@@ -5,7 +5,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-09-05
 
-* v4.4.1-1 released
+* v4.4.1-1.1 published on npmjs.com
+* 80d24ea package.json: update urls for 4.4.1-1.1 release
+* bd60653 CHANGELOG update
 * a8c9f3d README update
 * c3dd8b4 templates/jekyll: add make_version & co
 * 2bce5a2 versioning.sh: fix 4.4.1 version
