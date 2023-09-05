@@ -1,6 +1,6 @@
 {
   "name": "@xpack-dev-tools/windows-build-tools",
-  "version": "4.4.0-1.1",
+  "version": "4.4.1-1.1.pre",
   "description": "A binary xPack with the Windows Build Tools executables.",
   "main": "",
   "scripts": {
@@ -57,13 +57,13 @@
       }
     },
     "bin": {
-      "make": "./.content/bin/make.exe",
-      "busybox": "./.content/bin/busybox.exe",
-      "echo": "./.content/bin/echo.exe",
-      "mkdir": "./.content/bin/mkdir.exe",
-      "rm": "./.content/bin/rm.exe",
-      "sh": "./.content/bin/sh.exe",
-      "cp": "./.content/bin/cp.exe"
+      "busybox": "./.content/bin/busybox",
+      "cp": "./.content/bin/cp",
+      "echo": "./.content/bin/echo",
+      "make": "./.content/bin/make",
+      "mkdir": "./.content/bin/mkdir",
+      "rm": "./.content/bin/rm",
+      "sh": "./.content/bin/sh"
     },
     "devDependencies": {
       "@xpack-dev-tools/xbb-helper": "^1.11.1"

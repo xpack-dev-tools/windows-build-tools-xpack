@@ -18,7 +18,40 @@ function application_build_versioned_components()
     exit 1
   fi
 
-  if [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]0-.* ]]
+  if [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]1-.* ]]
+  then
+
+    # -------------------------------------------------------------------------
+    # Build the native dependencies.
+
+    # When bootstraping, autotools are required
+    # autotools_build
+
+    # -------------------------------------------------------------------------
+    # Build the target dependencies.
+
+    xbb_reset_env
+    # Before set target (to possibly update CC & co variables).
+    # xbb_activate_installed_bin
+
+    xbb_set_target "requested"
+
+    # None.
+
+    # -------------------------------------------------------------------------
+    # Build the application binaries.
+
+    xbb_set_executables_install_path "${XBB_APPLICATION_INSTALL_FOLDER_PATH}"
+    xbb_set_libraries_install_path "${XBB_DEPENDENCIES_INSTALL_FOLDER_PATH}"
+
+    # https://ftpmirror.gnu.org/make/
+    make_build "4.4"
+
+    # https://github.com/rmyorston/busybox-w32/tags
+    busybox_build "FRP-5181-g5c1a3b00e" # 18 Aug 2023
+
+    # -------------------------------------------------------------------------
+  elif [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]0-.* ]]
   then
 
     # -------------------------------------------------------------------------

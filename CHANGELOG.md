@@ -3,10 +3,112 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-09-05
+
+* v4.4.1-1 prepared
+* d64b33a make.sh: run_verbose diff
+* 09e6e2e READMEs update
+* 5799a7e package.json: bump deps
+
+## 2023-09-03
+
+* 434648c package.json: bump deps
+
+## 2023-08-28
+
+* 7919d72 READMEs update
+
+## 2023-08-25
+
+* c4d006e package.json: rm xpack-dev-tools-build/*
+* ac27764 package.json: bump deps
+
+## 2023-08-21
+
+* 0bb68c9 READMEs update
+* 2f48412 package.json: bump deps
+
+## 2023-08-19
+
+* 44ebce0 READMEs update
+* b9dad26 package.json: bump deps
+
+## 2023-08-15
+
+* c7e594b package.json: bump deps
+
+## 2023-08-05
+
+* d011792 READMEs update
+
+## 2023-08-04
+
+* 5d29ac9 READMEs update
+* ddba182 package.json: add build-develop-debug
+
+## 2023-08-03
+
+* 25f916a READMEs update
+* ea7259d package.json: bump deps
+
+## 2023-07-28
+
+* 49e391d READMEs update
+* ee0c779 READMEs update
+* d7b393b package.json: bump deps
+* 8b05b2e package.json: liquidjs --context --template
+* a92714f scripts cosmetics
+* f92f9dd re-generate workflows
+* 87120e9 READMEs update
+* 3ee3b11 package.json: minXpm 0.16.3 & @xpack-dev-tools/xbb-helper
+* 6e956fa READMEs update
+* be6e312 package.json: bump deps
+
+## 2023-07-26
+
+* 1ad1761 package.json: move scripts to actions
+* 17188b8 package.json: update xpack-dev-tools path
+* 0b71e29 READMEs update xpack-dev-tools path
+* c8d6f2a body-jekyll update
+* eb3f298 READMEs update
+
+## 2023-07-17
+
+* 8815da6 package.json: bump deps
+
+## 2023-03-25
+
+* abfcf20 READMEs update
+* f9cc0cf READMEs update prerequisites
+* 2757810 package.json: mkdir -pv cache
+
+## 2023-02-22
+
+* e8bbe61 READMEs update
+
+## 2023-02-14
+
+* e47794d body-jekyll update
+
+## 2023-02-10
+
+* dd7d7e9 package.json: update Work/xpacks
+* c456d17 READMEs update
+
+## 2023-02-07
+
+* ea9be58 READMEs update
+* b741f6c dependencies: update for https
+* 0d64eea body-jekyll update
+
 ## 2023-01-29
 
-* v4.4.0-1.1 published on npmjs.com
-* v4.4.0-1 released
+* 0df11eb 4.4.0-1.1
+* e3c22e2 CHANGELOG: publish npm v4.4.0-1.1
+* 40c5496 package.json: update urls for 4.4.0-1.1 release
+* 7fae19f CHANGELOG update
+* 2ddcab8 README update
+* 9cec4fe CHANGELOG update
 * 33b9e1d re-build workflows
 
 ## 2022-12-26

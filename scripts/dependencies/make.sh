@@ -79,10 +79,10 @@ function make_build()
           run_verbose git checkout -qf "${git_commit}"
 
           # TODO: Check if still needed.
-          run_verbose echo sed -i.bak \
-            -e 's|^isatty (int fd)$|__isatty (int fd)|' \
-            -e 's|^ttyname (int fd)$|__ttyname (int fd)|' \
-            src/w32/compat/posixfcn.c
+          # run_verbose echo sed -i.bak \
+          #   -e 's|^isatty (int fd)$|__isatty (int fd)|' \
+          #   -e 's|^ttyname (int fd)$|__ttyname (int fd)|' \
+          #   src/w32/compat/posixfcn.c
         )
       else
         download_and_extract "${make_url}" "${make_archive_file_name}" \
