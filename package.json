@@ -66,7 +66,7 @@
       "sh": "./.content/bin/sh"
     },
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^1.11.1"
+      "@xpack-dev-tools/xbb-helper": "^1.11.2"
     },
     "properties": {
       "appName": "Windows Build Tools",
@@ -132,8 +132,8 @@
       "common-dependencies": {
         "hidden": true,
         "devDependencies": {
-          "@xpack-dev-tools/m4": "1.4.19-2.1",
-          "@xpack-dev-tools/pkg-config": "0.29.2-2.1"
+          "@xpack-dev-tools/m4": "1.4.19-3.1",
+          "@xpack-dev-tools/pkg-config": "0.29.2-3.1"
         }
       },
       "common-actions": {
