@@ -5,8 +5,6 @@ TODO: select one summary
 
 summary: "Version **{{ XBB_RELEASE_VERSION }}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox."
 
-Or (TODO: edit!):
-
 summary: "Version **{{ XBB_RELEASE_VERSION }}** is a new release of the **xPack Windows Build Tools** package, following the make release."
 
 version: "{{ XBB_RELEASE_VERSION }}"
@@ -23,10 +21,12 @@ comments: true
 
 date:   {{ RELEASE_DATE }}
 
+# For Jekyll releases selection.
 categories:
   - releases
   - windows-build-tools
 
+# For navigation; use scripts/createtag.sh in Jekyll.
 tags:
   - releases
   - windows-build-tools
