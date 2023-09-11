@@ -210,7 +210,7 @@
           "@xpack-dev-tools/wine": "8.0.2-1.1"
         },
         "properties": {
-          "dockerImage": "ilegeul/ubuntu:amd64-18.04-xbb-v5.1.0"
+          "dockerImage": "ilegeul/ubuntu:amd64-18.04-xbb-v5.1.1"
         },
         "actions": {
           "build": "{{ properties.commandBashBuild }} --windows",
