@@ -5,7 +5,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-11-14
 
-* v4.4.1-2 prepared
+* f55da93 README update
+* db2f47e busybox.sh: disable CONFIG_MAKE
+* f839bed versioning.sh: revert to latest busybox
+* e259ebb README update
+* f32ab39 prepare v4.4.1-2
 
 ## 2023-11-12
 
