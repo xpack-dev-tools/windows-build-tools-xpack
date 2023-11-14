@@ -3,9 +3,48 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2023-11-14
+
+* v4.4.1-2 prepared
+
+## 2023-11-12
+
+* 626533a package.json: bump deps
+
+## 2023-09-25
+
+* 83405d1 body-jekyll update
+
+## 2023-09-20
+
+* f0aaf81 package.json: bump deps
+
+## 2023-09-16
+
+* 360352a package.json: add linux32
+
+## 2023-09-11
+
+* 72ac9c9 package.json: bump deps
+
+## 2023-09-08
+
+* 960b4de package.json: bump deps
+* 5618e22 versioning: document libiconv for autotools
+
+## 2023-09-06
+
+* 65c3806 package.json: bump deps
+* a8b838b READMEs update
+* 89091aa body-jekyll update
+
 ## 2023-09-05
 
-* v4.4.1-1.1 published on npmjs.com
+* 7b0f8d7 4.4.1-1.1
+* be752b0 dot.*ignore
+* ec9a74a re-generate workflows
+* 17551cd .npmignore update
+* 736074d CHANGELOG: publish npm v4.4.1-1.1
 * 80d24ea package.json: update urls for 4.4.1-1.1 release
 * bd60653 CHANGELOG update
 * a8c9f3d README update

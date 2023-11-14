@@ -103,8 +103,8 @@ After install, the package should create a structure like this (macOS files;
 only the first two depth levels are shown):
 
 ```console
-$ tree -L 2 /Users/ilg/.local/xPacks/@xpack-dev-tools/windows-build-tools/4.4.1-1/.content/
-/Users/ilg/.local/xPacks/@xpack-dev-tools/windows-build-tools/4.4.1-1/.content/
+$ tree -L 2 /Users/ilg/.local/xPacks/@xpack-dev-tools/windows-build-tools/4.4.1-2/.content/
+/Users/ilg/.local/xPacks/@xpack-dev-tools/windows-build-tools/4.4.1-2/.content/
 ├── README.md
 ├── bin
 │   ├── busybox.exe
@@ -165,12 +165,12 @@ The version strings used by the GNU make project are three number strings
 like `4.4.1`; to this string the xPack distribution adds a four number,
 but since semver allows only three numbers, all additional ones can
 be added only as pre-release strings, separated by a dash,
-like `4.4.1-1`. When published as a npm package, the version gets
-a fifth number, like `4.4.1-1.1`.
+like `4.4.1-2`. When published as a npm package, the version gets
+a fifth number, like `4.4.1-2.1`.
 
 Since adherence of third party packages to semver is not guaranteed,
 it is recommended to use semver expressions like `^4.4.1` and `~4.4.1`
-with caution, and prefer exact matches, like `4.4.1-1.1`.
+with caution, and prefer exact matches, like `4.4.1-2.1`.
 
 ## Maintainer info
 
