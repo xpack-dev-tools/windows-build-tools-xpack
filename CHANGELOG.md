@@ -5,6 +5,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-11-14
 
+* 949ee9b busybox.sh: ignore diff exit
+* b64bc7b busybox.sh: ignore diff exit
+* 06ec52d CHANGELOG update
 * f55da93 README update
 * db2f47e busybox.sh: disable CONFIG_MAKE
 * f839bed versioning.sh: revert to latest busybox
