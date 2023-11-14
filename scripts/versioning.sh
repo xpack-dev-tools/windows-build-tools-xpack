@@ -52,13 +52,7 @@ function application_build_versioned_components()
     make_build "4.4.1"
 
     # https://github.com/rmyorston/busybox-w32/tags
-    if [ "${XBB_RELEASE_VERSION}" == "4.4.1-1" ]
-    then
-      busybox_build "FRP-5181-g5c1a3b00e" # 18 Aug 2023
-    else
-      # Revert to an older version known to work.
-      busybox_build "FRP-4716-g31467ddfc" # 9 Jun 2022
-    fi
+    busybox_build "FRP-5181-g5c1a3b00e" # 18 Aug 2023
 
     # -------------------------------------------------------------------------
   elif [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]0-.* ]]
