@@ -130,7 +130,7 @@ function busybox_build()
               -e 's|^CONFIG_PDPMAKE=y|# CONFIG_PDPMAKE is not set|' \
               configs/mingw64_defconfig
 
-            run_verbose diff configs/mingw64_defconfig.bak configs/mingw64_defconfig | true
+            run_verbose diff configs/mingw64_defconfig.bak configs/mingw64_defconfig || true
 
             run_verbose make mingw64_defconfig \
               HOSTCC="${XBB_NATIVE_CC}" \
