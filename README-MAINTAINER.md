@@ -206,9 +206,9 @@ archive and its SHA signature, created in the `deploy` folder:
 
 ```console
 $ ls -l ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build/win32-x64/deploy
-total 2576
--rw-r--r-- 1 ilg ilg 2632071 Nov 14 07:49 xpack-windows-build-tools-4.4.1-2-win32-x64.zip
--rw-r--r-- 1 ilg ilg     114 Nov 14 07:49 xpack-windows-build-tools-4.4.1-2-win32-x64.zip.sha
+total 2608
+-rw-r--r-- 1 ilg ilg 2664327 Nov 14 08:31 xpack-windows-build-tools-4.4.1-2-win32-x64.zip
+-rw-r--r-- 1 ilg ilg     114 Nov 14 08:31 xpack-windows-build-tools-4.4.1-2-win32-x64.zip.sha
 ```
 
 ### Update README-MAINTAINER listing output
