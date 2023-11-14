@@ -125,6 +125,13 @@ function busybox_build()
               HOSTCXX="${XBB_NATIVE_CXX}"
           elif [ ${XBB_TARGET_BITS} == "64" ]
           then
+            run_verbose sed -i.bak \
+              -e 's|^CONFIG_MAKE=y|# CONFIG_MAKE is not set|' \
+              -e 's|^CONFIG_PDPMAKE=y|# CONFIG_PDPMAKE is not set|' \
+              configs/mingw64_defconfig
+
+            run_verbose diff configs/mingw64_defconfig.bak configs/mingw64_defconfig
+
             run_verbose make mingw64_defconfig \
               HOSTCC="${XBB_NATIVE_CC}" \
               HOSTCXX="${XBB_NATIVE_CXX}"
