@@ -522,4 +522,4 @@ Run the xPack action `trigger-workflow-deep-clean`, this
 will remove the build folders on all supported platforms.
 
 The results are available from the
-[Actions](https://github.com/xpack-dev-tools/windows-build-xpack/actions/) page.
+[Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/) page.
