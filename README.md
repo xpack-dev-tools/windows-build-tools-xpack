@@ -105,7 +105,6 @@ only the first two depth levels are shown):
 ```console
 $ tree -L 2 /Users/ilg/.local/xPacks/@xpack-dev-tools/windows-build-tools/4.4.1-2/.content/
 /Users/ilg/.local/xPacks/@xpack-dev-tools/windows-build-tools/4.4.1-2/.content/
-├── README.md
 ├── bin
 │   ├── busybox.exe
 │   ├── cp.exe
@@ -115,17 +114,15 @@ $ tree -L 2 /Users/ilg/.local/xPacks/@xpack-dev-tools/windows-build-tools/4.4.1-
 │   ├── rm.exe
 │   └── sh.exe
 ├── distro-info
-│   ├── CHANGELOG.md
-│   ├── licenses
-│   ├── patches
-│   └── scripts
+│   └── licenses
 ├── include
 │   └── gnumake.h
+├── README.md
 └── share
     ├── info
     └── man
 
-9 directories, 10 files
+7 directories, 9 files
 ```
 
 No other files are installed in any system folders or other locations.
