@@ -5,7 +5,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-11-14
 
-* v4.4.1-2 released
+* v4.4.1-2.1 published on npmjs.com
+* c0a8147 package.json: update urls for 4.4.1-2.1 release
+* d282e94 README update
+* 741f122 CHANGELOG update
+* 1aed5af CHANGELOG update
 * 949ee9b busybox.sh: ignore diff exit
 * b64bc7b busybox.sh: ignore diff exit
 * 06ec52d CHANGELOG update
