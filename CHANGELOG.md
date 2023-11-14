@@ -5,6 +5,7 @@ Entries in this file are in reverse chronological order.
 
 ## 2023-11-14
 
+* v4.4.1-2 released
 * 949ee9b busybox.sh: ignore diff exit
 * b64bc7b busybox.sh: ignore diff exit
 * 06ec52d CHANGELOG update
