@@ -207,7 +207,7 @@
           "common-docker"
         ],
         "devDependencies": {
-          "@xpack-dev-tools/gcc": "13.2.0-1.1",
+          "@xpack-dev-tools/gcc": "13.2.0-2.1",
           "@xpack-dev-tools/mingw-w64-gcc": "13.2.0-1.1",
           "@xpack-dev-tools/wine": "8.0.2-1.1"
         },
