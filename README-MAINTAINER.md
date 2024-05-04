@@ -189,6 +189,7 @@ caffeinate ssh xbbli
 Update the build scripts (or clone them at the first use):
 
 ```sh
+rm -f ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/package-lock.json && \
 git -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git pull && \
 xpm run install -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git && \
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \
