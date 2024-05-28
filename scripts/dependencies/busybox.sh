@@ -137,7 +137,7 @@ function busybox_build()
               HOSTCXX="${XBB_NATIVE_CXX}"
           fi
 
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${busybox_folder_name}/configure-output.txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${busybox_folder_name}/configure-output-$(ndate).txt"
       fi
 
       if [ ! -f "busybox.exe" -a ! -f "busybox" ]
@@ -179,7 +179,7 @@ function busybox_build()
             exit 1
           fi
 
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${busybox_folder_name}/make-output.txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${busybox_folder_name}/make-output-$(ndate).txt"
       fi
 
       copy_license \

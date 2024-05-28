@@ -157,8 +157,8 @@ function make_build()
           run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${make_folder_name}/configure" \
             ${config_options[@]}
 
-          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/config-make-log.txt"
-        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/configure-make-output.txt"
+          cp "config.log" "${XBB_LOGS_FOLDER_PATH}/config-make-log-$(ndate).txt"
+        ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/configure-make-output-$(ndate).txt"
 
       fi
 
@@ -174,7 +174,7 @@ function make_build()
 
         run_verbose make install-strip
 
-      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/make-make-output.txt"
+      ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/make-make-output-$(ndate).txt"
 
       copy_license \
         "${XBB_SOURCES_FOLDER_PATH}/${make_folder_name}" \
