@@ -103,8 +103,7 @@
       "generate-workflows": [
         "mkdir -p .github/workflows/",
         "cp xpacks/@xpack-dev-tools/xbb-helper/templates/body-github-pre-releases-test.md .github/workflows/",
-        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/build-liquid.yml > .github/workflows/build-all.yml",
-        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/build-xbbli-liquid.yml > .github/workflows/build-xbbli.yml",
+        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/build-linux-x64-liquid.yml > .github/workflows/build-linux-x64.yml",
         "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/test-prime-liquid.yml > .github/workflows/test-prime.yml",
         "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/publish-release-liquid.yml > .github/workflows/publish-release.yml",
         "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/test-xpm-liquid.yml  > .github/workflows/test-xpm.yml",
@@ -114,8 +113,7 @@
         "cp xpacks/@xpack-dev-tools/xbb-helper/templates/build.sh scripts/",
         "cp xpacks/@xpack-dev-tools/xbb-helper/templates/test.sh scripts/"
       ],
-      "trigger-workflow-build-all": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh",
-      "trigger-workflow-build-xbbli": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --machine xbbli",
+      "trigger-workflow-build-xbbli": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-linux-x64.yml",
       "trigger-workflow-test-prime": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-prime.sh",
       "trigger-workflow-publish-release": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-publish-release.sh",
       "generate-jekyll-post": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/generate-jekyll-post.sh",
