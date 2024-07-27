@@ -66,7 +66,7 @@
       "sh": "./.content/bin/sh"
     },
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^2.1.37"
+      "@xpack-dev-tools/xbb-helper": "^2.1.38"
     },
     "properties": {
       "appName": "Windows Build Tools",
@@ -103,17 +103,20 @@
       "generate-workflows": [
         "mkdir -p .github/workflows/",
         "cp xpacks/@xpack-dev-tools/xbb-helper/templates/body-github-pre-releases-test.md .github/workflows/",
-        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/build-linux-x64-liquid.yml > .github/workflows/build-linux-x64.yml",
-        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/test-prime-liquid.yml > .github/workflows/test-prime.yml",
-        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/publish-release-liquid.yml > .github/workflows/publish-release.yml",
-        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/test-xpm-liquid.yml  > .github/workflows/test-xpm.yml",
-        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/deep-clean-liquid.yml  > .github/workflows/deep-clean.yml",
+        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/build-linux-x64-liquid.yml --output .github/workflows/build-linux-x64.yml",
+        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/test-prime-liquid.yml --output .github/workflows/test-prime.yml",
+        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/publish-release-liquid.yml --output .github/workflows/publish-release.yml",
+        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/test-xpm-liquid.yml --output .github/workflows/test-xpm.yml",
+        "{{ properties.LIQUIDJS }} --template @xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/deep-clean-liquid.yml --output .github/workflows/deep-clean.yml",
+        "cp xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/publish-github-pages.yml .github/workflows/publish-github-pages.yml",
         "cp xpacks/@xpack-dev-tools/xbb-helper/templates/dot.gitignore .gitignore",
         "cp xpacks/@xpack-dev-tools/xbb-helper/templates/dot.npmignore .npmignore",
         "cp xpacks/@xpack-dev-tools/xbb-helper/templates/build.sh scripts/",
         "cp xpacks/@xpack-dev-tools/xbb-helper/templates/test.sh scripts/"
       ],
-      "trigger-workflow-build-xbbli": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-linux-x64.yml",
+      "website-generate-commons": "bash xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/website-generate-commons.sh",
+      "website-import-releases": "bash xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/website-import-releases.sh",
+      "trigger-workflow-build-win32-x64": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-win32-x64.yml --xpm-version {{ properties.xpm-version }} --loglevel {{ properties.xpm-install-loglevel }}",
       "trigger-workflow-test-prime": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-prime.sh",
       "trigger-workflow-publish-release": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-publish-release.sh",
       "generate-jekyll-post": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/generate-jekyll-post.sh",
@@ -122,6 +125,7 @@
       "trigger-workflow-deep-clean": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-deep-clean.sh",
       "test-native": "bash {{ properties.dbg }} scripts/test.sh",
       "test-pre-release": "bash {{ properties.dbg }} scripts/test.sh --base-url pre-release --develop --cache",
+      "test-release": "bash {{ properties.dbg }} scripts/test.sh --base-url pre-release --develop --cache",
       "test-xpm": "bash {{ properties.dbg }} scripts/test.sh --xpm",
       "build-native-win": "bash {{ properties.dbg }} scripts/build.sh --windows",
       "build-native-win-develop": "bash {{ properties.dbg }} scripts/build.sh --develop --windows"
