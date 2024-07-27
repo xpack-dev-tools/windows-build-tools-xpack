@@ -19,7 +19,7 @@ download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/relea
 
 comments: true
 
-date:   {{ RELEASE_DATE }}
+date: {{ RELEASE_DATE }}
 
 # For Jekyll releases selection.
 categories:
