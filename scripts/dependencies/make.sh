@@ -125,7 +125,7 @@ function make_build()
 
           # cd "${make_build_folder}"
 
-          if is_develop
+          if is_development
           then
             run_verbose bash "${XBB_SOURCES_FOLDER_PATH}/${make_src_folder_name}/configure" --help
           fi
