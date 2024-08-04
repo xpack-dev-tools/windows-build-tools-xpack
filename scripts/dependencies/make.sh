@@ -183,9 +183,9 @@ function make_build()
       (
         mkdir -pv "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin"
 
-        run_verbose ${CC} "${XBB_BUILD_GIT_PATH}/tests/src/test-env.c" -o "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-env.exe"
-        run_verbose ${CC} "${XBB_BUILD_GIT_PATH}/tests/src/test-sh.c" -o "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh.exe" -Wno-incompatible-pointer-types
-        run_verbose ${CC} "${XBB_BUILD_GIT_PATH}/tests/src/test-sh.c" -o "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh-null.exe" -Wno-incompatible-pointer-types -D__USE_NULL_ENVP
+        run_verbose ${CC} "${XBB_BUILD_ROOT_PATH}/tests/src/test-env.c" -o "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-env.exe"
+        run_verbose ${CC} "${XBB_BUILD_ROOT_PATH}/tests/src/test-sh.c" -o "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh.exe" -Wno-incompatible-pointer-types
+        run_verbose ${CC} "${XBB_BUILD_ROOT_PATH}/tests/src/test-sh.c" -o "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh-null.exe" -Wno-incompatible-pointer-types -D__USE_NULL_ENVP
       )
     )
 
@@ -212,7 +212,7 @@ function make_build()
     cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh.exe" "sh.exe"
     cp -v "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/bin/test-sh-null.exe" "sh-null.exe"
     cp -v "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin/make.exe" "make.exe"
-    cp -v "${XBB_BUILD_GIT_PATH}/tests/src/makefile" "makefile"
+    cp -v "${XBB_BUILD_ROOT_PATH}/tests/src/makefile" "makefile"
     (
       export WINEPATH="${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/test"
       run_host_app_verbose "${XBB_LIBRARIES_INSTALL_FOLDER_PATH}/test/make"
