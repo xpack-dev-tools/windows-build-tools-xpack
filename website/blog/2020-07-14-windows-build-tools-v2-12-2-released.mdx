@@ -1,0 +1,129 @@
+---
+title:  xPack Windows Build Tools v2.12.2 released
+
+date: 2020-07-14 12:01:00 +0300
+
+authors: ilg-ul
+
+# To be listed in the Releases page.
+tags:
+  - releases
+
+# ----- Custom properties -----------------------------------------------------
+
+version: 2.12.2
+npm_subversion: 2
+
+download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v2.12.2/
+
+---
+
+Version 2.12.2 is a maintenance release; it repacks the same tools from the previous release, but built with the new XBB v3.2 tools.
+
+<!-- truncate -->
+
+import Image from '@theme/IdealImage';
+
+This is the **xPack** distribution of **Windows Build Tools** (formerly part
+of the GNU MCU/ARM Eclipse project).
+
+There are separate binaries for **Windows**, 32/64-bit.
+
+## Download
+
+The binary files are available from <a href={ frontMatter.download_url }>GitHub Releases</a>.
+
+## Install
+
+The full details of installing the **xPack Windows Build Tools** on various platforms
+are presented in the [Install Guide](/docs/install/).
+
+## Compliance
+
+The xPack Windows Build Tools uses programs from other projects.
+
+The current version is based on:
+
+- GNU make version 4.2.1-1 from the [MSYS2](https://sourceforge.net/projects/msys2/) project
+- [Busybox](https://github.com/rmyorston/busybox-w32), the 65ae5b24c commit from Apr 06, 2019.
+
+## Changes
+
+There are no functional changes from original projects..
+
+## Bug fixes
+
+- none
+
+## Enhancements
+
+- none
+
+## Known problems
+
+- none
+
+## Documentation
+
+- none
+
+## Supported platforms
+
+Only binaries for **Windows** are provided.
+
+The binaries were built using the
+[xPack Build Box (XBB)](https://github.com/xpack/xpack-build-box), a set
+of build environments based on slightly older distributions, that should be
+compatible with most recent systems.
+
+- Windows: all binaries were built with mingw-w64 GCC 9.3, running in an
+  Ubuntu 12 Docker container
+
+## Build
+
+The scripts used to build this distribution are in:
+
+- `distro-info/scripts`
+
+For the prerequisites and more details on the build procedure, please see the
+[README-MAINTAINER](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-MAINTAINER.md) page.
+
+## Travis tests
+
+- none
+
+## Tests
+
+The binaries were testes on Windows 10 Pro 32/64-bit.
+
+The tests consist in running Eclipse builds.
+
+In all cases, install the archive in Downloads and configure the path
+in Eclipse.
+
+## Checksums
+
+The SHA-256 hashes for the files are:
+
+```txt
+0076cf109d08f7a176267c12aa3f8df9bce9a02b386379ad199f169b98193897
+xpack-windows-build-tools-2.12.2-win32-x32.zip
+
+b45514eece3fd28a26e69a4e16364021309900791699f4167f4172c20c81e9cf
+xpack-windows-build-tools-2.12.2-win32-x64.zip
+```
+
+## Download analytics
+
+- GitHub [xpack-dev-tools/windows-build-tools-xpack.git](https://github.com/xpack-dev-tools/windows-build-tools-xpack/)
+  - this release <a href={ `https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/v${ frontMatter.version }/` } ><Image img={ `https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/v${ frontMatter.version }/total.svg` } alt='Github Release' /></a>
+  - all releases [![Github All Releases](https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/total.svg)](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/)
+  - [individual file counters](https://somsubhra.github.io/github-release-stats/?username=xpack-dev-tools&repository=windows-build-tools-xpack) (grouped per release)
+- xPack [@xpack-dev-tools/windows-build-tools](https://github.com/xpack-dev-tools/windows-build-tools-xpack/)
+  - latest releases [![npm](https://img.shields.io/npm/dw/@xpack-dev-tools/windows-build-tools.svg)](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools/)
+  - all @xpack-dev-tools releases [![npm](https://img.shields.io/npm/dt/@xpack-dev-tools/windows-build-tools.svg)](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools/)
+  - all @gnu-mcu-eclipse releases [![npm](https://img.shields.io/npm/dt/@gnu-mcu-eclipse/windows-build-tools.svg)](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools/)
+
+Credit to [Shields IO](https://shields.io) for the badges and to
+[Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats)
+for the individual file counters.
