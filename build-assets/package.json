@@ -58,9 +58,9 @@
     },
     "actions": {
       "npm-install": "npm install",
-      "npm-pack": "npm pack",
-      "npm-version-patch": "npm version patch",
-      "npm-version-minor": "npm version minor",
+      "npm-pack": "cd .. && npm pack",
+      "npm-version-patch": "cd .. && npm version patch",
+      "npm-version-minor": "cd .. && npm version minor",
       "deep-clean": [
         "rm -rf build xpacks node_modules package-lock.json",
         "rm -rf ${HOME}/Work/xpack-dev-tools-build/{{ properties.appLcName }}-[0-9]*-*"
@@ -75,7 +75,7 @@
       "git-pull-helper": [
         "git -C ${HOME}/Work/xpack-dev-tools/xbb-helper-xpack.git pull"
       ],
-      "git-log": "git log --pretty='%cd * %h %s' --date=short",
+      "git-log": "git -C .. log --pretty='%cd * %h %s' --date=short",
       "generate-workflows": [
         "mkdir -p .github/workflows/",
         "cp xpacks/@xpack-dev-tools/xbb-helper/templates/body-github-pre-releases-test.md .github/workflows/",
@@ -95,7 +95,7 @@
       "trigger-workflow-build-win32-x64": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-win32-x64.yml --xpm-version {{ properties.xpm-version }} --loglevel {{ properties.xpm-install-loglevel }}",
       "trigger-workflow-test-prime": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-prime.sh",
       "trigger-workflow-publish-release": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-publish-release.sh",
-      "generate-jekyll-post": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/generate-jekyll-post.sh",
+      "generate-website-blog-post": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/generate-website-blog-post.sh",
       "update-package-binaries": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/update-package-binaries.sh",
       "trigger-workflow-test-xpm": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-xpm.sh",
       "trigger-workflow-deep-clean": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-deep-clean.sh",
