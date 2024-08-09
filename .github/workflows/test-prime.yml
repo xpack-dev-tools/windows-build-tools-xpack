@@ -1,6 +1,7 @@
 
 # -----------------------------------------------------------------------------
-# DO NOT EDIT! Generated from xpacks/@xpack-dev-tools/xbb-helper/templates/*.
+# DO NOT EDIT!
+# Generated from xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/*.
 #
 # This file is part of the xPack distribution.
 #   (https://xpack.github.io)
@@ -16,6 +17,10 @@
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch
 # https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_dispatch
 # https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event
+
+# https://github.com/actions/checkout
+# https://github.com/actions/upload-artifact
+# https://github.com/actions/download-artifact
 
 # -----------------------------------------------------------------------------
 
@@ -36,12 +41,12 @@ on:
       helper-git-ref:
         description: 'The helper branch, tag or SHA to checkout'
         required: false
-        default: 'xpack-develop'
+        default: 'xpack-development'
 
 jobs:
 
-  windows-x64:
-    name: 'Windows x64 windows-build-tools ${{ github.event.inputs.version }} test'
+  win32-x64-test:
+    name: 'win32-x64 windows-build-tools ${{ github.event.inputs.version }} test'
     runs-on: windows-2022
     defaults:
       run:
@@ -49,30 +54,70 @@ jobs:
         shell: bash # for --
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           systeminfo # lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: xpacks/@xpack-dev-tools/xbb-helper
+          path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
           ref: ${{ github.event.inputs.helper-git-ref }}
           fetch-depth: 3
 
       - name: 'Run ${{ github.event.inputs.version }} native test'
-        run: bash scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
-  
+        run: bash build-assets/scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+
+      - name: Upload platform tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report-win32-x64
+          path: ${{ github.workspace }}/build-assets/build/win32-x64/artefacts/tests-report-*.md
+          overwrite: true
+
+  generate-tests-report:
+    name: 'Generate tests report for Windows Build Tools@${{ github.event.inputs.version }}'
+    runs-on: ubuntu-22.04
+    needs: [win32-x64-test]
+
+    steps:
+      - name: Download platform test reports
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ github.workspace }}/build-assets/artefacts
+          merge-multiple: true
+
+      - name: Concatenate platform test reports
+        run: |
+          ls -lR ${{ github.workspace }}/build-assets/artefacts
+          touch ${{ github.workspace }}/build-assets/artefacts/tests-report.md
+          echo "---" >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
+          echo "title: Windows Build Tools ${{ github.event.inputs.version }} test results" >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
+          echo >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
+          echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
+          echo >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
+          echo "---" >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
+          echo >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
+          (cd ${{ github.workspace }}; cat -s artefacts/tests-report-win32-x64.md  | tee -a build-assets/artefacts/tests-report.md)
+          mv -v ${{ github.workspace }}/build-assets/artefacts/tests-report.md ${{ github.workspace }}/build-assets/artefacts/${{ github.event.inputs.version }}.md
+
+      - name: Upload tests report
+        uses: actions/upload-artifact@v4
+        with:
+          name: tests-report
+          path: ${{ github.workspace }}/build-assets/artefacts/${{ github.event.inputs.version }}.md
+          overwrite: true
+
 # -----------------------------------------------------------------------------

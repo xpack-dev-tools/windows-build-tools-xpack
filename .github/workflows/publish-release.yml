@@ -1,5 +1,6 @@
 # -----------------------------------------------------------------------------
-# DO NOT EDIT! Generated from xpacks/@xpack-dev-tools/xbb-helper/templates/*.
+# DO NOT EDIT!
+# Generated from xpacks/@xpack-dev-tools/xbb-helper/templates/workflows/*.
 #
 # This file is part of the xPack distribution.
 #   (https://xpack.github.io)
@@ -16,6 +17,10 @@
 # https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#workflow_dispatch
 # https://docs.github.com/en/rest/reference/actions#create-a-workflow-dispatch-event
 
+# https://github.com/actions/checkout
+# https://github.com/actions/upload-artifact
+# https://github.com/actions/download-artifact
+
 # -----------------------------------------------------------------------------
 
 
@@ -31,7 +36,7 @@ on:
       helper-git-ref:
         description: 'The helper branch, tag or SHA to checkout'
         required: false
-        default: 'xpack-develop'
+        default: 'xpack-development'
 
 jobs:
   create-release:
@@ -39,42 +44,43 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: 'Environment'
+      - name: 'Show environment'
         run: |
           uname -a
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
           ls -lLA
-          env | sort | egrep '^[^ \t]+='
+          env | sort | grep -E '^[^ \t]+='
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
-          path: xpacks/@xpack-dev-tools/xbb-helper
+          path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
           ref: ${{ github.event.inputs.helper-git-ref }}
           fetch-depth: 3
 
       - name: 'Create body'
         run: |
-          npm install
-          npm run liquidjs --silent -- --context '{ "XBB_RELEASE_VERSION": "${{ github.event.inputs.version }}" }' --template @scripts/templates/body-github-release-liquid.md >.github/workflows/body-github-release.md
+          ls -lLA
+          npm --prefix build-assets install -dd
+          ./build-assets/node_modules/.bin/liquidjs --context '{ "XBB_RELEASE_VERSION": "${{ github.event.inputs.version }}" }' --template @build-assets/templates/body-github-release-liquid.md --output .github/workflows/body-github-release.md
           cat .github/workflows/body-github-release.md
 
       - name: 'Publish release'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: false
           bodyFile: '.github/workflows/body-github-release.md'
-          commit: 'xpack-develop'
+          commit: 'xpack-development'
           draft: true
           name: 'xPack Windows Build Tools v${{ github.event.inputs.version }}'
           omitBodyDuringUpdate: true
@@ -89,15 +95,15 @@ jobs:
           token: ${{ secrets.PUBLISH_TOKEN }}
 
       - name: 'Gather artifacts'
-        run: 'bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/download-all-binaries.sh'
+        run: 'bash build-assets/xpacks/@xpack-dev-tools/xbb-helper/github-actions/download-all-binaries.sh'
 
       - name: 'Publish artifacts'
         # https://github.com/ncipollo/release-action
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           artifacts: '~/Downloads/xpack-binaries/windows-build-tools/*'
-          commit: 'xpack-develop'
+          commit: 'xpack-development'
           draft: true
           omitBodyDuringUpdate: true
           omitDraftDuringUpdate: true
