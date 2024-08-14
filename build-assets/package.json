@@ -43,6 +43,8 @@
       "generate-workflows": "bash xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/generate-workflows.sh",
       "website-generate-commons": "bash xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/website-generate-commons.sh",
       "website-import-releases": "bash xpacks/@xpack-dev-tools/xbb-helper/maintainer-scripts/website-import-releases.sh",
+      "check-space": "{% if os.platform == 'darwin' %}df -gH /{% else %}df -BG -H /{% endif %}",
+      "clear-all-projects-builds": "rm -rf ~/Work/xpack-dev-tools/*/build-assets/build",
       "trigger-workflow-build-win32-x64": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-build.sh --workflow build-win32-x64.yml --xpm-version {{ properties.xpm-version }} --loglevel {{ properties.xpm-install-loglevel }}",
       "trigger-workflow-test-prime": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-prime.sh",
       "trigger-workflow-publish-release": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-publish-release.sh",
