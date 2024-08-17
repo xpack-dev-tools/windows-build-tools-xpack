@@ -1,10 +1,10 @@
-![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/v{{ XBB_RELEASE_VERSION }}/total.svg)
+![Github Releases (by Release)](https://img.shields.io/github/downloads/xpack-dev-tools/windows-build-tools-xpack/v{{releaseVersion}}/total.svg)
 
-Version **{{ XBB_RELEASE_VERSION }}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox.
+TODO: select one
 
-Or (TODO: edit!):
+Version **{{releaseVersion}}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox.
 
-Version **{{ XBB_RELEASE_VERSION }}** is a new release of the **xPack Windows Build Tools** package, following the make release.
+Version **{{releaseVersion}}** is a new release of the **xPack Windows Build Tools** package, following the make release.
 
 [Continue reading »](will-be-updated-shortly)
 
