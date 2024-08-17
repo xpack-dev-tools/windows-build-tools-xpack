@@ -39,7 +39,7 @@ jobs:
 
 
   win32-x64:
-    name: 'win32-x64 windows-build-tools ${{ github.event.inputs.version }} clean'
+    name: 'win32-x64 windows-build-tools ${{github.event.inputs.version}} clean'
     timeout-minutes: 5760 # 4 days
     runs-on: [self-hosted, linux, x64]
     steps:

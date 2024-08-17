@@ -46,7 +46,7 @@ on:
 jobs:
 
   win32-x64-test:
-    name: 'win32-x64 windows-build-tools ${{ github.event.inputs.version }} test'
+    name: 'win32-x64 windows-build-tools ${{github.event.inputs.version}} test'
     runs-on: windows-2022
     defaults:
       run:
@@ -69,26 +69,26 @@ jobs:
         with:
           fetch-depth: 3
 
-      - name: 'Checkout helper ${{ github.event.inputs.helper-git-ref }}'
+      - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
         uses: actions/checkout@v4
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
-          ref: ${{ github.event.inputs.helper-git-ref }}
+          ref: ${{github.event.inputs.helper-git-ref}}
           fetch-depth: 3
 
-      - name: 'Run ${{ github.event.inputs.version }} native test'
-        run: bash build-assets/scripts/test.sh --version ${{ github.event.inputs.version }} --base-url ${{ github.event.inputs.base_url }}
+      - name: 'Run ${{github.event.inputs.version}} native test'
+        run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
 
       - name: Upload platform tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report-win32-x64
-          path: ${{ github.workspace }}/build-assets/build/win32-x64/artefacts/tests-report-*.md
+          path: ${{github.workspace}}/build-assets/build/win32-x64/artefacts/tests-report-*.md
           overwrite: true
 
   generate-tests-report:
-    name: 'Generate tests report for Windows Build Tools@${{ github.event.inputs.version }}'
+    name: 'Generate tests report for Windows Build Tools@${{github.event.inputs.version}}'
     runs-on: ubuntu-22.04
     needs: [win32-x64-test]
 
@@ -96,28 +96,28 @@ jobs:
       - name: Download platform test reports
         uses: actions/download-artifact@v4
         with:
-          path: ${{ github.workspace }}/build-assets/artefacts
+          path: ${{github.workspace}}/build-assets/artefacts
           merge-multiple: true
 
       - name: Concatenate platform test reports
         run: |
-          ls -lR ${{ github.workspace }}/build-assets/artefacts
-          touch ${{ github.workspace }}/build-assets/artefacts/tests-report.md
-          echo "---" >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
-          echo "title: Windows Build Tools ${{ github.event.inputs.version }} test results" >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
-          echo >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
-          echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
-          echo >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
-          echo "---" >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
-          echo >>${{ github.workspace }}/build-assets/artefacts/tests-report.md
-          (cd ${{ github.workspace }}; cat -s artefacts/tests-report-win32-x64.md  | tee -a build-assets/artefacts/tests-report.md)
-          mv -v ${{ github.workspace }}/build-assets/artefacts/tests-report.md ${{ github.workspace }}/build-assets/artefacts/${{ github.event.inputs.version }}.md
+          ls -lR ${{github.workspace}}/build-assets/artefacts
+          touch ${{github.workspace}}/build-assets/artefacts/tests-report.md
+          echo "---" >>${{github.workspace}}/build-assets/artefacts/tests-report.md
+          echo "title: Windows Build Tools ${{github.event.inputs.version}} test results" >>${{github.workspace}}/build-assets/artefacts/tests-report.md
+          echo >>${{github.workspace}}/build-assets/artefacts/tests-report.md
+          echo "date: $(date "+%Y-%m-%d %H:%M:%S %z")" >>${{github.workspace}}/build-assets/artefacts/tests-report.md
+          echo >>${{github.workspace}}/build-assets/artefacts/tests-report.md
+          echo "---" >>${{github.workspace}}/build-assets/artefacts/tests-report.md
+          echo >>${{github.workspace}}/build-assets/artefacts/tests-report.md
+          (cd ${{github.workspace}}; cat -s build-assets/artefacts/tests-report-win32-x64.md  | tee -a build-assets/artefacts/tests-report.md)
+          mv -v ${{github.workspace}}/build-assets/artefacts/tests-report.md ${{github.workspace}}/build-assets/artefacts/${{github.event.inputs.version}}.md
 
       - name: Upload tests report
         uses: actions/upload-artifact@v4
         with:
           name: tests-report
-          path: ${{ github.workspace }}/build-assets/artefacts/${{ github.event.inputs.version }}.md
+          path: ${{github.workspace}}/build-assets/artefacts/${{github.event.inputs.version}}.md
           overwrite: true
 
 # -----------------------------------------------------------------------------
