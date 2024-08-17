@@ -1,13 +1,13 @@
 ---
-title:  xPack Windows Build Tools v{{ XBB_RELEASE_VERSION }} released
+title:  xPack Windows Build Tools v{{releaseVersion}} released
 
 TODO: select one summary
 
-summary: "Version **{{ XBB_RELEASE_VERSION }}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox."
+summary: "Version **{{releaseVersion}}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox."
 
-summary: "Version **{{ XBB_RELEASE_VERSION }}** is a new release of the **xPack Windows Build Tools** package, following the make release."
+summary: "Version **{{releaseVersion}}** is a new release of the **xPack Windows Build Tools** package, following the make release."
 
-version: "{{ XBB_RELEASE_VERSION }}"
+version: "{{releaseVersion}}"
 npm_subversion: "1"
 
 make_version: "4.4.1"
@@ -15,11 +15,11 @@ make_version: "4.4.1"
 busybox_commit: "5c1a3b0"
 busybox_date: "18 aug 2023"
 
-download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v{{ XBB_RELEASE_VERSION }}/
+download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v{{releaseVersion}}/
 
 comments: true
 
-date: {{ RELEASE_DATE }}
+date: {{releaseDate}}
 
 # For Jekyll releases selection.
 categories:
@@ -48,7 +48,7 @@ There are separate binaries for **Windows** (Intel 32/64-bit).
 
 ## Download
 
-The binary files are available from GitHub [Releases]({% raw %}{{ page.download_url }}{% endraw %}).
+The binary files are available from GitHub [Releases]({% raw %}{{page.download_url}}{% endraw %}).
 
 ## Prerequisites
 
@@ -60,12 +60,12 @@ The binary files are available from GitHub [Releases]({% raw %}{{ page.download_
 
 The full details of installing the **xPack Windows Build Tools**
 are presented in the separate
-[Install]({% raw %}{{ site.baseurl }}{% endraw %}/dev-tools/windows-build-tools/install/) page.
+[Install]({% raw %}{{site.baseurl}}{% endraw %}/dev-tools/windows-build-tools/install/) page.
 
 ### Easy install
 
 The easiest way to install Windows Build Tools is with
-[`xpm`]({% raw %}{{ site.baseurl }}{% endraw %}/xpm/)
+[`xpm`]({% raw %}{{site.baseurl}}{% endraw %}/xpm/)
 by using the **binary xPack**, available as
 [`@xpack-dev-tools/windows-build-tools`](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools)
 from the [`npmjs.com`](https://www.npmjs.com) registry.
@@ -86,7 +86,7 @@ ls -l xpacks/.bin
 To install this specific version, use:
 
 ```sh
-xpm install @xpack-dev-tools/windows-build-tools@{% raw %}{{ page.version }}.{{ page.npm_subversion }}{% endraw %} --verbose
+xpm install @xpack-dev-tools/windows-build-tools@{% raw %}{{page.version}}.{{page.npm_subversion}}{% endraw %} --verbose
 ```
 
 For xPacks aware tools, like the **Eclipse Embedded C/C++ plug-ins**,
@@ -122,9 +122,9 @@ The xPack Windows Build Tools uses programs from other projects.
 
 The current version is based on:
 
-- [GNU make](https://ftpmirror.gnu.org/make/) version {% raw %}{{ page.make_version }}{% endraw %}
-- [Busybox](https://github.com/rmyorston/busybox-w32), the {% raw %}{{ page.busybox_commit }}{% endraw %}
-commit from {% raw %}{{ page.busybox_date }}{% endraw %}.
+- [GNU make](https://ftpmirror.gnu.org/make/) version {% raw %}{{page.make_version}}{% endraw %}
+- [Busybox](https://github.com/rmyorston/busybox-w32), the {% raw %}{{page.busybox_commit}}{% endraw %}
+commit from {% raw %}{{page.busybox_date}}{% endraw %}.
 
 ## Changes
 
@@ -178,7 +178,7 @@ Install the package with xpm.
 The simple test, consists in starting the binary.
 
 ```sh
-.../xpack-windows-build-tools-{{ XBB_RELEASE_VERSION }}/bin/make --version
+.../xpack-windows-build-tools-{{releaseVersion}}/bin/make --version
 ```
 
 A more elaborate test would be to run an Eclipse build.
