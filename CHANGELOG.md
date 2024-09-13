@@ -5,7 +5,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-09-13
 
-* prepare v4.4.1-3
+* v4.4.1-3 released
+* ae4803a prepare 4.4.1-3
+* da34d44 CHANGELOG update
 * d83ceb4 move tests in build-assets
 * 6d74ab2 prepare v4.4.1-2
 * 80f5448 build-assets/package.json: bump deps
