@@ -32,7 +32,7 @@
     "minimumXpmRequired": "0.16.3",
     "binaries": {
       "destination": "./.content",
-      "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v4.4.1-2",
+      "baseUrl": "https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/download/v4.4.1-3",
       "skip": 1,
       "platforms": {
         "linux-arm64": {
@@ -51,8 +51,8 @@
           "skip": true
         },
         "win32-x64": {
-          "fileName": "xpack-windows-build-tools-4.4.1-2-win32-x64.zip",
-          "sha256": "04a637e3d93254eaf321decdb816d28e38c8bad4256ab988c615abf89820cc4d"
+          "fileName": "xpack-windows-build-tools-4.4.1-3-win32-x64.zip",
+          "sha256": "113d4dfdbbc56dc9b865c9f75d38cd0da82f0d7094187e6f7a803fe6eef1d218"
         }
       }
     },
