@@ -1,0 +1,135 @@
+---
+title:  xPack Windows Build Tools v4.4.1-3 released
+
+date: 2024-09-13 16:11:58 +0300
+
+authors: ilg-ul
+
+# To be listed in the Releases page.
+tags:
+  - releases
+
+# ----- Custom properties -----------------------------------------------------
+
+version: "4.4.1-3"
+npm_subversion: "1"
+
+make_version: "4.4.1"
+make_release_date: "26 Feb 2023"
+
+busybox_tag: "FRP-5398-g89ae34445"
+busybox_date: "25 Jun 2024"
+
+download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v4.4.1-3/
+
+---
+
+Version **4.4.1-3** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox.
+
+<!-- truncate -->
+
+import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
+
+import Prerequisites from './_common/_prerequisites-glib-2.27.mdx'
+import DeprecationNotices from './_common/_deprecation-notices-glib-2.27.mdx'
+import DownloadAnalytics from './_common/_download-analytics.mdx'
+
+The [xPack Windows Build Tools](https://xpack-dev-tools.github.io/windows-build-tools-xpack/)
+is a standalone Windows binary distribution of
+**GNU make** and a few of other tools required by the Eclipse Embedded CDT
+(formerly GNU MCU/ARM Eclipse) project, but the binaries can also be used in
+generic build environments.
+
+There are binaries for **x64 Windows**.
+
+## Download
+
+The binary files are available from <a href={frontMatter.download_url}>GitHub Releases</a>.
+
+<Prerequisites/>
+
+## Install
+
+The full details of installing the **xPack Windows Build Tools**
+are presented in the [Install Guide](/docs/install/).
+
+## Compliance
+
+The xPack Windows Build Tools uses programs from other projects.
+
+The current version is based on:
+
+- [GNU make](https://ftpmirror.gnu.org/make/), version {frontMatter.make_version} from {frontMatter.make_release_date}
+- [Busybox](https://github.com/rmyorston/busybox-w32), the {frontMatter.busybox_tag}
+tag from {frontMatter.busybox_date}.
+
+## Changes
+
+There are no functional changes from original projects.
+
+## Bug fixes
+
+- none
+
+## Enhancements
+
+- none
+
+## Known problems
+
+- none
+
+## Shared libraries
+
+The dependencies are either linked as static libraries or the
+DLLs are included, so the binaries should run on any Windows system.
+
+## Documentation
+
+- none
+
+## Build
+
+The binaries were built using the
+[xPack Build Box (XBB)](https://xpack.github.io/xbb/), a set
+of build environments based on slightly older distributions, that should be
+compatible with most recent systems.
+
+For the prerequisites and more details on the build procedure, please see the
+[Maintainer Info](/docs/maintainer/) page.
+
+## CI tests
+
+Before publishing, a set of simple tests were performed on an exhaustive
+set of platforms. The results are available from:
+
+- [GitHub Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/)
+
+## Tests
+
+The binaries were testes on Windows 10 Pro 32/64-bit.
+
+Install the package with xpm.
+
+The simple test, consists in starting the binary.
+
+```sh
+.../xpack-windows-build-tools-4.4.1-3/bin/make --version
+```
+
+A more elaborate test would be to run an Eclipse build.
+
+## Checksums
+
+The SHA-256 hashes for the files are:
+
+```txt
+113d4dfdbbc56dc9b865c9f75d38cd0da82f0d7094187e6f7a803fe6eef1d218
+xpack-windows-build-tools-4.4.1-3-win32-x64.zip
+
+```
+
+<DeprecationNotices/>
+
+<DownloadAnalytics version={frontMatter.version}/>
