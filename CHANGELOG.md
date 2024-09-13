@@ -5,7 +5,9 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-09-13
 
-* v4.4.1-2 prepared
+* v4.4.1-2 released
+* d83ceb4 move tests in build-assets
+* 6d74ab2 prepare v4.4.1-2
 * 80f5448 build-assets/package.json: bump deps
 * 16e41f4 re-generate workflows
 
