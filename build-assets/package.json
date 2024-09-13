@@ -13,6 +13,18 @@
       "appName": "Windows Build Tools",
       "appLcName": "windows-build-tools",
       "platforms": "win32-x64",
+      "customFields": {
+        "programName": "make",
+        "branding": "GNU Make ",
+        "$links": [
+          "https://ftp.gnu.org/gnu/make/",
+          "https://github.com/rmyorston/busybox-w32/tags"
+        ],
+        "makeVersion": "4.4.1",
+        "makeReleaseDate": "26 Feb 2023",
+        "busyboxTag": "FRP-5398-g89ae34445",
+        "busyboxReleaseDate": "25 Jun 2024"
+      },
       "buildFolderRelativePath": "{{ 'build' | path_join: configuration.name | to_filename | downcase }}",
       "buildFolderRelativePathPosix": "{{ 'build' | path_posix_join: configuration.name | downcase }}",
       "commandBashBuild": "bash {{ properties.dbg }} scripts/build.sh --target {{ configuration.name }} --build-folder {{ properties.buildFolderRelativePathPosix }}",

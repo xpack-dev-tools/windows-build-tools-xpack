@@ -3,9 +3,138 @@
 
 Entries in this file are in reverse chronological order.
 
+## 2024-09-13
+
+* v4.4.1-2 prepared
+* 80f5448 build-assets/package.json: bump deps
+* 16e41f4 re-generate workflows
+
+## 2024-09-12
+
+* e2e5587 update scripts copyright notices
+
+## 2024-08-17
+
+* 3017922 website remove preliminary
+* 8a71632 build-assets/package.json: updates
+* ddb4389 templates/body-blog update
+* af43e2a templates/body-github: update
+* 4ea9ab9 re-generate workflows
+
+## 2024-08-16
+
+* cf2973a templates/body-github: update
+
+## 2024-08-14
+
+* 2d4a8e1 build-assets/package.json: updates
+
+## 2024-08-09
+
+* 24bb774 re-generate workflows & scripts
+* 7ca8cc7 package.json: git+https
+* 606b3e6 build-assets/package.json: updates
+* 3f2fb7a templates/body-blog update
+
+## 2024-08-07
+
+* 1d4ed65 build-assets/package.json: updates
+* 5dd4c9d move to build-assets
+* ae6561e website: preliminary content
+* 7324f87 re-generate workflows
+* e07e393 move to build-assets
+
+## 2024-08-06
+
+* 1a3b8b5 package.json: bump deps
+
+## 2024-08-04
+
+* 7b3711d package.json: bump deps
+* eaa2e1b make.sh: XBB_BUILD_ROOT_PATH
+* d82297f make.sh: use is_development
+* ae4e448 READMEs update
+* 77a6d7e package.json: add actions, bump deps
+
+## 2024-07-27
+
+* dd89cba package.json: add actions, bump deps
+* 4e206e6 templates/jekyll update
+
+## 2024-07-23
+
+* 716437a re-generate scripts
+* 2454a99 re-generate workflows
+* 986f61d package.json: loglevel info
+* 88c5844 package.json: bump deps
+
+## 2024-06-18
+
+* a5f4164 package.json: rework generate workflows
+* 4237586 READMEs update
+
+## 2024-06-17
+
+* 8ca11d3 package.json: bump deps
+* 543780a application.sh: update
+
+## 2024-05-28
+
+* 8c12e9e *.sh: fix log dates
+
+## 2024-05-18
+
+* 0a8928a READMEs update
+* 95c025d package.json: XBB_ENVIRONMENT_SKIP_CHECKS
+
+## 2024-05-16
+
+* aad8844 READMEs update
+
+## 2024-05-09
+
+* a751f2f use is_develop and with_strip
+
+## 2024-05-04
+
+* 30d243e README update
+
+## 2024-05-03
+
+* a89f3ce package.json: add bison to deps
+
+## 2024-04-22
+
+* 1e0b58a package.json: bump deps
+
+## 2024-03-08
+
+* 4561066 package.json: xpm-version 0.18.0
+
+## 2024-03-07
+
+* d432089 package.json: xpm-version 0.18.0
+* d90959f package.json: bump deps
+
+## 2024-03-06
+
+* 4c1ffd4 package.json: bump deps
+
+## 2024-02-07
+
+* 07e69c4 READMEs update
+* 950fa54 package.json: bump deps
+
+## 2023-12-03
+
+* 1b7b18a package.json: bump deps
+* 22ed21b re-generate workflows
+
 ## 2023-11-14
 
-* v4.4.1-2.1 published on npmjs.com
+* 7f60f51 README update
+* 50d06c5 4.4.1-2.1
+* 654d83e CHANGELOG: publish npm v4.4.1-2.1
 * c0a8147 package.json: update urls for 4.4.1-2.1 release
 * d282e94 README update
 * 741f122 CHANGELOG update

@@ -18,7 +18,7 @@ function application_build_versioned_components()
     exit 1
   fi
 
-  if [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]1-.* ]]
+  if [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]1-[0-9]* ]]
   then
 
     # -------------------------------------------------------------------------
@@ -52,10 +52,18 @@ function application_build_versioned_components()
     make_build "4.4.1"
 
     # https://github.com/rmyorston/busybox-w32/tags
-    busybox_build "FRP-5181-g5c1a3b00e" # 18 Aug 2023
+    if [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]1-2 ]]
+    then
+      busybox_build "FRP-5398-g89ae34445" # 25 Jun 2024
+    elif [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]1-1 ]]
+    then
+      busybox_build "FRP-5181-g5c1a3b00e" # 18 Aug 2023
+    else
+      echo "Unsupported ${XBB_APPLICATION_LOWER_CASE_NAME} version ${XBB_RELEASE_VERSION}"
+    fi
 
     # -------------------------------------------------------------------------
-  elif [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]0-.* ]]
+  elif [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]0-[0-9]* ]]
   then
 
     # -------------------------------------------------------------------------
