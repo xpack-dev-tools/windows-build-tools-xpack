@@ -1,42 +1,43 @@
 ---
 title:  xPack Windows Build Tools v{{releaseVersion}} released
 
-TODO: select one summary
+date: {{releaseDate}}
 
-summary: "Version **{{releaseVersion}}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox."
+authors: ilg-ul
 
-summary: "Version **{{releaseVersion}}** is a new release of the **xPack Windows Build Tools** package, following the make release."
+# To be listed in the Releases page.
+tags:
+  - releases
+
+# ----- Custom properties -----------------------------------------------------
 
 version: "{{releaseVersion}}"
 npm_subversion: "1"
 
-make_version: "4.4.1"
+make_version: "{{customFields.makeVersion}}"
+make_release_date: "{{customFields.makeReleaseDate}}"
 
-busybox_commit: "5c1a3b0"
-busybox_date: "18 aug 2023"
+busybox_tag: "{{customFields.busyboxTag}}"
+busybox_date: "{{customFields.busyboxReleaseDate}}"
 
 download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v{{releaseVersion}}/
 
-comments: true
-
-date: {{releaseDate}}
-
-# For Jekyll releases selection.
-categories:
-  - releases
-  - windows-build-tools
-
-# For navigation; use scripts/createtag.sh in Jekyll.
-tags:
-  - releases
-  - windows-build-tools
-  - build
-  - make
-  - rm
-  - mkdir
-  - busybox
-
 ---
+
+TODO: select one summary
+
+Version **{{releaseVersion}}** is a maintenance release of the **xPack Windows Build Tools** package; it updates to the latest upstream Busybox.
+
+Version **{{releaseVersion}}** is a new release of the **xPack Windows Build Tools** package, following the make release.
+
+<!-- truncate -->
+
+import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
+
+import Prerequisites from './_common/_prerequisites-glib-2.27.mdx'
+import DeprecationNotices from './_common/_deprecation-notices-glib-2.27.mdx'
+import DownloadAnalytics from './_common/_download-analytics.mdx'
 
 The [xPack Windows Build Tools](https://xpack-dev-tools.github.io/windows-build-tools-xpack/)
 is a standalone Windows binary distribution of
@@ -44,77 +45,18 @@ is a standalone Windows binary distribution of
 (formerly GNU MCU/ARM Eclipse) project, but the binaries can also be used in
 generic build environments.
 
-There are separate binaries for **Windows** (Intel 32/64-bit).
+There are binaries for **x64 Windows**.
 
 ## Download
 
-The binary files are available from GitHub [Releases]({% raw %}{{page.download_url}}{% endraw %}).
+The binary files are available from <a href={frontMatter.download_url}>GitHub Releases</a>.
 
-## Prerequisites
-
-- Intel Windows 64-bit: Windows 7 with the Universal C Runtime
-  ([UCRT](https://support.microsoft.com/en-us/topic/update-for-universal-c-runtime-in-windows-c0514201-7fe6-95a3-b0a5-287930f3560c)),
-  Windows 8, Windows 10
+<Prerequisites/>
 
 ## Install
 
 The full details of installing the **xPack Windows Build Tools**
-are presented in the separate
-[Install]({% raw %}{{site.baseurl}}{% endraw %}/dev-tools/windows-build-tools/install/) page.
-
-### Easy install
-
-The easiest way to install Windows Build Tools is with
-[`xpm`]({% raw %}{{site.baseurl}}{% endraw %}/xpm/)
-by using the **binary xPack**, available as
-[`@xpack-dev-tools/windows-build-tools`](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools)
-from the [`npmjs.com`](https://www.npmjs.com) registry.
-
-With the `xpm` tool available, installing
-the latest version of the package and adding it as
-a development dependency for a project is quite easy:
-
-```sh
-cd my-project
-xpm init # Add a package.json if not already present
-
-xpm install @xpack-dev-tools/windows-build-tools@latest --verbose
-
-ls -l xpacks/.bin
-```
-
-To install this specific version, use:
-
-```sh
-xpm install @xpack-dev-tools/windows-build-tools@{% raw %}{{page.version}}.{{page.npm_subversion}}{% endraw %} --verbose
-```
-
-For xPacks aware tools, like the **Eclipse Embedded C/C++ plug-ins**,
-it is also possible to install Windows Build Tools globally, in the user home folder.
-
-```sh
-xpm install --global @xpack-dev-tools/windows-build-tools@latest --verbose
-```
-
-Eclipse will automatically
-identify binaries installed with
-`xpm` and provide a convenient method to manage paths.
-
-### Uninstall
-
-To remove the links created by xpm in the current project:
-
-```sh
-cd my-project
-
-xpm uninstall @xpack-dev-tools/windows-build-tools
-```
-
-To completely remove the package from the central xPack store:
-
-```sh
-xpm uninstall --global @xpack-dev-tools/windows-build-tools
-```
+are presented in the [Install Guide](/docs/install/).
 
 ## Compliance
 
@@ -122,9 +64,9 @@ The xPack Windows Build Tools uses programs from other projects.
 
 The current version is based on:
 
-- [GNU make](https://ftpmirror.gnu.org/make/) version {% raw %}{{page.make_version}}{% endraw %}
-- [Busybox](https://github.com/rmyorston/busybox-w32), the {% raw %}{{page.busybox_commit}}{% endraw %}
-commit from {% raw %}{{page.busybox_date}}{% endraw %}.
+- [GNU make](https://ftpmirror.gnu.org/make/), version {frontMatter.make_version} from {frontMatter.make_release_date}
+- [Busybox](https://github.com/rmyorston/busybox-w32), the {frontMatter.busybox_tag}
+tag from {frontMatter.busybox_date}.
 
 ## Changes
 
@@ -132,8 +74,7 @@ There are no functional changes from original projects.
 
 ## Bug fixes
 
-- the BusyBox code includes a patch around the UCRT bug that affects spawning
-  sub-processes.
+- none
 
 ## Enhancements
 
@@ -160,7 +101,7 @@ of build environments based on slightly older distributions, that should be
 compatible with most recent systems.
 
 For the prerequisites and more details on the build procedure, please see the
-[How to build](https://github.com/xpack-dev-tools/windows-build-tools-xpack/blob/xpack/README-BUILD.md) page.
+[Maintainer Info](/docs/maintainer/) page.
 
 ## CI tests
 
