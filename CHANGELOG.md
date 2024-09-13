@@ -5,7 +5,11 @@ Entries in this file are in reverse chronological order.
 
 ## 2024-09-13
 
-* v4.4.1-3 released
+* v4.4.1-3 published on npmjs.com
+* adc34fb package.json: update urls for 4.4.1-3.1 release
+* 2d90a9e website update
+* 49c8700 build-assets/templates updates
+* 5b067b0 CHANGELOG update
 * ae4803a prepare 4.4.1-3
 * da34d44 CHANGELOG update
 * d83ceb4 move tests in build-assets
