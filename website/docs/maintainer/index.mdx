@@ -203,8 +203,40 @@ and fix them; assign them to a milestone (like <code>{customField('xpackVersion'
 
 - open the `CHANGELOG.md` file
 - check if all previous fixed issues are in
+- check the latest commits `xpm run git-log`; if necessary, copy/paste lines,
+  group by dates and edit them using the below regular expressions
 - add a new entry like _**\* v{customField('xpackVersion')} prepared**_
 - commit with a message like _**prepare v{customField('xpackVersion')}**_
+
+To turn the dates into headings, change from:
+
+```txt
+
+
+([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) [*]
+```
+
+to:
+
+```txt
+
+
+## $1
+
+*
+```
+
+To remove the rest of the dates, change from:
+
+```txt
+^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [*]
+```
+
+to:
+
+```txt
+*
+```
 
 ### Push the changes to the `xpack-development` branch
 
@@ -608,7 +640,7 @@ xpm run update-package-binaries -C ~/Work/xpack-dev-tools/windows-build-tools-xp
 ### Publish on the npmjs.com server
 
 - select the `xpack-development` branch
-- check the latest commits `npm run git-log`
+- check the latest commits `xpm run git-log`
 - update `CHANGELOG.md`, add a line like _**\* v{customField('xpackVersion')} published on npmjs.com**_
 - commit with a message like _**CHANGELOG: publish npm v{customField('xpackVersion')}.{customField('npmSubversion')}**_
 - `npm pack` and check the content of the archive, which should list

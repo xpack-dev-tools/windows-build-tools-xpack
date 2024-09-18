@@ -10,11 +10,11 @@ date: 2020-09-28 17:49:00 +0300
 ---
 
 import Overview from './_overview.mdx';
+import OtherBenefits from './_other-benefits.mdx';
 import UpgradeNotice from './_upgrade-notice.mdx';
 import Compatibility from './_compatibility.mdx';
 import Documentation from './_documentation.mdx'
 import ReleaseSchedule from './_release-schedule.mdx'
-import More from './_more.mdx'
 
 {/* ------------------------------------------------------------------------ */}
 
@@ -22,7 +22,6 @@ import More from './_more.mdx'
 ![GitHub Repo stars](https://img.shields.io/github/stars/xpack-dev-tools/windows-build-tools-xpack)
 
 ## Overview
-
 
 **xPack Windows Build Tools** is a standalone
 Windows
@@ -67,7 +66,7 @@ feasible.
 The main advantages of using the **xPack Windows Build Tools** are:
 
 - a convenient, uniform and portable install/uninstall/upgrade
-  procedure on **x64 Windows**
+procedure on **x64 Windows**
 - multiple versions of the same package can be installed at the same time on
   the same system
 - no need to worry about dependent libraries, all are included
@@ -75,6 +74,8 @@ The main advantages of using the **xPack Windows Build Tools** are:
   similar functionality and are GNU/Linux centric
 - projects can be tied to specific tools versions; this provides a good
   reproducibility, especially useful in **CI/CD** environments.
+
+<OtherBenefits/>
 
 <Compatibility/>
 
@@ -133,5 +134,3 @@ corresponding licenses are available in each archive in the
 ## Releases
 
 The list of releases is available in the [Releases](/docs/releases/) pages.
-
-<More/>

@@ -41,11 +41,6 @@ function getCustomFields() {
   // Remove the first part, up to the dash.
   const xpackSubversion = xpackVersion.replace(/^.*[-]/, '');
 
-  // Remove from the dash to the end.
-
-  const upstreamVersion = xpackVersion.replace(/[-].*$/, '');
-
-
   let rootPackageJson
   try {
     const rootFilePath = path.join(path.dirname(path.dirname(pwd)), 'build-assets', 'package.json');
@@ -58,15 +53,23 @@ function getCustomFields() {
 
   const customFields = rootPackageJson?.xpack?.properties?.customFields ?? {};
 
+  let upstreamVersion
+  if (customFields.hasTwoNumbersVersion === 'true' && xpackSemver.endsWith('.0')) {
+    // Remove the patch number if zero (wine uses both 2 and 3 numbers).
+    upstreamVersion = xpackSemver.replace(/[.]0*$/, '');
+  } else {
+    upstreamVersion = xpackSemver;
+  }
+
   return {
     appName: rootPackageJson.xpack.properties.appName,
     appLcName: rootPackageJson.xpack.properties.appLcName,
     version: jsonVersion,
-    upstreamVersion,
     xpackVersion,
     xpackSemver,
     xpackSubversion,
     npmSubversion,
+    upstreamVersion,
     ...customFields,
   }
 }
