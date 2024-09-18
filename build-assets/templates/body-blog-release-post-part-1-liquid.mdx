@@ -11,14 +11,14 @@ tags:
 
 # ----- Custom properties -----------------------------------------------------
 
-version: "{{releaseVersion}}"
-npm_subversion: "1"
-
-make_version: "{{customFields.makeVersion}}"
+make_version: "{{upstreamVersion}}"
 make_release_date: "{{customFields.makeReleaseDate}}"
 
 busybox_tag: "{{customFields.busyboxTag}}"
 busybox_date: "{{customFields.busyboxReleaseDate}}"
+
+version: "{{releaseVersion}}"
+npm_subversion: "1"
 
 download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/tag/v{{releaseVersion}}/
 
