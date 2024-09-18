@@ -109,7 +109,7 @@ update the dependencies in `package.json`.
 
 Check the latest release from
 (<https://mirrors.nav.ro/gnu/make/>) and and compare with
-the xPack [release](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases).
+the xPack [release](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases/).
 When using Git, check the latest commit from
 [savannah](https://git.savannah.gnu.org/cgit/make.git/log/).
 
