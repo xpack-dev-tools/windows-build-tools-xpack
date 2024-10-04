@@ -23,6 +23,7 @@ DO NOT USE! Version **4.2.1-3** is a maintenance release; it updates to the late
 <!-- truncate -->
 
 import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
 
 :::caution
 
@@ -36,7 +37,7 @@ is a standalone Windows binary distribution of
 (formerly GNU MCU/ARM Eclipse) project, but the binaries can also be used in
 generic build environments.
 
-There are binaries for **x64 Windows**.
+There are separate binaries for **Windows** (x64 and x86).
 
 ## Download
 
@@ -50,8 +51,14 @@ The binary files are available from <a href={frontMatter.download_url}>GitHub Re
 
 ## Install
 
+The easiest way to install this specific version, is by using **xpm**:
+
+<CodeBlock language="console"> {
+`xpm install @xpack-dev-tools/windows-build-tools@${frontMatter.version}.${frontMatter.npm_subversion} -verbose
+`} </CodeBlock>
+
 The full details of installing the **xPack Windows Build Tools**
-are presented in the [Install Guide](/docs/install/).
+can be found in the [Install Guide](/docs/install/).
 
 ## Compliance
 
@@ -139,11 +146,11 @@ xpack-windows-build-tools-4.2.1-3-win32-x64.zip
 
 ### 32-bit support
 
-Support for 32-bit Intel Linux and Intel Windows will most probably
-be dropped in 2022. Support for 32-bit Arm Linux will be preserved
+Support for 32-bit x86 GNU/Linux and x86 Windows will most probably
+be dropped in 2022. Support for 32-bit Arm GNU/Linux will be preserved
 for a while, due to the large user base of 32-bit Raspberry Pi systems.
 
-### Linux minimum requirements
+### GNU/Linux minimum requirements
 
 Support for RedHat 7 will most probably be dropped in 2022, and the
 minimum requirement will be raised to GLIBC 2.27, available starting

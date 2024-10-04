@@ -1,0 +1,88 @@
+
+import Link from '@docusaurus/Link';
+
+import HistoryPlatformsAdded from './_common/HistoryPlatformsAdded'
+import HistoryZipAdded from './_common/HistoryZipAdded'
+import HistoryXpm from './_common/HistoryXpm'
+import HistoryRenameXpack from './_common/HistoryRenameXpack'
+import HistoryWindowsUcrt from './_common/HistoryWindowsUcrt'
+import History32bitDiscontinued from './_common/History32bitDiscontinued'
+
+import HistoryGnuArmEclipse from './_common/_history-gnu-arm-eclipse.mdx'
+import HistorySetupDiscontinued from './_common/_history-setup-discontinued.mdx'
+import HistoryXBBv5 from './_common/_history-xbb-v5.mdx'
+import HistoryRestructuring from './_common/_history-restructuring.mdx'
+
+{/* ------------------------------------------------------------------------ */}
+
+<HistoryGnuArmEclipse date="December 2014"/>
+
+Originally developed for Unix environments, the **Eclipse CDT** managed build
+generator required `make` and `rm`, which are unfortunately not available
+on Windows.
+
+Some cross-toolchains for Windows addressed this issue by including
+`make` and `rm` in their distribution. However, many did not, leaving
+users to find alternative distributions of these tools.
+
+The **GNU Arm Eclipse** plug-ins aimed to enhance path management
+by offering a mechanism to define separate paths for the toolchain
+and these tools. This led to the creation of the **Windows Build Tools**
+project.
+
+The package was first published on `npmjs.com` as
+[`@gnu-mcu-eclipse/windows-build-tools`](https://www.npmjs.com/package/@gnu-mcu-eclipse/windows-build-tools).
+
+### December 2014
+
+The initial release ([v2.0](/blog/2014/12/02/windows-build-tools-v2.0-20141202-released/))
+repackaged the `cs-make.exe` and `cs-rm.exe` binaries, renaming them without the prefix, and bundled them into a `*-setup.exe`.
+The binaries were _borrowed_ from
+the **[Mentor Sourcery CodeBench Lite](http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition/)** toolchain for Windows.
+
+### January 2015
+
+The project moved away from the initial Mentor binaries
+and started to pack newer versions of `make.exe` and `sh.exe`, built from
+sources (in [v2.1](/blog/2015/01/21/windows-build-tools-v2.1-20150121-released/)).
+
+### July 2015
+
+<HistoryPlatformsAdded platforms="x64 Windows (64-bit)"/> (in [v2.6](/blog/2015/07/15/windows-build-tools-v2.6-20150715-released/)).
+
+### June 2017
+
+<HistoryZipAdded/> (in [v2.9](/blog/2017/06/29/windows-build-tools-v2-9-20170629-released/)).
+
+### January 2018
+
+<HistorySetupDiscontinued releaseName="2.10" releaseURL="/blog/2018/01/03/windows-build-tools-v2-10-20180103-released/"/>
+
+<HistoryXpm specifier="@gnu-mcu-eclipse/windows-build-tools"/> (in [v2.10](/blog/2018/01/03/windows-build-tools-v2-10-20180103-released/)).
+
+### July 2019
+
+<HistoryRenameXpack/> and the npm scope was changed from `@gnu-mcu-eclipse` to
+[`@xpack-dev-tools`](https://www.npmjs.com/package/@xpack-dev-tools/windows-build-tools/)
+(in [v2.12.2](/blog/2020/07/14/windows-build-tools-v2-12-2-released/)).
+
+### December 2020
+
+The versioning scheme was updated to align with the
+version of **make** (in [v4.2.1-1](/blog/2020/12/27/windows-build-tools-v4-2-1-1-released/)).
+
+### October 2021
+
+<HistoryWindowsUcrt/> (in [v4.2.1-3](/blog/2021/10/18/windows-build-tools-v4-2-1-3-released/)).
+
+### March 2022
+
+<History32bitDiscontinued platforms="x86 Windows"/> (in [v4.3.0-1](/blog/2022/03/05/windows-build-tools-v4-3-0-1-released/)).
+
+### December 2022
+
+<HistoryXBBv5/>
+
+### August 2024
+
+<HistoryRestructuring/>

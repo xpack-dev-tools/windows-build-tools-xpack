@@ -23,6 +23,7 @@ DEPRECATED: Version **4.4.0-1** is a new release of the **xPack Windows Build To
 <!-- truncate -->
 
 import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
 
 The [xPack Windows Build Tools](https://xpack-dev-tools.github.io/windows-build-tools-xpack)
 is a standalone Windows binary distribution of
@@ -30,7 +31,7 @@ is a standalone Windows binary distribution of
 (formerly GNU MCU/ARM Eclipse) project, but the binaries can also be used in
 generic build environments.
 
-There are binaries for **x64 Windows**.
+There are separate binaries for **Windows** (x64 and x86).
 
 ## Deprecated
 
@@ -48,8 +49,14 @@ The binary files are available from <a href={frontMatter.download_url}>GitHub Re
 
 ## Install
 
+The easiest way to install this specific version, is by using **xpm**:
+
+<CodeBlock language="console"> {
+`xpm install @xpack-dev-tools/windows-build-tools@${frontMatter.version}.${frontMatter.npm_subversion} -verbose
+`} </CodeBlock>
+
 The full details of installing the **xPack Windows Build Tools**
-are presented in the [Install Guide](/docs/install/).
+can be found in the [Install Guide](/docs/install/).
 
 ## Compliance
 
@@ -133,7 +140,7 @@ xpack-windows-build-tools-4.4.0-1-win32-x64.zip
 
 ### 32-bit support
 
-Support for 32-bit Intel Windows was dropped in 2022.
+Support for 32-bit x86 Windows was dropped in 2022.
 
 ## Download analytics
 

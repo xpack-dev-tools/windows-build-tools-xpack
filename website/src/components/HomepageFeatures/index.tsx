@@ -24,15 +24,14 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Multi-version, cross-platform',
+    title: 'Multi-version',
     Svg: require('@site/static/img/mosaic.svg').default,
     description: (
       <>
-        By design, <b>multiple versions</b> of the same tools
-        can be installed
-        at the same time on the same system. <b>Windows</b>, <b>macOS</b>, <b>GNU/Linux</b> are
-        supported. The tools include all
-        required libraries and can be installed in any folder.
+        By design, <b>multiple versions</b> of the same tools can be
+        installed at the same time on the same
+        system. The binaries run on  <b>Windows</b>.
+        The tools include all required libraries and can be installed in any folder.
       </>
     ),
   },
