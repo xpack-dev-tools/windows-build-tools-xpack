@@ -24,6 +24,9 @@
 # -----------------------------------------------------------------------------
 
 
+
+
+
 name: 'Deep clean xPack Windows Build Tools'
 
 on:
@@ -35,6 +38,9 @@ on:
         default: 'current'
 
 jobs:
+
+
+
 
 
 
@@ -56,6 +62,15 @@ jobs:
         run: |
           chmod -Rf a+w * || true
           rm -rf * .git*
+
+
+
+
+
+
+
+
+
 
 
 
