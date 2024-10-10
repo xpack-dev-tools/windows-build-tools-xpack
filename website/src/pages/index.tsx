@@ -41,9 +41,9 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <Layout
-      title={`Hello from xPack Binary Development Tools`}
-      description="A binary package with the Windows Build Tools executables">
+    <Layout 
+      title={`Hello from windows-build-tools`}
+      description="A binary package with the windows-build-tools executables">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

@@ -1,20 +1,9 @@
 
 import CodeBlock from '@theme/CodeBlock';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 import customField from '@site/src/libs/customField';
 
 {/* ------------------------------------------------------------------------ */}
-
-## Folder hierarchy
-
-After install, the package creates a folder hierarchy like the following
-(only the first two depth levels are shown):
-
-<Tabs groupId="operating-systems">
-
-<TabItem value="windows" label="Windows" default>
 
 <CodeBlock language="console"> {
 `C:\> tree /f %USERPROFILE%\\AppData\\Roaming\\xPacks\\@xpack-dev-tools\\windows-build-tools\\${customField('version')}\\.content
@@ -39,8 +28,3 @@ Volume serial number is B02D-925C
 
 7 directories, 9 files
 `} </CodeBlock>
-
-</TabItem>
-
-</Tabs>
-
