@@ -42,7 +42,7 @@ export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout 
-      title={`Hello from windows-build-tools`}
+      title={`Welcome to windows-build-tools`}
       description="A binary package with the windows-build-tools executables">
       <HomepageHeader />
       <main>
