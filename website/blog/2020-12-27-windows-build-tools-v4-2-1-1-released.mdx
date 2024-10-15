@@ -1,5 +1,6 @@
 ---
 title: xPack Windows Build Tools v4.2.1-1 released
+seo_title: Version 4.2.1-1 released
 description: Version 4.2.1-1 is maintenance release of xPack Windows Build Tools.
 keywords:
   - xpack
@@ -23,17 +24,15 @@ download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/relea
 
 ---
 
-<head>
-  <title>{frontMatter.title}</title>
-  <meta property="og:title" content={frontMatter.title} />
-</head>
+import {PageMetadata} from '@docusaurus/theme-common';
+import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
 
-Version 4.2.1-1 is maintenance release; it updates to the latest BusyBox.
+Version **4.2.1-1** is maintenance release; it updates to the latest BusyBox.
 
 <!-- truncate -->
 
-import Image from '@theme/IdealImage';
-import CodeBlock from '@theme/CodeBlock';
+<PageMetadata title={frontMatter.seo_title} />
 
 This is the **xPack** distribution of **Windows Build Tools** (formerly part
 of the GNU MCU/ARM Eclipse project).

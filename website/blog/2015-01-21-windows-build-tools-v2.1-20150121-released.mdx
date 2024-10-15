@@ -1,6 +1,7 @@
 ---
 title: GNU ARM Eclipse Windows Build Tools v2.1-20150122* released
-description: Version 2.1-201501221704 is a maintenance release of GNU ARM Eclipse Windows Build Tools.
+seo_title: Version 2.1-20150122* released
+description: Version 2.1-201501221704 is a maintenance release. It is a repack of GNU ARM Eclipse Windows Build Tools.
 keywords:
   - xpack
   - windows-build-tools
@@ -16,30 +17,19 @@ tags:
 
 # ----- Custom properties -----------------------------------------------------
 
-app_name: "GNU ARM Eclipse Windows Build Tools"
-
 download_url: https://github.com/gnu-mcu-eclipse/windows-build-tools/releases/tag/v2.1/
 
 ---
 
-<head>
-  <title>{frontMatter.title}</title>
-  <meta property="og:title" content={frontMatter.title} />
-</head>
+import {PageMetadata} from '@docusaurus/theme-common';
+import Image from '@theme/IdealImage';
+import CodeBlock from '@theme/CodeBlock';
 
-Version 2.1-201501221704 is a maintenance release.
-
-<!-- truncate -->
-
-Version 2.1-201501221704 is a new repack of the previous version.
+Version **2.1-201501221704** is a maintenance release. It is a repack of the previous version.
 
 <!-- truncate -->
 
-<p><a href={frontMatter.download_url}>Binary files »</a></p>
-
-## Known problems
-
-* this version of make does not support parallel builds.
+<PageMetadata title={frontMatter.seo_title} />
 
 ## Download
 
@@ -48,3 +38,7 @@ The binary files are available from <a href={frontMatter.download_url}>GitHub Re
 The available files are:
 
 * `gnuarmeclipse-build-tools-win32-2.1-201501221704-setup.exe`
+
+## Known problems
+
+* this version of make does not support parallel builds.
