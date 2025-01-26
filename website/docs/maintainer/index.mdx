@@ -17,8 +17,6 @@ date: 2024-07-21 20:11:00 +0300
 
 ---
 
-
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -27,20 +25,21 @@ import CodeBlock from '@theme/CodeBlock';
 import customField from '@site/src/libs/customField';
 import isXpackSubversionDouble from '@site/src/libs/isXpackSubversionDouble';
 
-import MoreRepos from './_more-repos.mdx';
-import ReleaseSchedule from '../getting-started/_release-schedule.mdx';
-import CheckUpstreamRelease from './_check-upstream-release.mdx'
-import UpdateVersionSpecific from './_update-version-specific.mdx'
-import GitHubActionsDurations from './_github-actions-durations.mdx'
-import MoreTests from './_more-tests.mdx'
-import ShareCustom from './_share-custom.mdx'
-import FirstDevelopmentRun from './_first-development-run.mdx'
-import FirstProductionRun from './_first-production-run.mdx'
-import {developmentDurations} from './_development-durations.mdx'
-import Patches from './_patches.mdx'
+import ReleaseSchedule from '../_shared/_release-schedule.mdx';
+import GitHubActionsDurations from '../_shared/_github-actions-durations.mdx';
+import {developmentDurations} from '../_shared/_development-durations.mdx';
 
-import PlatformNativeBuild from './_common/_platform-native-build.mdx'
-import PlatformDockerBuild from './_common/_platform-docker-build.mdx'
+import MoreRepos from './_project/_more-repos.mdx';
+import CheckUpstreamRelease from './_project/_check-upstream-release.mdx';
+import UpdateVersionSpecific from './_project/_update-version-specific.mdx';
+import MoreTests from './_project/_more-tests.mdx';
+import ShareCustom from './_project/_share-custom.mdx';
+import FirstDevelopmentRun from './_project/_first-development-run.mdx';
+import FirstProductionRun from './_project/_first-production-run.mdx';
+import Patches from './_project/_patches.mdx';
+
+import PlatformNativeBuild from './_common/_platform-native-build.mdx';
+import PlatformDockerBuild from './_common/_platform-docker-build.mdx';
 
 {/* ------------------------------------------------------------------------ */}
 
@@ -313,7 +312,6 @@ caffeinate ssh xbbli
 
 <PlatformDockerBuild platform="win32-x64"/>
 
-
 ### Update the durations of the development builds
 
 In `website/docs/maintainer/_development-durations.mdx`, update
@@ -407,8 +405,6 @@ For `xbbli`, which has more memory, start two runners:
 ~/actions-runners/xpack-dev-tools/2/run.sh &
 ```
 
-
-
 To check the status of the runners locally:
 
 ```sh
@@ -451,7 +447,6 @@ xpm run check-space -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/buil
 This is equivalent to running a `df` command.
 
 <Tabs groupId="operating-systems">
-
 
 <TabItem value="linux" label="GNU/Linux">
 
@@ -566,8 +561,6 @@ The tests results are available from the
 After running the prime tests, download the test results and compare
 with previous runs.
 
-
-
 ### Manual tests
 
 To download the pre-released archive for the specific platform
@@ -583,8 +576,6 @@ For even more tests, on each platform,
 download the archive from
 [pre-releases/test](https://github.com/xpack-dev-tools/pre-releases/releases/tag/test/)
 and check the binaries.
-
-
 
 <MoreTests/>
 
@@ -717,8 +708,6 @@ This will install the package via `xpm install` on all supported platforms.
 The tests results are available from the
 [GitHub Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions) page.
 
-
-
 ### Tag the npm package as `latest`
 
 When the release is considered stable, promote it as `latest`:
@@ -849,5 +838,4 @@ Close those that were addressed.
 Credit to [Shields IO](https://shields.io) for the badges and to
 [Somsubhra/github-release-stats](https://github.com/Somsubhra/github-release-stats)
 for the individual file counters.
-
 
