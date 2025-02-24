@@ -9,14 +9,14 @@ import TabItem from '@theme/TabItem';
 
 ### Quick test {#manual-install-quick-test}
 
-To check if the {props.longName} installed manually starts properly, use something like:
+To check if the {props.descriptiveName} installed manually starts properly, use something like:
 
 <Tabs groupId="operating-systems">
 
 <TabItem value="windows" label="Windows" default>
 
 <CodeBlock language="console"> {
-`C:\\> %USERPROFILE%\\AppData\\Roaming\\xPacks\\${props.shortName}\\xpack-${props.shortName}-4.4.1-3\\bin\\${props.programName}.exe --version
+`C:\\> %USERPROFILE%\\AppData\\Roaming\\xPacks\\${props.permalinkName}\\xpack-${props.permalinkName}-4.4.1-3\\bin\\${props.programName}.exe --version
 ${props.branding}4.4.1
 `} </CodeBlock>
 
