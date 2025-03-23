@@ -80,7 +80,8 @@
     ],
     "makeReleaseDate": "26 Feb 2023",
     "busyboxTag": "FRP-5398-g89ae34445",
-    "busyboxReleaseDate": "25 Jun 2024"
+    "busyboxReleaseDate": "25 Jun 2024",
+    "shareOnTwitter": "true"
   },
   "engines": {
     "node": ">=18.0"
