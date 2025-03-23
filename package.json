@@ -79,6 +79,7 @@
   "topConfig": {
     "descriptiveName": "Windows Build Tools",
     "permalinkName": "windows-build-tools",
+    "skipCiTests": "true",
     "useSelfHostedRunners": "true"
   },
   "engines": {
