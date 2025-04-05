@@ -1,0 +1,70 @@
+# -----------------------------------------------------------------------------
+#
+# This file is part of the xPack project (http://xpack.github.io).
+# Copyright (c) 2025 Liviu Ionescu. All rights reserved.
+#
+# Permission to use, copy, modify, and/or distribute this software
+# for any purpose is hereby granted, under the terms of the MIT license.
+#
+# If a copy of the license was not distributed with this file, it can
+# be obtained from https://opensource.org/licenses/MIT.
+#
+# -----------------------------------------------------------------------------
+
+  name: 'Test SourceForge downloads'
+
+  on:
+    schedule:
+      - cron: '16 4 * * 6' # every Sunday
+    workflow_dispatch:
+
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+          with:
+            repository: xpack-dev-tools/xbb-helper-xpack
+            ref: 'xpack-development'
+
+        - name: Show environment
+          run: |
+            ls -lLA
+            env | sort | grep -E '^[^ \t]+='
+
+        - name: Run test
+          run: |
+            #!/usr/bin/env bash
+            set -e
+
+            # The script is in the xbb-helper-xpack repo.
+            source maintenance-scripts/download-sourceforge-source.sh
+
+            date
+
+            # https://sourceforge.net/projects/windows-build-tools-xpack/files/
+            name="windows-build-tools"
+            threshold=0 # 16383 # (50%)
+
+            # 2024
+            platforms="win32-x64"
+            download_sourceforge "${name}" "4.4.1-3" ${threshold} "${platforms}"
+
+            # 2023
+            platforms="win32-x64"
+            download_sourceforge "${name}" "4.4.1-2" ${threshold} "${platforms}"
+            download_sourceforge "${name}" "4.4.1-1" ${threshold} "${platforms}"
+            download_sourceforge "${name}" "4.4.0-1" ${threshold} "${platforms}"
+
+            # 2022
+            platforms="win32-x64"
+            download_sourceforge "${name}" "4.3.0-1" ${threshold} "${platforms}"
+
+            # 2021
+            platforms="win32-x64,win32-ia32"
+            download_sourceforge "${name}" "4.2.1-3" ${threshold} "${platforms}"
+
+            # 2020
+            platforms="win32-x64,win32-x32"
+            download_sourceforge "${name}" "2.12.2" ${threshold} "${platforms}"
