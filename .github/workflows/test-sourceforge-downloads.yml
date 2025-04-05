@@ -15,7 +15,7 @@
 
   on:
     schedule:
-      - cron: '16 4 * * 6' # every Sunday
+      - cron: '38 14 * * 6' # every Sunday
     workflow_dispatch:
 
   jobs:
@@ -45,7 +45,7 @@
 
             # https://sourceforge.net/projects/windows-build-tools-xpack/files/
             name="windows-build-tools"
-            threshold=0 # 16383 # (50%)
+            threshold=16383 # (50%)
 
             # 2024
             platforms="win32-x64"
