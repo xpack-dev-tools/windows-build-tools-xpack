@@ -59,4 +59,7 @@
             # 2021
             platforms="win32-x64,win32-ia32"
             download_sourceforge "${name}" "4.2.1-3" ${threshold} "${platforms}"
+
+            # 2020
+            platforms="win32-x64,win32-x32"
             download_sourceforge "${name}" "2.12.2" ${threshold} "${platforms}"
