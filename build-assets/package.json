@@ -13,7 +13,7 @@
   "xpack": {
     "minimumXpmRequired": "0.20.5",
     "devDependencies": {
-      "@xpack-dev-tools/xbb-helper": "^3.1.13"
+      "@xpack-dev-tools/xbb-helper": "github:xpack-dev-tools/xbb-helper-xpack#v4.1.0"
     },
     "properties": {
       "platforms": "win32-x64",
@@ -48,7 +48,6 @@
       "generate-website-blog-post": "cd ../website; npm run generate-website-blog-post",
       "update-package-binaries": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/update-package-binaries.sh",
       "trigger-workflow-test-xpm": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-test-xpm.sh",
-      "trigger-workflow-deep-clean": "bash xpacks/@xpack-dev-tools/xbb-helper/github-actions/trigger-workflow-deep-clean.sh",
       "test-native": "bash {{properties.dbg}} scripts/test.sh",
       "test-pre-release": "bash {{properties.dbg}} scripts/test.sh --base-url pre-release --development --cache",
       "test-release": "bash {{properties.dbg}} scripts/test.sh --base-url pre-release --development --cache",

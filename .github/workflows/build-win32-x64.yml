@@ -3,13 +3,13 @@
 # Automatically generated from npm-packages-helper/templates/*.
 #
 # This file is part of the xPack project (http://xpack.github.io).
-# Copyright (c) 2021 Liviu Ionescu. All rights reserved.
+# Copyright (c) 2021-2025 Liviu Ionescu. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 #
 # If a copy of the license was not distributed with this file, it can
-# be obtained from https://opensource.org/licenses/MIT.
+# be obtained from https://opensource.org/licenses/mit.
 #
 # -----------------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ jobs:
   win32-x64-build:
     name: 'win32-x64 windows-build-tools ${{github.event.inputs.version}} build'
     timeout-minutes: 2880 # 2 days
-    runs-on: [self-hosted, linux, x64, xbbliw]
+    runs-on: ubuntu-24.04
     defaults:
       run:
         shell: bash
@@ -81,26 +81,24 @@ jobs:
           lsb_release -sd
           echo "whoami: $(whoami)"
           echo "pwd: $(pwd)"
-          echo "node: $(node --version)"
-          echo "npm: $(npm --version)"
           ls -lLA
           env | sort | grep -E '^[^ \t]+='
-
-      - name: 'Clean working area' # Mandatory for self-hosted runners.
-        run: |
-          chmod -Rf a+w * || true
-          rm -rf * .git*
-
-      - name: 'Checkout project'
-        uses: actions/checkout@v1 # v1 for old Git
-        with:
-          fetch-depth: 3
 
       - name: 'Install xpm'
         timeout-minutes: 1440
         run: |
           npm install --location=global xpm@${{github.event.inputs.xpm_version}}
-          xpm --version
+
+      - name: 'Verify Node.js, npm and xpm'
+        run: |
+          echo "$(which node): $(node --version)"
+          echo "$(which npm): $(npm --version)"
+          echo "$(which xpm): $(xpm --version)"
+
+      - name: 'Checkout project'
+        uses: actions/checkout@v1 # v1 for old Git
+        with:
+          fetch-depth: 3
 
       - name: 'Build win32-x64 binaries'
         timeout-minutes: 1440
@@ -138,13 +136,9 @@ jobs:
           tag: 'test'
           token: ${{secrets.PUBLISH_TOKEN}}
 
-      - name: 'Rename working area'
-        # For just in case absolute paths remain unprocessed.
-        run: echo mv -v build-assets/build build-assets/build-$(date -u +%Y%m%d-%H%M%S)
-
   win32-x64-test:
     name: 'win32-x64 windows-build-tools ${{github.event.inputs.version}} test'
-    runs-on: windows-2022
+    runs-on: windows-2025
     needs: [win32-x64-build]
     defaults:
       run:
@@ -163,12 +157,12 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: build-assets/xpacks/@xpack-dev-tools/xbb-helper

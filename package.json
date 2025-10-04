@@ -77,12 +77,13 @@
     "liquidjs": "^10.19.1"
   },
   "topConfig": {
-    "descriptiveName": "Windows Build Tools",
+    "descriptiveName": "xPack Windows Build Tools",
+    "upstreamDescriptiveName": "Windows Build Tools",
     "permalinkName": "windows-build-tools",
     "skipCiTests": "true",
-    "useSelfHostedRunners": "true"
+    "useSelfHostedRunners": "false"
   },
   "engines": {
-    "node": " >=18.0.0"
+    "node": " >=20.0"
   }
 }

@@ -61,7 +61,7 @@ function make_build()
 
   local make_archive_file_name="${make_folder_name}.tar.gz"
 
-  local make_url="https://ftp.gnu.org/gnu/make/${make_archive_file_name}"
+  local make_url="https://ftpmirror.gnu.org/gnu/make/${make_archive_file_name}"
   local make_git_url="https://git.savannah.gnu.org/git/make.git"
 
   mkdir -pv "${XBB_LOGS_FOLDER_PATH}/${make_folder_name}"
