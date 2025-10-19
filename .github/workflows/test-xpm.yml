@@ -52,7 +52,7 @@ jobs:
 
 
   win32-x64-test:
-    name: 'win32-x64 xPack Windows Build Tools@${{github.event.inputs.version}} test'
+    name: 'win32-x64 Windows Build Tools@${{github.event.inputs.version}} test'
     runs-on: windows-2025
     defaults:
       run:

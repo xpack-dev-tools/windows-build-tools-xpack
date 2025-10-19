@@ -87,7 +87,7 @@ jobs:
           bodyFile: '.github/workflows/body-github-release.md'
           commit: 'xpack-development'
           draft: true
-          name: 'xPack xPack Windows Build Tools v${{github.event.inputs.version}}'
+          name: 'xPack Windows Build Tools v${{github.event.inputs.version}}'
           omitBodyDuringUpdate: true
           omitDraftDuringUpdate: true
           omitNameDuringUpdate: true

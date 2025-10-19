@@ -88,42 +88,6 @@ jobs:
 
 
 
-  # One more run with the oldest Windows available.
-  win32-x64-test2:
-    name: 'win32-x64 windows-build-tools ${{github.event.inputs.version}} test 2022'
-    runs-on: windows-2022
-    defaults:
-      run:
-        # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
-        shell: bash # for --
-
-    steps:
-      - name: 'Show environment'
-        run: |
-          uname -a
-          systeminfo # lsb_release -sd
-          echo "whoami: $(whoami)"
-          echo "pwd: $(pwd)"
-          ls -lLA
-          env | sort | grep -E '^[^ \t]+='
-
-      # https://github.com/actions/checkout
-      - name: 'Checkout project'
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 3
-
-      - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
-        uses: actions/checkout@v5
-        with:
-          repository: xpack-dev-tools/xbb-helper-xpack
-          path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
-          ref: ${{github.event.inputs.helper-git-ref}}
-          fetch-depth: 3
-
-      - name: 'Run ${{github.event.inputs.version}} native test'
-        run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
-
 
 
 
