@@ -154,19 +154,6 @@ triggered via the VS Code graphical interface, utilising the
 
 <ProjectPatches/>
 
-### Restart the Docker daemons
-
-If, for any reason, the Docker builds need to be cancelled, it is very
-likely that some processes will continue to execute in the background.
-
-To completely terminate them, and ensure that Docker executes
-from a clean slate, restart the Docker daemons on all GNU/Linux
-machines:
-
-```sh
-sudo systemctl restart docker
-```
-
 ### Verify if both projects are pushed
 
 Verify that both the **current project** and the **helper** are
@@ -203,9 +190,11 @@ Commit with the message _**website: update development durations**_
 Copy the trees displayed at the end of the test builds and paste to the
 **Folder hierarchy** section within the web file:
 
+<ul>
 
 
-- `website/docs/_project/_folders-hierarchies-windows.mdx`
+<li> <code>website/docs/_project/_folders-hierarchies-windows.mdx</code></li>
+</ul>
 
 If present, replace the actual version
 (such as **4.4.1-3.1**) with the following expression:
@@ -251,7 +240,7 @@ place them in the XBB cache (`Work/cache`) and restart the build.
 
 ## Execute the production builds
 
-The automation is provided by GitHub Actions.
+The automation is provided by GitHub Actions on GitHub-hosted runners.
 
 ### Publish the helper
 
@@ -316,7 +305,7 @@ The resulting binaries are available for testing from
 
 ### Automated tests
 
-The automation is provided by GitHub Actions.
+The automation is provided by GitHub Actions on GitHub-hosted runners.
 
 To trigger the GitHub Actions tests, execute the xpm actions:
 
@@ -351,11 +340,6 @@ git -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git pull
 xpm run install -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
 xpm run test-pre-release -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
 ```
-
-:::caution
-Since the builds were performed on the latest GitHub macOS runners,
-it is strongly recommended to also execute the tests on an older macOS 11 machine.
-:::
 
 For additional tests, on each platform,
 download the archive from
@@ -402,17 +386,10 @@ watching the windows-build-tools-xpack project.
 
 <CommonPrepareNewBlogPost />
 
-### Update the web install page
-
-- Check and possibly update the output of the `--version` runs in
-  - `website/docs/install/_project/_automatic-install-quick-test.mdx`
-  - `website/docs/install/_project/_manual-install-quick-test.mdx`
-- **Commit** with the message _**website: update quick tests**_
-
 ### Check the list of links in top package.json
 
 - Open the top `package.json` file
-- Check if the links in the `bin` property cover the actual binaries
+- Check if the links in the `xpack.executables` property cover the actual binaries
 - If necessary, also check on Windows
 
 ### Update the package.json list of binaries
@@ -446,7 +423,7 @@ Execute the **trigger-workflow-test-xpm** xpm action:
 xpm run trigger-workflow-test-xpm -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
 ```
 
-This will install the package via `xpm install` on all supported platforms.
+This will test if the package can be installed via `xpm install` on all supported platforms.
 
 The test results are available from the
 [GitHub Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions) page.
