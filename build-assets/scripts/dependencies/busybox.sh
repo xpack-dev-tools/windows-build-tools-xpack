@@ -109,6 +109,11 @@ function busybox_build()
       export CPPFLAGS
       export CFLAGS
       export LDFLAGS
+      VERBOSE=""
+      if is_development
+      then
+        VERBOSE="V=1"
+      fi
 
       if [ ! -f ".config" ]
       then
@@ -152,7 +157,7 @@ function busybox_build()
 
           if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
-            run_verbose make -j ${XBB_JOBS} \
+            run_verbose make -j ${XBB_JOBS} ${VERBOSE} \
               HOSTCC="${XBB_NATIVE_CC}" \
               HOSTCXX="${XBB_NATIVE_CXX}"
 
