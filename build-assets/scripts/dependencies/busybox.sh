@@ -96,9 +96,11 @@ function busybox_build()
 
       cd "${XBB_BUILD_FOLDER_PATH}/${busybox_folder_name}"
 
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
+      CPPFLAGS=""
+      CFLAGS=""
+      LDFLAGS=""
+
+      HOSTCFLAGS="-w"
 
       HOSTCFLAGS="-w"
 
