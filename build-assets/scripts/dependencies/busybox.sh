@@ -96,9 +96,11 @@ function busybox_build()
 
       cd "${XBB_BUILD_FOLDER_PATH}/${busybox_folder_name}"
 
-      CPPFLAGS="${XBB_CPPFLAGS}"
-      CFLAGS="${XBB_CFLAGS_NO_W}"
-      LDFLAGS="${XBB_LDFLAGS_APP}"
+      CPPFLAGS=""
+      CFLAGS=""
+      LDFLAGS=""
+
+      HOSTCFLAGS="-w"
 
       if [ ${XBB_TARGET_BITS} == "32" ]
       then
@@ -109,6 +111,14 @@ function busybox_build()
       export CPPFLAGS
       export CFLAGS
       export LDFLAGS
+
+      export HOSTCFLAGS
+
+      VERBOSE=""
+      if is_development
+      then
+        VERBOSE="V=1"
+      fi
 
       if [ ! -f ".config" ]
       then
@@ -126,7 +136,8 @@ function busybox_build()
             export HOST_EXTRACFLAGS="-D_FILE_OFFSET_BITS=64"
             run_verbose make mingw32_defconfig \
               HOSTCC="${XBB_NATIVE_CC}" \
-              HOSTCXX="${XBB_NATIVE_CXX}"
+              HOSTCXX="${XBB_NATIVE_CXX}" \
+              HOSTCFLAGS="${HOSTCFLAGS}"
           elif [ ${XBB_TARGET_BITS} == "64" ]
           then
             run_verbose sed -i.bak \
@@ -138,7 +149,8 @@ function busybox_build()
 
             run_verbose make mingw64_defconfig \
               HOSTCC="${XBB_NATIVE_CC}" \
-              HOSTCXX="${XBB_NATIVE_CXX}"
+              HOSTCXX="${XBB_NATIVE_CXX}" \
+              HOSTCFLAGS="${HOSTCFLAGS}"
           fi
 
         ) 2>&1 | tee "${XBB_LOGS_FOLDER_PATH}/${busybox_folder_name}/configure-output-$(ndate).txt"
@@ -152,9 +164,10 @@ function busybox_build()
 
           if [ "${XBB_TARGET_PLATFORM}" == "win32" ]
           then
-            run_verbose make -j ${XBB_JOBS} \
+            run_verbose make -j ${XBB_JOBS} ${VERBOSE} \
               HOSTCC="${XBB_NATIVE_CC}" \
-              HOSTCXX="${XBB_NATIVE_CXX}"
+              HOSTCXX="${XBB_NATIVE_CXX}" \
+              HOSTCFLAGS="${HOSTCFLAGS}"
 
             mkdir -pv "${XBB_EXECUTABLES_INSTALL_FOLDER_PATH}/bin"
             cp -v "busybox.exe" \
