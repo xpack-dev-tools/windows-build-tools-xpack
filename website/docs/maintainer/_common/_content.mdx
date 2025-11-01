@@ -107,7 +107,7 @@ update the dependencies in `build-assets/package.json`.
 ### Update VERSION
 
 Update the `build-assets/scripts/VERSION` file; the format
-is <code>4.4.1-3</code>.
+is <code>4.4.1-4</code>.
 {isXpackSubversionDouble() ?
 'The fourth & fifth numbers are the xPack release number of this version. A sixth' :
 'The fourth number is the xPack release number of this version. A fifth'} number will be added to the version in `package.json` when the package is published to the `npm` server.
@@ -197,7 +197,7 @@ Copy the trees displayed at the end of the test builds and paste to the
 </ul>
 
 If present, replace the actual version
-(such as **4.4.1-3.1**) with the following expression:
+(such as **4.4.1-4.1**) with the following expression:
 
 ```txt
 ${customField('releaseVersion')}
@@ -337,7 +337,8 @@ and execute the tests, utilise:
 
 ```sh
 git -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git pull
-xpm run install -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
+npm --prefix ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets install
+xpm install -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
 xpm run test-pre-release -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
 ```
 
@@ -353,7 +354,7 @@ and check the binaries.
 ### Create a new GitHub pre-release
 
 - In `CHANGELOG.md`, add the release date and a message
-  such as _**\* v4.4.1-3 released**_
+  such as _**\* v4.4.1-4 released**_
 - **Commit** with the message _**CHANGELOG update**_
 - Check and possibly update the `build-assets/templates/body-github-release-liquid.mdx`
 - **Push** the `xpack-development` branch to GitHub
@@ -367,8 +368,8 @@ The workflow result and logs are available from the
 
 The result is a
 [draft pre-release](https://github.com/xpack-dev-tools/windows-build-tools-xpack/releases)
-tagged such as **v4.4.1-3** (mind the dash in the middle!) and
-named such as **xPack Windows Build Tools v4.4.1-3** (mind the dash),
+tagged such as **v4.4.1-4** (mind the dash in the middle!) and
+named such as **xPack Windows Build Tools v4.4.1-4** (mind the dash),
 with all binaries attached.
 
 - Edit the draft and ensure it is attached to the `xpack-development` branch (important!)
@@ -407,7 +408,7 @@ watching the windows-build-tools-xpack project.
 - Compare the SHA sums with those shown by `cat *.sha`
 - Check the executable names
 - **Commit** all changes with the message
-  _**package.json: update URLs for 4.4.1-3.1 release**_
+  _**package.json: update URLs for 4.4.1-4.1 release**_
 
 <CommonPrepareRelease />
 
