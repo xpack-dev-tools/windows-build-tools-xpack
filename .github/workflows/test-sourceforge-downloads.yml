@@ -47,7 +47,7 @@ jobs:
           # https://github.com/xpack-dev-tools/windows-build-tools-xpack/tags
           # https://sourceforge.net/projects/windows-build-tools-xpack/files/
           name="windows-build-tools"
-          threshold=13107 # (60%, i.e. 32767 * (100-60)/100)
+          threshold=100
 
           # 2024-2022
           platforms="win32-x64"
