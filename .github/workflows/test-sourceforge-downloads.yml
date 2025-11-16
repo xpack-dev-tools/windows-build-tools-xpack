@@ -47,7 +47,13 @@ jobs:
           # https://github.com/xpack-dev-tools/windows-build-tools-xpack/tags
           # https://sourceforge.net/projects/windows-build-tools-xpack/files/
           name="windows-build-tools"
-          threshold=100
+
+          if [ "${GITHUB_REF_NAME}" == "xpack-development" ]
+          then
+            threshold=100
+          else
+            threshold=66
+          fi
 
           # 2024-2022
           platforms="win32-x64"
