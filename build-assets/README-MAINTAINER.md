@@ -70,7 +70,7 @@ xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git
 
 The xPack Windows Build Tools has no strict release schedule, but
 will try to follow the GNU make
-[releases](https://ftp.gnu.org/gnu/make/).
+[releases](https://ftpmirror.gnu.org/gnu/make/).
 
 However, make stables releases were rare, and occasionally git sources
 might be used.
@@ -320,7 +320,7 @@ This command uses the `xpack-develop` branch of this repo.
 
 ## Durations & results
 
-The builds take a few minutes to complete.
+The builds take several minutes to complete.
 
 The workflow result and logs are available from the
 [Actions](https://github.com/xpack-dev-tools/windows-build-tools-xpack/actions/) page.

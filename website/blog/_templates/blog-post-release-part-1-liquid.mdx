@@ -1,8 +1,8 @@
 ---
 
-title: xPack {{packageConfig.descriptiveName}} v{{xpackVersion}} released
+title: {{packageConfig.descriptiveName}} v{{xpackVersion}} released
 seo_title: Version {{xpackVersion}} released
-description: Version {{xpackVersion}} is a TODO new/maintenance release.
+description: Version {{xpackVersion}} is a TODO maintenance/new release.
 keywords:
   - xpack
   - {{packageConfig.permalinkName}}
@@ -34,9 +34,13 @@ download_url: https://github.com/xpack-dev-tools/windows-build-tools-xpack/relea
 import {PageMetadata} from '@docusaurus/theme-common';
 import Image from '@theme/IdealImage';
 import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-import Prerequisites from './_common/_prerequisites-glib-2.27.mdx';
-import DeprecationNotices from './_common/_deprecation-notices-glib-2.27.mdx';
+import customField from '@site/src/libs/customField';
+
+import Prerequisites from './_common/_prerequisites-glib-2.28.mdx';
+import DeprecationNotices from './_common/_deprecation-notices-glib-2.28.mdx';
 import DownloadAnalytics from './_common/_download-analytics.mdx';
 
 TODO: select one summary
@@ -128,7 +132,7 @@ set of platforms. The results are available from:
 
 ## Tests
 
-The binaries were testes on Windows 10 Pro 32/64-bit.
+The binaries were testes on x64 Windows.
 
 Install the package with xpm.
 

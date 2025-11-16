@@ -13,7 +13,7 @@ To check the available space:
 xpm run check-space -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
 ```
 
-To free the space used by all previous builds of all `xpack-dev-tools` packages:
+To free the space utilised by all previous builds of all `xpack-dev-tools` packages:
 
 ```sh
 xpm run clear-all-projects-builds -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
@@ -22,9 +22,11 @@ xpm run clear-all-projects-builds -C ~/Work/xpack-dev-tools/windows-build-tools-
 To update the build scripts and build the development binaries:
 
 <CodeBlock language="sh"> {
-`rm -rf ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets/package-lock.json && \\
+`rm -rf ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/package-lock.json && \\
+rm -rf ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets/package-lock.json && \\
 git -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git pull && \\
-xpm run install -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets && \\
+npm --prefix ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets  install && \\
+xpm install -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets && \\
 git -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git pull && \\
 xpm link -C ~/Work/xpack-dev-tools/xbb-helper-xpack.git && \\
 xpm run link-deps -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets && \\
@@ -39,17 +41,19 @@ xpm run docker-build-development --config ${props.platform} -C ~/Work/xpack-dev-
 archive and its SHA signature, created in
 the <code>build-assets/build/{props.platform}/deploy</code> folder:
 
-- <code>xpack-windows-build-tools-4.4.1-3-{props.platform}.{props.platform === 'win32-x64' ? 'zip' : 'tar.gz'}</code>
-- <code>xpack-windows-build-tools-4.4.1-3-{props.platform}.{props.platform === 'win32-x64' ? 'zip' : 'tar.gz'}.sha</code>
+- <code>xpack-windows-build-tools-4.4.1-4-{props.platform}.{props.platform === 'win32-x64' ? 'zip' : 'tar.gz'}</code>
+- <code>xpack-windows-build-tools-4.4.1-4-{props.platform}.{props.platform === 'win32-x64' ? 'zip' : 'tar.gz'}.sha</code>
 
 To update the build scripts and build the release binaries:
 
 <CodeBlock language="sh"> {
 `rm -rf ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/package-lock.json && \\
+rm -rf ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets/package-lock.json && \\
 git -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git pull && \\
-xpm run install -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets && \\
+npm --prefix ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets  install && \\
+xpm install -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets && \\
 \\
 xpm run deep-clean --config ${props.platform}  -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets && \\
 xpm run docker-prepare --config ${props.platform} -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets && \\
-xpm run docker-build-development --config ${props.platform} -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
+xpm run docker-build --config ${props.platform} -C ~/Work/xpack-dev-tools/windows-build-tools-xpack.git/build-assets
 `} </CodeBlock>

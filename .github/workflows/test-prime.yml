@@ -4,13 +4,13 @@
 # Automatically generated from npm-packages-helper/templates/*.
 #
 # This file is part of the xPack project (http://xpack.github.io).
-# Copyright (c) 2021 Liviu Ionescu. All rights reserved.
+# Copyright (c) 2021-2025 Liviu Ionescu. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
 #
 # If a copy of the license was not distributed with this file, it can
-# be obtained from https://opensource.org/licenses/MIT.
+# be obtained from https://opensource.org/licenses/mit.
 #
 # -----------------------------------------------------------------------------
 
@@ -52,8 +52,8 @@ jobs:
 
 
   win32-x64-test:
-    name: 'win32-x64 windows-build-tools ${{github.event.inputs.version}} test'
-    runs-on: windows-2022
+    name: 'win32-x64 windows-build-tools ${{github.event.inputs.version}} test 2025'
+    runs-on: windows-2025
     defaults:
       run:
         # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
@@ -71,58 +71,41 @@ jobs:
 
       # https://github.com/actions/checkout
       - name: 'Checkout project'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 3
 
       - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: xpack-dev-tools/xbb-helper-xpack
           path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
           ref: ${{github.event.inputs.helper-git-ref}}
           fetch-depth: 3
 
-      - name: 'Run ${{github.event.inputs.version}} native test'
-        run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
-
-
-
-  # One more run with the oldest Windows available.
-  win32-x64-test2:
-    name: 'win32-x64 windows-build-tools ${{github.event.inputs.version}} test 2019'
-    runs-on: windows-2019
-    defaults:
-      run:
-        # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsshell
-        shell: bash # for --
-
-    steps:
-      - name: 'Show environment'
+      - name: 'Move workspace to short path for MinGW compatibility'
         run: |
-          uname -a
-          systeminfo # lsb_release -sd
-          echo "whoami: $(whoami)"
-          echo "pwd: $(pwd)"
-          ls -lLA
-          env | sort | grep -E '^[^ \t]+='
+          echo Creating D:\t short name folder...
+          mkdir D:\t
 
-      # https://github.com/actions/checkout
-      - name: 'Checkout project'
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 3
+          echo Moving workspace to D:\t...
+          robocopy "%GITHUB_WORKSPACE%" "D:\t" /E /MOVE /NFL /NDL /NJH /NJS /NC /NS
 
-      - name: 'Checkout helper ${{github.event.inputs.helper-git-ref}}'
-        uses: actions/checkout@v4
-        with:
-          repository: xpack-dev-tools/xbb-helper-xpack
-          path: build-assets/xpacks/@xpack-dev-tools/xbb-helper
-          ref: ${{github.event.inputs.helper-git-ref}}
-          fetch-depth: 3
+          if %ERRORLEVEL% LEQ 3 (
+            echo ✓ Workspace successfully moved to D:\t
+            dir D:\t
+          ) else (
+            echo ✗ Failed to move workspace, robocopy exit code: %ERRORLEVEL%
+            exit /b 1
+          )
+        shell: cmd
 
       - name: 'Run ${{github.event.inputs.version}} native test'
+        working-directory: D:\t
+        # Run the test from the short path
         run: bash build-assets/scripts/test.sh --version ${{github.event.inputs.version}} --base-url ${{github.event.inputs.base_url}}
+
+
 
 
 

@@ -17,11 +17,11 @@ For information on how to install and use this project, please refer to the
 ## Project source
 
 The source code of the current release is available on
-[GitHub tag v4.4.1-3.1 tree](https://github.com/xpack-dev-tools/windows-build-tools-xpack/tree/v4.4.1-3.1).
+[GitHub tag v4.4.1-4.1 tree](https://github.com/xpack-dev-tools/windows-build-tools-xpack/tree/v4.4.1-4.1).
 
 ## License
 
 Unless otherwise stated, the original content is released under the terms of the
-[MIT License](https://opensource.org/licenses/MIT),
+[MIT License](https://opensource.org/licenses/mit),
 with all rights reserved to
 [Liviu Ionescu](https://github.com/ilg-ul).

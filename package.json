@@ -1,6 +1,6 @@
 {
   "name": "@xpack-dev-tools/windows-build-tools",
-  "version": "4.4.1-3.1",
+  "version": "4.4.1-4.1.pre",
   "description": "A binary xpm package with the Windows Build Tools executables.",
   "main": "",
   "scripts": {
@@ -72,17 +72,18 @@
     }
   },
   "devDependencies": {
-    "del-cli": "^6.0.0",
+    "del-cli": "^7.0.0",
     "json": "^11.0.0",
-    "liquidjs": "^10.19.1"
+    "liquidjs": "^10.23.0"
   },
   "topConfig": {
-    "descriptiveName": "Windows Build Tools",
+    "descriptiveName": "xPack Windows Build Tools",
+    "upstreamDescriptiveName": "Windows Build Tools",
     "permalinkName": "windows-build-tools",
     "skipCiTests": "true",
-    "useSelfHostedRunners": "true"
+    "useSelfHostedRunners": "false"
   },
   "engines": {
-    "node": " >=18.0.0"
+    "node": " >=20.0"
   }
 }

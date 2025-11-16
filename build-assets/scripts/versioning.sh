@@ -1,10 +1,13 @@
 # -----------------------------------------------------------------------------
-# This file is part of the xPacks distribution.
-#   (https://xpack.github.io)
-# Copyright (c) 2020 Liviu Ionescu. All rights reserved.
+# This file is part of the xPack project (http://xpack.github.io).
+# Copyright (c) 2020-2025 Liviu Ionescu. All rights reserved.
 #
 # Permission to use, copy, modify, and/or distribute this software
 # for any purpose is hereby granted, under the terms of the MIT license.
+#
+# If a copy of the license was not distributed with this file, it can
+# be obtained from https://opensource.org/licenses/mit.
+#
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
@@ -52,7 +55,10 @@ function application_build_versioned_components()
     make_build "4.4.1"
 
     # https://github.com/rmyorston/busybox-w32/tags
-    if [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]1-3 ]]
+    if [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]1-4 ]]
+    then
+      busybox_build "FRP-5857-g3681e397f" # 11 Oct 2025
+    elif [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]1-3 ]]
     then
       busybox_build "FRP-5398-g89ae34445" # 25 Jun 2024
     elif [[ "${XBB_RELEASE_VERSION}" =~ 4[.]4[.]1-[12] ]]
