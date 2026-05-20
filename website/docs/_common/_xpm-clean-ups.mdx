@@ -8,12 +8,27 @@ import TabItem from '@theme/TabItem';
 
 For a comprehensive clean-up, please note that **xpm** utilises only two folders:
 
+
 <Tabs groupId="operating-systems">
 
 <TabItem value="windows" label="Windows" default>
 
 - `%APPDATA%\Roaming\xPacks`
 - `%APPDATA%\Local\Caches\xPacks`
+
+</TabItem>
+
+<TabItem value="macos" label="macOS">
+
+- `${HOME}/Library/xPacks`
+- `${HOME}/Library/Caches/xPacks`
+
+</TabItem>
+
+<TabItem value="linux" label="GNU/Linux">
+
+- `${HOME}/.local/xPacks`
+- `${HOME}/.cache/xPacks`
 
 </TabItem>
 

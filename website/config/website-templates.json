@@ -1,0 +1,12 @@
+{
+  "branding": "GNU Make ",
+  "$links": [
+    "https://ftpmirror.gnu.org/gnu/make/",
+    "https://github.com/rmyorston/busybox-w32/tags"
+  ],
+  "busyboxReleaseDate": "25 Jun 2024",
+  "busyboxTag": "FRP-5398-g89ae34445",
+  "makeReleaseDate": "26 Feb 2023",
+  "programName": "make",
+  "shareOnTwitter": true
+}
