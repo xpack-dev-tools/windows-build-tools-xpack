@@ -1,0 +1,8 @@
+{
+  "descriptiveName": "xPack Windows Build Tools",
+  "permalinkName": "windows-build-tools",
+  "preferredName": "xPack Windows Build Tools",
+  "upstreamDescriptiveName": "Windows Build Tools",
+  "skipCiTests": true,
+  "useSelfHostedRunners": false
+}

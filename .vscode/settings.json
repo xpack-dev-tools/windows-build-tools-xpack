@@ -1,11 +1,20 @@
 {
-  "editor.tabSize": 2,
   "editor.detectIndentation": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "files.associations": { "*.json": "jsonc" },
   "editor.stablePeek": true,
   "files.watcherExclude": {
     "**/.git/**": true,
     "**/node_modules/*/**": true,
     "**/build/**": true
+  },
+  "C_Cpp.intelliSenseExclude": {
+    "**/build-assets": true,
+    "**/website": true,
+    "**/node_modules": true,
+    "**/xpacks": true
   },
   "markdownlint.config": {
     "MD041": false
@@ -14,29 +23,6 @@
     "en_GB"
   ],
   "spellright.notificationClass": "warning",
-  "cSpell.ignoreWords": [
-    "Ionescu",
-    "Liviu",
-    "NSIS",
-    "Somsubhra",
-    "UCRT",
-    "caffeinate",
-    "cleanups",
-    "gettext",
-    "gnumake",
-    "ilegeul",
-    "liquidjs",
-    "loglevel",
-    "msys",
-    "npmignore",
-    "npmjs",
-    "postversion",
-    "rmyorston",
-    "userdel",
-    "wksi",
-    "workdir",
-    "xbbli",
-    "xpack",
-    "xpacks"
-  ]
+  "cSpell.language": "en-GB",
+  "cSpell.ignoreWords": []
 }

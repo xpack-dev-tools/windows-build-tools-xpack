@@ -2,7 +2,6 @@
   "name": "@xpack-dev-tools/windows-build-tools",
   "version": "4.4.1-4.1.pre",
   "description": "A binary xpm package with the Windows Build Tools executables.",
-  "main": "",
   "scripts": {
     "generate-top-commons": "bash node_modules/@xpack/npm-packages-helper/maintenance-scripts/generate-top-commons.sh --xpack-dev-tools",
     "npm-install": "npm install",
@@ -71,12 +70,17 @@
       "sh": "./.content/bin/sh"
     }
   },
+  "$dependenciesUrls": {
+    "del-cli": "https://www.npmjs.com/package/del-cli",
+    "json": "https://www.npmjs.com/package/json",
+    "liquidjs": "https://www.npmjs.com/package/liquidjs"
+  },
   "devDependencies": {
     "del-cli": "^7.0.0",
     "json": "^11.0.0",
-    "liquidjs": "^10.23.0"
+    "liquidjs": "^10.27.0"
   },
-  "topConfig": {
+  "_topConfig": {
     "descriptiveName": "xPack Windows Build Tools",
     "upstreamDescriptiveName": "Windows Build Tools",
     "permalinkName": "windows-build-tools",
