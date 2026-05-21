@@ -2,16 +2,6 @@
   "name": "@xpack-dev-tools/windows-build-tools",
   "version": "4.4.1-4.1.pre",
   "description": "A binary xpm package with the Windows Build Tools executables.",
-  "scripts": {
-    "generate-top-commons": "bash node_modules/@xpack/npm-packages-helper/maintenance-scripts/generate-top-commons.sh --xpack-dev-tools",
-    "npm-install": "npm install",
-    "npm-link-helpers": "npm link @xpack/npm-packages-helper @xpack/docusaurus-template-liquid",
-    "npm-outdated": "npm outdated",
-    "npm-pack": "npm pack",
-    "npm-link": "npm link",
-    "deep-clean": "del-cli node_modules package-lock.json *.tgz",
-    "postversion": "git push origin --all && git push origin --tags"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xpack-dev-tools/windows-build-tools-xpack.git"
@@ -80,12 +70,15 @@
     "json": "^11.0.0",
     "liquidjs": "^10.27.0"
   },
-  "_topConfig": {
-    "descriptiveName": "xPack Windows Build Tools",
-    "upstreamDescriptiveName": "Windows Build Tools",
-    "permalinkName": "windows-build-tools",
-    "skipCiTests": "true",
-    "useSelfHostedRunners": "false"
+  "scripts": {
+    "generate-top-commons": "bash node_modules/@xpack/npm-packages-helper/maintenance-scripts/generate-top-commons.sh --xpack-dev-tools",
+    "npm-install": "npm install",
+    "npm-link-helpers": "npm link @xpack/npm-packages-helper @xpack/docusaurus-template-liquid",
+    "npm-outdated": "npm outdated",
+    "npm-pack": "npm pack",
+    "npm-link": "npm link",
+    "deep-clean": "del-cli node_modules package-lock.json *.tgz",
+    "postversion": "git push origin --all && git push origin --tags"
   },
   "engines": {
     "node": ">=20.0"
